@@ -1,33 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MusicEvolutionVis</title>
-    
+
     <link rel="shortcut icon" href="./assets/favicon.png" type="image/x-icon">
 
     <link rel="stylesheet" href="./libs/Bootstrap/css/bootstrap.css">
     <link rel="stylesheet" href="./libs/MDB5/css/mdb.min.css">
-</head>
-<body>
-    <div>
 
+    <link rel="stylesheet" href="./src/css/layout.css">
+    <link rel="stylesheet" href="./src/css/color.css">
+</head>
+
+<body>
+    <div id="app">
+        <div id="bg">
+            <img id="guitar-img" src="./assets/guitar/guitar_07.svg" alt="">
+            <div id="bg-notes"></div>
+        </div>
+
+        <div id="table-view">
+            <div id="table-title">
+                Title
+            </div>
+            <div id="table-main">
+
+            </div>
+            <div id="table-slider">
+
+            </div>
+            <div id="table-decoration">
+
+            </div>
+        </div>
+
+        <div id="graph-view">
+            <div id="graph-main">
+
+            </div>
+            <div id="graph-bar">
+
+            </div>
+        </div>
+
+        <div id="controls">
+            <label class="control-label">Time Display</label>
+            <div id="view-mode-switch" class="btn-group control-btn" role="group">
+                <button v-for="(name, i) in view_mode_list"
+                        class="btn btn-sm btn-primary"
+                        @click="change_view_mode(i)">
+                    {{name}}
+                </button>
+            </div>
+            <div style="height: 8px;"></div>
+            <label class="control-label">Effect Type</label>
+            <div id="graph-mode-switch" class="btn-group control-btn" role="group">
+                <button v-for="(name, i) in graph_mode_list"
+                        class="btn btn-sm btn-primary" 
+                        @click="change_graph_mode(i)">
+                    {{name}}
+                </button>
+            </div>
+        </div>
     </div>
 
-    <script src="./libs/Vue/vue.js"></script>
+
+    <script src="./libs/Vue/vue.global.js"></script>
     <script src="./libs/httpVueLoader.js"></script>
     <script src="./libs/Bootstrap/js/bootstrap.js"></script>
     <script src="./libs/Bootstrap/js/bootstrap.bundle.js"></script>
     <script src="./libs/MDB5/js/mdb.min.js"></script>
     <script src="./libs/jQuery/jquery.js"></script>
     <script src="./libs/d3js/d3.js"></script>
+    <script src="./libs/echarts/echarts.js"></script>
+    <script src="./libs/vue-echarts.js"></script>
 
-    <script>
-        let app = new Vue({
-
-        });
-    </script>
+    <script src="./src/js/main.js"></script>
 </body>
+
 </html>
