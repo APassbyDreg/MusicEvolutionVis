@@ -11,9 +11,12 @@
 
     <link rel="stylesheet" href="./libs/Bootstrap/css/bootstrap.css">
     <link rel="stylesheet" href="./libs/MDB5/css/mdb.min.css">
+    <link rel="stylesheet" href="./libs/vue-slider-component/theme/material.css">
 
     <link rel="stylesheet" href="./src/css/layout.css">
     <link rel="stylesheet" href="./src/css/color.css">
+    <link rel="stylesheet" href="./src/css/tableview.css">
+    <link rel="stylesheet" href="./src/css/graphview.css">
 </head>
 
 <body>
@@ -31,7 +34,21 @@
 
             </div>
             <div id="table-slider">
-
+                <div id="slider-value">
+                    <div class="form-outline range-input">
+                        <input type="number" id="start-year" class="form-control active" v-model="time_range[0]"/>
+                        <label class="form-label" for="start-year">Start Year</label>
+                    </div>
+                    ~ 
+                    <div class="form-outline range-input">
+                        <input type="number" id="end-year" class="form-control active" v-model="time_range[1]"/>
+                        <label class="form-label" for="end-year">End Year</label>
+                    </div>
+                </div>
+                <v-slider v-model="time_range" 
+                          :min="1921"
+                          :max="2020"
+                          :step="1"/>
             </div>
             <div id="table-decoration">
 
@@ -78,6 +95,7 @@
     <script src="./libs/d3js/d3.js"></script>
     <script src="./libs/echarts/echarts.js"></script>
     <script src="./libs/vue-echarts.js"></script>
+    <script src="./libs/vue-slider-component/vue-slider-component.umd.js"></script>
 
     <script src="./src/js/main.js"></script>
 </body>
