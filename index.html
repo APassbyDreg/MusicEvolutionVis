@@ -36,12 +36,16 @@
             <div id="table-slider">
                 <div id="slider-value">
                     <div class="form-outline range-input">
-                        <input type="number" id="start-year" class="form-control active" v-model="time_range[0]"/>
+                        <input id="start-year" class="form-control active" 
+                               v-model="time_range[0]"
+                               @change="rangeChange"/>
                         <label class="form-label" for="start-year">Start Year</label>
                     </div>
                     ~ 
                     <div class="form-outline range-input">
-                        <input type="number" id="end-year" class="form-control active" v-model="time_range[1]"/>
+                        <input id="end-year" class="form-control active" 
+                               v-model="time_range[1]"
+                               @change="rangeChange"/>
                         <label class="form-label" for="end-year">End Year</label>
                     </div>
                 </div>

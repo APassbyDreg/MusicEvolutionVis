@@ -20,6 +20,13 @@ let appconf = {
             this.graph_mode = mode;
             $("#graph-mode-switch button").removeClass("active");
             $("#graph-mode-switch button")[mode].classList.add("active");
+        },
+        rangeChange: function () {
+            let start = (typeof(this.time_range[0]) === "number") ? this.time_range[0] : parseInt(this.time_range[0]);
+            let end = (typeof(this.time_range[1]) === "number") ? this.time_range[1] : parseInt(this.time_range[1]);
+            start = Math.max(1921, Math.min(2020, start));
+            end = Math.max(1921, Math.min(2020, end));
+            this.time_range = (start > end) ? [end, start] : [start, end];
         }
     },
     computed: {
