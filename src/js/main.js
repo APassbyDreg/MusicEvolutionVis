@@ -44,3 +44,11 @@ let app = Vue.createApp(appconf)
              .component("v-slider", window['vue-slider-component'])
              .mount("#app");
 
+
+async function init_page () {
+    // // example code
+    // await readCSV("./assets/data/data_by_year.csv");
+    // console.log(window.__loaded_csv[0]);
+}
+
+window.onload = init_page;
