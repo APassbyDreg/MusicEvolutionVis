@@ -25,14 +25,14 @@ body {
     background-image: url("../../assets/music-notes.png");
     background-size: 10vh;
     transform: rotate(340deg) scale(2);
-    opacity: 0.1;
+    opacity: 0.05;
     z-index: -1000;
 }
 
 #guitar-img {
     float: right;
     height: 100vh;
-    transform: translateX(-20vh) scale(1.8  ) rotate(270deg);
+    transform: translateX(-25vh) scale(1.8  ) rotate(270deg);
     z-index: -100;
 }
 
@@ -66,9 +66,10 @@ body {
 #table-slider {
     position: inherit;
     top: 85%;
-    left: 50%;
-    height: 15%;
-    width: 40%;
+    left: 60%;
+    width: 30%;
+    padding: 10px;
+    border-radius: 10px;
     background-color: azure;
 }
 

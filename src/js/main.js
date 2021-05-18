@@ -2,8 +2,8 @@ let appconf = {
     data() {
         return {
             // options
-            year: 1921,
             attr: 0,
+            time_range: [1921, 2020],
             view_mode_list:["Overview", "Year"],
             graph_mode_list:["Ingoing", "Outgoing"],
             view_mode: 0,
@@ -26,11 +26,14 @@ let appconf = {
 
     },
     mounted: function () {
+        // initialize options
         this.change_view_mode(0);
         this.change_graph_mode(0);
     }
 }
 
-let app = Vue.createApp(appconf).mount("#app");
-// app.component("v-chart", VueECharts);
+let app = Vue.createApp(appconf)
+             .component("v-chart", VueECharts)
+             .component("v-slider", window['vue-slider-component'])
+             .mount("#app");
 
