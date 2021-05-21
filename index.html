@@ -31,7 +31,7 @@
                 Title
             </div>
             <div id="table-main">
-
+                <!-- 这里就是左边的表格了 -->
             </div>
             <div id="table-slider">
                 <div id="slider-value">
@@ -39,14 +39,14 @@
                         <input id="start-year" class="form-control active" 
                                v-model="time_range[0]"
                                @change="rangeChange"/>
-                        <label class="form-label" for="start-year">Start Year</label>
+                        <label class="form-label" for="start-year">Start</label>
                     </div>
                     ~ 
                     <div class="form-outline range-input">
                         <input id="end-year" class="form-control active" 
                                v-model="time_range[1]"
                                @change="rangeChange"/>
-                        <label class="form-label" for="end-year">End Year</label>
+                        <label class="form-label" for="end-year">End</label>
                     </div>
                 </div>
                 <v-slider v-model="time_range" 
@@ -104,6 +104,9 @@
 
     <script src="./src/js/main.js"></script>
     <script src="./src/js/loader.js"></script>
+    <script src="./src/js/table.js"></script>
+
+    <script src="./assets/data/full_music_data.json"></script>
 </body>
 
 </html>
