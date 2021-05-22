@@ -39,7 +39,7 @@
                 <div id="table-slider-value" class="row">
                     <div class="col-5 p-0">
                         <div class="form-outline range-input w-100">
-                            <input id="start-year" class="form-control active text-center" v-model="time_range[0]" @change="rangeChange" />
+                            <input id="start-year" class="form-control active text-center" v-model="time_range[0]" @change="range_change" />
                             <label class="form-label" for="start-year">Start</label>
                         </div>
                     </div>
@@ -48,14 +48,14 @@
                     </div>
                     <div class="col-5 p-0">
                         <div class="form-outline range-input w-100">
-                            <input id="end-year" class="form-control active text-center" v-model="time_range[1]" @change="rangeChange" />
+                            <input id="end-year" class="form-control active text-center" v-model="time_range[1]" @change="range_change" />
                             <label class="form-label" for="end-year">End</label>
                         </div>
                     </div>
                 </div>
                 <div id="table-slider-rail" class="row">
                     <div class="col-12">
-                        <v-slider v-model="time_range" :min="1921" :max="2020" :step="1" @change="rangeChange" />
+                        <v-slider v-model="time_range" :min="1921" :max="2020" :step="1" @change="range_change" />
                     </div>
                 </div>
             </div>
@@ -75,7 +75,7 @@
 
         <div id="controls">
             <div id="controls-bg"></div>
-            <div id="controls-graph-mode">
+            <div id="controls-graph-mode" class="control-group">
                 <div class="control-label fw-bold">Edge Type:</div>
                 <div id="graph-mode-switch" class="btn-group control-btn" role="group">
                     <button v-for="(name, i) in graph_mode_list" class="btn btn-sm btn-primary" @click="change_graph_mode(i)">
@@ -83,21 +83,41 @@
                     </button>
                 </div>
             </div>
+            <div style="height: 0.4rem;"></div>
+            <div id="controls-genre-chosen" class="control-group">
+                <div class="control-label fw-bold">Genres:</div>
+                <div class="dropdown">
+                    <button class="btn btn-sm btn-primary dropdown-toggle w-100" 
+                            type="button"  
+                            data-bs-toggle="dropdown" 
+                            aria-expanded="false" id="dropdownMenuButton">
+                        Select Displayed Genres
+                    </button>
+                    <div class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton">
+                        <div id="genres-select" class="container">
+                            <li v-for="i in attrs.length">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" v-model="using_genres[i-1]" @change="grene_change(i-1)" />
+                                    <label class="form-check-label">{{genres[i-1]}}</label>
+                                </div>
+                            </li>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-
     <script src="./libs/Vue/vue.global.js"></script>
     <script src="./libs/httpVueLoader.js"></script>
-    <script src="./libs/Bootstrap/js/bootstrap.js"></script>
-    <script src="./libs/Bootstrap/js/bootstrap.bundle.js"></script>
-    <script src="./libs/MDB5/js/mdb.min.js"></script>
-    <script src="./libs/jQuery/jquery.js"></script>
-    <script src="./libs/jquery.csv.js"></script>
     <script src="./libs/d3js/d3.js"></script>
     <script src="./libs/echarts/echarts.js"></script>
     <script src="./libs/vue-echarts.js"></script>
     <script src="./libs/vue-slider-component/vue-slider-component.umd.js"></script>
+    <script src="./libs/MDB5/js/mdb.min.js"></script>
+    <script src="./libs/bootstrap/js/bootstrap.bundle.js"></script>
+    <script src="./libs/jQuery/jquery.js"></script>
+    <script src="./libs/jquery.csv.js"></script>
 
     <script src="./src/js/main.js"></script>
     <script src="./src/js/loader.js"></script>

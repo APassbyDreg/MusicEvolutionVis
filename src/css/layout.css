@@ -144,27 +144,3 @@ body {
     background-image: url("../../assets/textures/pexels-henry-&-co-2341290.jpg");
     background-size: cover;
 }
-
-#contrils-graph-mode {
-    position: inherit;
-    z-index: 10;
-    width: 100;
-}
-
-.control-label {
-    position: relative;
-    color: white;
-    z-index: 1000;
-}
-
-.control-btn {
-    margin: 0;
-}
-
-.btn-group.control-btn {
-  display: flex;
-}
-
-.control-btn .btn {
-  flex: 1;
-}

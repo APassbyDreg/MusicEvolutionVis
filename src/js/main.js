@@ -3,25 +3,24 @@ let appconf = {
         return {
             // options
             attr: 0,
+            attrs: ["danceability", "energy", "valence", "tempo", "loudness", "mode", "key", "acousticness", "instrumentalness", "liveness", "speechiness", "explicit", "duration_ms", "popularity"],
             time_range: [1921, 2020],
-            view_mode_list:["Overview", "Year"],
-            graph_mode_list:["Ingoing", "Outgoing"],
-            view_mode: 0,
+            graph_mode_list:["In", "Out", "Both"],
             graph_mode: 0,
+            genres: ["Electronic", "R&B", "Vocal", "Pop/Rock", "Religious", "Blues", "Country", "Jazz", "Latin", "New Age", "Folk", "International", "Reggae", "Comedy/Spoken", "Easy Listening", "Classical", "Avant-Garde", "Stage & Screen", "Children's"],
+            using_genres: Array(19).fill(true),
         }
     },
     methods: {
-        // change_view_mode: function (mode) {
-        //     this.view_mode = mode;
-        //     $("#view-mode-switch button").removeClass("active");
-        //     $("#view-mode-switch button")[mode].classList.add("active");
-        // },
         change_graph_mode: function (mode) {
             this.graph_mode = mode;
             $("#graph-mode-switch button").removeClass("active");
             $("#graph-mode-switch button")[mode].classList.add("active");
         },
-        rangeChange: function () {
+        grene_change: function (idx) {
+            console.log("genres", this.genres[idx], "toggled");
+        },
+        range_change: function () {
             let start = (typeof(this.time_range[0]) === "number") ? this.time_range[0] : parseInt(this.time_range[0]);
             let end = (typeof(this.time_range[1]) === "number") ? this.time_range[1] : parseInt(this.time_range[1]);
             start = Math.max(1921, Math.min(2020, start));
