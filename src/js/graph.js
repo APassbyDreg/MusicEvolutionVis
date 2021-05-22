@@ -15,6 +15,8 @@ function set_out_graph_opt(start, end) {
     cate_data = ori_cate_data.map(function(cate) {
         return {name: cate};
     });
+    start = (start / 10 - 1) * 10;
+    end = (end / 10 + 1) * 10
     // 初始化node,link数据
     var node_data = new Array();
     var link_data = new Array();
