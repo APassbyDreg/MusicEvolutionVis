@@ -1,0 +1,1058 @@
+{
+    "1980": {
+        "Pop/Rock": {
+            "Pop/Rock": 4511,
+            "Latin": 39,
+            "R&B;": 48,
+            "Country": 32,
+            "Comedy/Spoken": 1,
+            "Classical": 3,
+            "Electronic": 180,
+            "Stage & Screen": 4,
+            "Blues": 1,
+            "Jazz": 8,
+            "Vocal": 4,
+            "Folk": 5,
+            "International": 5,
+            "Easy Listening": 2,
+            "Reggae": 3,
+            "Religious": 10,
+            "Avant-Garde": 1,
+            "New Age": 1
+        },
+        "Electronic": {
+            "Pop/Rock": 51,
+            "Electronic": 107,
+            "R&B;": 4
+        },
+        "Reggae": {
+            "Pop/Rock": 4,
+            "Reggae": 75,
+            "Latin": 4,
+            "Electronic": 2
+        },
+        "Comedy/Spoken": {
+            "Pop/Rock": 9,
+            "R&B;": 1,
+            "Comedy/Spoken": 15
+        },
+        "Country": {
+            "Country": 196,
+            "Pop/Rock": 30,
+            "Folk": 4
+        },
+        "R&B;": {
+            "R&B;": 330,
+            "Pop/Rock": 90,
+            "Electronic": 8,
+            "Jazz": 4,
+            "Classical": 1,
+            "Country": 2,
+            "Religious": 7,
+            "Vocal": 4,
+            "Reggae": 1,
+            "Latin": 2
+        },
+        "Latin": {
+            "Latin": 61,
+            "International": 4,
+            "Religious": 1,
+            "Pop/Rock": 14,
+            "New Age": 1
+        },
+        "Religious": {
+            "R&B;": 11,
+            "Religious": 63,
+            "Pop/Rock": 8,
+            "Country": 3
+        },
+        "New Age": {
+            "New Age": 10,
+            "Classical": 1,
+            "Pop/Rock": 4,
+            "Electronic": 1,
+            "Latin": 1,
+            "Jazz": 1,
+            "International": 2,
+            "Vocal": 1,
+            "Folk": 1
+        },
+        "Jazz": {
+            "Jazz": 15,
+            "Pop/Rock": 7,
+            "R&B;": 1,
+            "Vocal": 3
+        },
+        "Folk": {
+            "Country": 9,
+            "Pop/Rock": 15,
+            "Classical": 1,
+            "International": 1,
+            "Folk": 1,
+            "Religious": 1,
+            "New Age": 1
+        },
+        "Classical": {
+            "Classical": 1
+        },
+        "International": {
+            "International": 2,
+            "Pop/Rock": 7,
+            "R&B;": 1,
+            "New Age": 1
+        },
+        "Vocal": {
+            "R&B;": 3,
+            "Pop/Rock": 2,
+            "Jazz": 2,
+            "Latin": 1,
+            "Vocal": 3
+        },
+        "Stage & Screen": {
+            "Stage & Screen": 2
+        },
+        "Blues": {
+            "Pop/Rock": 5
+        },
+        "Unknown": {
+            "Pop/Rock": 1
+        }
+    },
+    "1990": {
+        "Electronic": {
+            "Pop/Rock": 105,
+            "Electronic": 155,
+            "Classical": 1,
+            "R&B;": 3
+        },
+        "Pop/Rock": {
+            "Pop/Rock": 2278,
+            "Electronic": 52,
+            "Country": 18,
+            "Jazz": 2,
+            "Classical": 2,
+            "Vocal": 1,
+            "R&B;": 29,
+            "Latin": 11,
+            "Religious": 12,
+            "Reggae": 1,
+            "Easy Listening": 2,
+            "Folk": 7,
+            "International": 1,
+            "Comedy/Spoken": 2
+        },
+        "Latin": {
+            "Electronic": 1,
+            "Latin": 37,
+            "International": 1,
+            "R&B;": 1,
+            "Pop/Rock": 10,
+            "Jazz": 1
+        },
+        "R&B;": {
+            "R&B;": 399,
+            "Pop/Rock": 114,
+            "Religious": 6,
+            "Latin": 6,
+            "Reggae": 1,
+            "Electronic": 4,
+            "Country": 4
+        },
+        "Country": {
+            "Country": 250,
+            "Pop/Rock": 24,
+            "Religious": 2,
+            "Folk": 1,
+            "Latin": 1
+        },
+        "Religious": {
+            "Religious": 16,
+            "Pop/Rock": 8,
+            "R&B;": 1
+        },
+        "Reggae": {
+            "Reggae": 18,
+            "Latin": 3,
+            "Pop/Rock": 4,
+            "Electronic": 2
+        },
+        "Jazz": {
+            "Jazz": 5,
+            "Pop/Rock": 4,
+            "Vocal": 3
+        },
+        "Classical": {
+            "Classical": 1,
+            "Vocal": 2,
+            "Pop/Rock": 2,
+            "Country": 1
+        },
+        "Comedy/Spoken": {
+            "Vocal": 1,
+            "Comedy/Spoken": 5
+        },
+        "Avant-Garde": {
+            "Pop/Rock": 1
+        },
+        "Folk": {
+            "Pop/Rock": 9,
+            "Country": 1,
+            "R&B;": 1
+        },
+        "International": {
+            "International": 3,
+            "Pop/Rock": 1
+        },
+        "New Age": {
+            "Vocal": 2,
+            "New Age": 1,
+            "Pop/Rock": 2
+        },
+        "Easy Listening": {
+            "Pop/Rock": 1
+        },
+        "Blues": {
+            "Pop/Rock": 1,
+            "Country": 1
+        },
+        "Vocal": {
+            "Pop/Rock": 1
+        }
+    },
+    "1960": {
+        "Pop/Rock": {
+            "Pop/Rock": 7786,
+            "Easy Listening": 3,
+            "Electronic": 89,
+            "Stage & Screen": 2,
+            "Vocal": 23,
+            "Country": 244,
+            "Blues": 29,
+            "Jazz": 57,
+            "Comedy/Spoken": 11,
+            "New Age": 19,
+            "Folk": 116,
+            "Classical": 10,
+            "R&B;": 110,
+            "Religious": 31,
+            "Reggae": 4,
+            "International": 22,
+            "Unknown": 3,
+            "Latin": 29,
+            "Avant-Garde": 6
+        },
+        "Country": {
+            "Pop/Rock": 140,
+            "Country": 373,
+            "Folk": 29,
+            "Jazz": 1,
+            "R&B;": 3,
+            "Blues": 3
+        },
+        "R&B;": {
+            "Pop/Rock": 501,
+            "R&B;": 1007,
+            "Jazz": 30,
+            "Country": 6,
+            "Blues": 17,
+            "Electronic": 28,
+            "Religious": 26,
+            "Vocal": 10,
+            "Reggae": 24,
+            "New Age": 1,
+            "Comedy/Spoken": 1,
+            "Latin": 8,
+            "Folk": 2,
+            "Avant-Garde": 1,
+            "International": 2
+        },
+        "Latin": {
+            "Easy Listening": 3,
+            "Latin": 99,
+            "Pop/Rock": 27,
+            "Jazz": 11,
+            "International": 10,
+            "Electronic": 2,
+            "R&B;": 2,
+            "Vocal": 2,
+            "New Age": 1,
+            "Stage & Screen": 1
+        },
+        "Avant-Garde": {
+            "Electronic": 13,
+            "New Age": 7,
+            "Pop/Rock": 21,
+            "Avant-Garde": 5,
+            "Classical": 2,
+            "Stage & Screen": 1
+        },
+        "Reggae": {
+            "Reggae": 259,
+            "Pop/Rock": 125,
+            "Electronic": 23,
+            "R&B;": 3,
+            "Latin": 1
+        },
+        "Jazz": {
+            "R&B;": 34,
+            "Jazz": 226,
+            "Pop/Rock": 56,
+            "International": 6,
+            "Latin": 4,
+            "New Age": 12,
+            "Electronic": 12,
+            "Avant-Garde": 1,
+            "Vocal": 6,
+            "Folk": 1,
+            "Stage & Screen": 3
+        },
+        "Blues": {
+            "Pop/Rock": 43,
+            "Blues": 9,
+            "R&B;": 1
+        },
+        "Folk": {
+            "Pop/Rock": 252,
+            "Folk": 67,
+            "Blues": 1,
+            "Country": 29,
+            "Religious": 1,
+            "R&B;": 3,
+            "Vocal": 1,
+            "International": 4,
+            "New Age": 8,
+            "Comedy/Spoken": 1,
+            "Electronic": 2
+        },
+        "Vocal": {
+            "Pop/Rock": 11,
+            "R&B;": 7,
+            "Vocal": 9,
+            "Jazz": 4,
+            "Latin": 19,
+            "Folk": 1,
+            "Classical": 1
+        },
+        "Electronic": {
+            "New Age": 20,
+            "Electronic": 16,
+            "Pop/Rock": 14,
+            "Stage & Screen": 1
+        },
+        "International": {
+            "Pop/Rock": 60,
+            "Electronic": 4,
+            "Classical": 3,
+            "Religious": 1,
+            "Vocal": 4,
+            "International": 24,
+            "Jazz": 5,
+            "Latin": 26,
+            "New Age": 4,
+            "Avant-Garde": 2,
+            "R&B;": 4,
+            "Blues": 1,
+            "Unknown": 2,
+            "Folk": 1
+        },
+        "Stage & Screen": {
+            "Classical": 1,
+            "Pop/Rock": 8,
+            "Vocal": 6,
+            "Stage & Screen": 1
+        },
+        "New Age": {
+            "Jazz": 2,
+            "Pop/Rock": 4,
+            "New Age": 9,
+            "Electronic": 6
+        },
+        "Easy Listening": {
+            "Jazz": 1,
+            "Pop/Rock": 4
+        },
+        "Classical": {
+            "Pop/Rock": 17,
+            "Classical": 7,
+            "Electronic": 10,
+            "New Age": 4,
+            "Vocal": 6,
+            "Country": 1,
+            "Stage & Screen": 2,
+            "Avant-Garde": 3
+        },
+        "Religious": {
+            "Religious": 30,
+            "Vocal": 1,
+            "Pop/Rock": 6,
+            "R&B;": 1
+        },
+        "Comedy/Spoken": {
+            "Comedy/Spoken": 52,
+            "Pop/Rock": 2,
+            "Folk": 1,
+            "R&B;": 2,
+            "Country": 1
+        }
+    },
+    "1950": {
+        "Pop/Rock": {
+            "Pop/Rock": 1783,
+            "Easy Listening": 2,
+            "Stage & Screen": 4,
+            "Blues": 12,
+            "New Age": 2,
+            "Country": 108,
+            "Electronic": 11,
+            "R&B;": 59,
+            "Religious": 7,
+            "International": 6,
+            "Vocal": 27,
+            "Folk": 21,
+            "Jazz": 15,
+            "Latin": 4,
+            "Reggae": 2,
+            "Comedy/Spoken": 1
+        },
+        "R&B;": {
+            "Pop/Rock": 553,
+            "R&B;": 1001,
+            "Country": 18,
+            "Blues": 11,
+            "Religious": 23,
+            "Reggae": 69,
+            "Vocal": 15,
+            "Jazz": 13,
+            "International": 7,
+            "Electronic": 11,
+            "Classical": 1,
+            "Latin": 5,
+            "Folk": 3
+        },
+        "Country": {
+            "Country": 595,
+            "Pop/Rock": 191,
+            "Religious": 2,
+            "Unknown": 2,
+            "Folk": 11,
+            "Vocal": 3,
+            "Blues": 5,
+            "R&B;": 2,
+            "New Age": 2,
+            "Electronic": 2
+        },
+        "Comedy/Spoken": {
+            "Comedy/Spoken": 11,
+            "Pop/Rock": 8,
+            "Folk": 1,
+            "R&B;": 1
+        },
+        "Folk": {
+            "Comedy/Spoken": 2,
+            "Folk": 74,
+            "Pop/Rock": 137,
+            "Country": 39,
+            "R&B;": 2,
+            "Latin": 1,
+            "Religious": 2,
+            "Vocal": 1,
+            "New Age": 5,
+            "International": 7,
+            "Blues": 1,
+            "Jazz": 1
+        },
+        "Latin": {
+            "Easy Listening": 2,
+            "Jazz": 15,
+            "R&B;": 3,
+            "Electronic": 3,
+            "Pop/Rock": 26,
+            "Vocal": 3,
+            "Latin": 72,
+            "International": 17,
+            "New Age": 1,
+            "Country": 1
+        },
+        "International": {
+            "Easy Listening": 1,
+            "Folk": 6,
+            "Pop/Rock": 10,
+            "Jazz": 4,
+            "International": 26,
+            "Reggae": 4,
+            "Latin": 10,
+            "New Age": 1,
+            "Vocal": 2,
+            "R&B;": 2,
+            "Electronic": 1
+        },
+        "Stage & Screen": {
+            "Stage & Screen": 45,
+            "Pop/Rock": 31,
+            "Electronic": 10,
+            "Vocal": 4,
+            "Jazz": 4,
+            "Folk": 1,
+            "Easy Listening": 1
+        },
+        "Reggae": {
+            "Reggae": 22,
+            "Pop/Rock": 6
+        },
+        "Vocal": {
+            "R&B;": 56,
+            "Vocal": 85,
+            "Pop/Rock": 102,
+            "Electronic": 2,
+            "Stage & Screen": 3,
+            "Classical": 3,
+            "Blues": 2,
+            "Jazz": 17,
+            "International": 2,
+            "Country": 5,
+            "New Age": 1,
+            "Latin": 3,
+            "Folk": 6,
+            "Reggae": 3,
+            "Religious": 4
+        },
+        "Blues": {
+            "R&B;": 51,
+            "Blues": 122,
+            "Jazz": 2,
+            "Pop/Rock": 226,
+            "Vocal": 2,
+            "Folk": 3
+        },
+        "Jazz": {
+            "Jazz": 428,
+            "Pop/Rock": 92,
+            "R&B;": 42,
+            "Classical": 2,
+            "Folk": 1,
+            "Vocal": 21,
+            "International": 6,
+            "Latin": 10,
+            "Reggae": 1,
+            "New Age": 6,
+            "Electronic": 10,
+            "Religious": 1,
+            "Blues": 2,
+            "Country": 1,
+            "Stage & Screen": 6,
+            "Easy Listening": 1
+        },
+        "Religious": {
+            "Religious": 19,
+            "R&B;": 12
+        },
+        "Easy Listening": {
+            "Jazz": 3,
+            "Easy Listening": 6,
+            "Pop/Rock": 8,
+            "New Age": 4,
+            "Vocal": 1,
+            "Avant-Garde": 1
+        },
+        "Avant-Garde": {
+            "Electronic": 1,
+            "Avant-Garde": 2,
+            "Pop/Rock": 10,
+            "Classical": 3
+        },
+        "Classical": {
+            "Classical": 1,
+            "Jazz": 1,
+            "Electronic": 1,
+            "Pop/Rock": 1
+        },
+        "Children's": {
+            "Pop/Rock": 1,
+            "Children's": 2
+        }
+    },
+    "1970": {
+        "Pop/Rock": {
+            "Pop/Rock": 5370,
+            "Latin": 47,
+            "Blues": 5,
+            "Comedy/Spoken": 15,
+            "New Age": 15,
+            "Country": 110,
+            "Classical": 9,
+            "R&B;": 33,
+            "Reggae": 14,
+            "Religious": 23,
+            "Electronic": 164,
+            "Jazz": 13,
+            "Vocal": 14,
+            "Folk": 17,
+            "International": 3,
+            "Avant-Garde": 4,
+            "Unknown": 1
+        },
+        "Jazz": {
+            "Pop/Rock": 42,
+            "Jazz": 49,
+            "Electronic": 5,
+            "New Age": 1,
+            "Country": 5,
+            "R&B;": 5,
+            "Folk": 1,
+            "Vocal": 1
+        },
+        "Country": {
+            "Country": 448,
+            "Pop/Rock": 29,
+            "Religious": 1,
+            "International": 1,
+            "Unknown": 1,
+            "Jazz": 4,
+            "Folk": 20
+        },
+        "R&B;": {
+            "R&B;": 446,
+            "Latin": 10,
+            "Pop/Rock": 198,
+            "Comedy/Spoken": 3,
+            "Electronic": 32,
+            "Jazz": 13,
+            "Vocal": 3,
+            "Religious": 6,
+            "Country": 1,
+            "Avant-Garde": 1,
+            "Reggae": 1
+        },
+        "Reggae": {
+            "Reggae": 204,
+            "R&B;": 3,
+            "Pop/Rock": 27,
+            "Electronic": 7,
+            "Latin": 2
+        },
+        "New Age": {
+            "New Age": 27,
+            "Classical": 2,
+            "Pop/Rock": 8,
+            "Electronic": 3,
+            "Folk": 1,
+            "Jazz": 2,
+            "Stage & Screen": 2,
+            "Easy Listening": 1
+        },
+        "Latin": {
+            "Latin": 39,
+            "Pop/Rock": 9,
+            "International": 1
+        },
+        "Blues": {
+            "Blues": 2,
+            "Country": 3,
+            "Pop/Rock": 14
+        },
+        "Comedy/Spoken": {
+            "Comedy/Spoken": 8,
+            "Pop/Rock": 4
+        },
+        "Folk": {
+            "Pop/Rock": 45,
+            "Folk": 8,
+            "Country": 4,
+            "International": 3,
+            "Blues": 1,
+            "New Age": 1
+        },
+        "Religious": {
+            "Pop/Rock": 12,
+            "Religious": 20,
+            "Vocal": 2,
+            "Country": 5,
+            "R&B;": 3
+        },
+        "Vocal": {
+            "Pop/Rock": 26,
+            "Classical": 2,
+            "Vocal": 18,
+            "R&B;": 8,
+            "Jazz": 3,
+            "Stage & Screen": 1
+        },
+        "Electronic": {
+            "Pop/Rock": 120,
+            "New Age": 6,
+            "Electronic": 69,
+            "R&B;": 3
+        },
+        "International": {
+            "Pop/Rock": 27,
+            "International": 14,
+            "Reggae": 2,
+            "New Age": 4,
+            "R&B;": 3,
+            "Latin": 1,
+            "Folk": 3,
+            "Vocal": 1
+        },
+        "Stage & Screen": {
+            "Stage & Screen": 4,
+            "Pop/Rock": 5,
+            "Electronic": 2,
+            "Avant-Garde": 1
+        },
+        "Avant-Garde": {
+            "Pop/Rock": 9,
+            "Electronic": 3
+        },
+        "Classical": {
+            "Vocal": 2,
+            "Classical": 1
+        },
+        "Unknown": {
+            "International": 1
+        }
+    },
+    "1940": {
+        "Country": {
+            "Country": 346,
+            "Pop/Rock": 115,
+            "Jazz": 6,
+            "Vocal": 1,
+            "Folk": 19,
+            "R&B;": 1,
+            "International": 1,
+            "New Age": 2,
+            "Religious": 1
+        },
+        "Easy Listening": {
+            "Easy Listening": 9,
+            "Pop/Rock": 18,
+            "Vocal": 3,
+            "Latin": 3,
+            "Stage & Screen": 5,
+            "New Age": 1,
+            "Jazz": 4,
+            "International": 1
+        },
+        "Jazz": {
+            "Electronic": 17,
+            "Vocal": 18,
+            "Jazz": 681,
+            "Pop/Rock": 151,
+            "R&B;": 27,
+            "Classical": 1,
+            "New Age": 6,
+            "Comedy/Spoken": 1,
+            "Blues": 5,
+            "Country": 4,
+            "International": 7,
+            "Latin": 11,
+            "Folk": 7,
+            "Stage & Screen": 1,
+            "Easy Listening": 5,
+            "Avant-Garde": 1,
+            "Reggae": 2
+        },
+        "Blues": {
+            "Pop/Rock": 237,
+            "International": 2,
+            "Jazz": 10,
+            "Blues": 113,
+            "Religious": 1,
+            "R&B;": 43,
+            "Folk": 10,
+            "Latin": 1,
+            "Country": 2,
+            "Vocal": 1,
+            "Reggae": 2
+        },
+        "Classical": {
+            "Stage & Screen": 2,
+            "Pop/Rock": 6,
+            "Avant-Garde": 1,
+            "Classical": 1
+        },
+        "Vocal": {
+            "Vocal": 167,
+            "Pop/Rock": 95,
+            "Religious": 2,
+            "Country": 13,
+            "R&B;": 51,
+            "Jazz": 24,
+            "Classical": 5,
+            "Folk": 3,
+            "Latin": 5,
+            "International": 8,
+            "Blues": 5,
+            "Comedy/Spoken": 1
+        },
+        "R&B;": {
+            "International": 2,
+            "Pop/Rock": 140,
+            "R&B;": 145,
+            "Religious": 5,
+            "Country": 8,
+            "Blues": 22,
+            "Reggae": 7,
+            "Jazz": 11,
+            "Folk": 1,
+            "Vocal": 6
+        },
+        "Pop/Rock": {
+            "Pop/Rock": 63,
+            "Country": 1,
+            "R&B;": 2
+        },
+        "Latin": {
+            "Jazz": 8,
+            "R&B;": 2,
+            "Latin": 67,
+            "International": 4,
+            "Vocal": 3,
+            "Pop/Rock": 10,
+            "Electronic": 1,
+            "Classical": 1
+        },
+        "Folk": {
+            "Pop/Rock": 37,
+            "R&B;": 1,
+            "Religious": 1,
+            "Folk": 45,
+            "International": 7,
+            "Country": 9,
+            "New Age": 2
+        },
+        "Stage & Screen": {
+            "Vocal": 7,
+            "Pop/Rock": 1,
+            "Country": 1,
+            "Children's": 1
+        },
+        "Comedy/Spoken": {
+            "Folk": 2,
+            "Pop/Rock": 3,
+            "Comedy/Spoken": 3
+        },
+        "Religious": {
+            "Religious": 3,
+            "R&B;": 4
+        },
+        "International": {
+            "Reggae": 5,
+            "Jazz": 1,
+            "Pop/Rock": 4,
+            "International": 10,
+            "Easy Listening": 1,
+            "Vocal": 2,
+            "Classical": 1,
+            "R&B;": 1
+        },
+        "Reggae": {
+            "International": 2,
+            "Reggae": 1,
+            "Vocal": 1
+        }
+    },
+    "1930": {
+        "Classical": {
+            "Classical": 5,
+            "Electronic": 5,
+            "Pop/Rock": 17,
+            "Avant-Garde": 6,
+            "International": 2,
+            "Easy Listening": 1,
+            "Jazz": 1,
+            "Latin": 1,
+            "Stage & Screen": 1
+        },
+        "Vocal": {
+            "Comedy/Spoken": 3,
+            "Easy Listening": 2,
+            "Vocal": 255,
+            "Pop/Rock": 144,
+            "Country": 18,
+            "R&B;": 106,
+            "Folk": 6,
+            "Jazz": 34,
+            "Latin": 17,
+            "Blues": 8,
+            "Religious": 3,
+            "Stage & Screen": 4,
+            "Classical": 4,
+            "Reggae": 2,
+            "International": 12,
+            "Children's": 1
+        },
+        "Comedy/Spoken": {
+            "Comedy/Spoken": 7,
+            "Country": 1,
+            "Folk": 1,
+            "Pop/Rock": 7,
+            "Vocal": 2,
+            "Electronic": 1,
+            "Stage & Screen": 1,
+            "Children's": 1,
+            "Reggae": 1
+        },
+        "Blues": {
+            "Pop/Rock": 163,
+            "International": 3,
+            "Blues": 126,
+            "Electronic": 1,
+            "Folk": 11,
+            "R&B;": 23,
+            "Jazz": 5,
+            "Vocal": 2,
+            "Reggae": 1,
+            "New Age": 1
+        },
+        "Stage & Screen": {
+            "Stage & Screen": 28,
+            "Vocal": 6,
+            "Pop/Rock": 6,
+            "Jazz": 2,
+            "Folk": 1,
+            "International": 1,
+            "Easy Listening": 3
+        },
+        "Jazz": {
+            "Blues": 26,
+            "Vocal": 53,
+            "Jazz": 365,
+            "Pop/Rock": 57,
+            "Religious": 1,
+            "Country": 14,
+            "R&B;": 67,
+            "Comedy/Spoken": 4,
+            "Reggae": 8,
+            "Latin": 16,
+            "New Age": 3,
+            "Folk": 1,
+            "Easy Listening": 6,
+            "Electronic": 2,
+            "Stage & Screen": 4,
+            "International": 3,
+            "Children's": 1,
+            "Classical": 2
+        },
+        "International": {
+            "Jazz": 10,
+            "Folk": 1,
+            "Pop/Rock": 6,
+            "New Age": 2,
+            "International": 2,
+            "Classical": 1,
+            "Vocal": 1
+        },
+        "Latin": {
+            "Latin": 27,
+            "Pop/Rock": 7,
+            "Jazz": 2,
+            "International": 4
+        },
+        "Pop/Rock": {
+            "Pop/Rock": 14,
+            "Vocal": 5,
+            "Classical": 1,
+            "Country": 1
+        },
+        "Country": {
+            "Country": 285,
+            "Pop/Rock": 111,
+            "Folk": 17,
+            "R&B;": 1,
+            "Latin": 1,
+            "Reggae": 1,
+            "International": 1,
+            "Comedy/Spoken": 1,
+            "Blues": 2,
+            "Vocal": 3
+        },
+        "Religious": {
+            "Pop/Rock": 3,
+            "Vocal": 1,
+            "R&B;": 7,
+            "Religious": 1,
+            "Folk": 3
+        },
+        "Folk": {
+            "Folk": 76,
+            "R&B;": 1,
+            "Pop/Rock": 58,
+            "Religious": 2,
+            "International": 7,
+            "Country": 17,
+            "Electronic": 1,
+            "Comedy/Spoken": 2,
+            "Vocal": 1
+        },
+        "R&B;": {
+            "R&B;": 13,
+            "Pop/Rock": 9,
+            "Reggae": 1
+        },
+        "Easy Listening": {
+            "Easy Listening": 3
+        }
+    },
+    "2000": {
+        "Pop/Rock": {
+            "Pop/Rock": 236,
+            "Country": 5,
+            "Vocal": 1,
+            "Electronic": 6,
+            "R&B;": 3
+        },
+        "Reggae": {
+            "Reggae": 5,
+            "R&B;": 3
+        },
+        "Religious": {
+            "Religious": 3,
+            "R&B;": 1
+        },
+        "Latin": {
+            "Latin": 3
+        },
+        "R&B;": {
+            "R&B;": 40,
+            "Pop/Rock": 18,
+            "Religious": 1,
+            "Electronic": 4
+        },
+        "Electronic": {
+            "Pop/Rock": 7,
+            "Latin": 1,
+            "Electronic": 24,
+            "R&B;": 2
+        },
+        "International": {
+            "R&B;": 1,
+            "Pop/Rock": 1
+        },
+        "Country": {
+            "Pop/Rock": 1,
+            "Country": 9
+        },
+        "Avant-Garde": {
+            "Pop/Rock": 1
+        }
+    },
+    "2010": {
+        "Pop/Rock": {
+            "Pop/Rock": 8,
+            "Electronic": 2,
+            "Latin": 2
+        },
+        "Classical": {
+            "Avant-Garde": 1
+        },
+        "R&B;": {
+            "R&B;": 3,
+            "Electronic": 1,
+            "Pop/Rock": 2
+        },
+        "Electronic": {
+            "Electronic": 1
+        }
+    }
+}

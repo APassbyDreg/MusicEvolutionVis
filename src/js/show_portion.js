@@ -6,16 +6,6 @@ var genre_list;
 var now_start_time;
 var now_end_time;
 
-async function init_page_1() {
-    // example code
-    await readCSV("./assets/data/music_portion.csv");
-    // console.log(window.__loaded_csv[0]);
-    portion_csv = window.__loaded_csv;
-    genre_list = portion_csv[0];
-    // console.log(portion_csv);
-}
-window.onload = init_page_1;
-
 port_option = {
     color: ["#5470c6", "#91cc75", "#fac858"],
     tooltip: {
