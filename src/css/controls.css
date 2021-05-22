@@ -18,6 +18,10 @@
     padding-left: calc(10px + 0.4rem);
 }
 
+.genre-check-label {
+    letter-spacing: 1px;
+}
+
 .control-label {
     position: relative;
     color: white;
