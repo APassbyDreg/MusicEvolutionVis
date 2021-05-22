@@ -4,9 +4,7 @@ let appconf = {
             // options
             attr: 0,
             time_range: [1921, 2020],
-            view_mode_list:["Overview", "Year"],
             graph_mode_list:["Ingoing", "Outgoing"],
-            view_mode: 0,
             graph_mode: 0,
         }
     },
@@ -34,7 +32,6 @@ let appconf = {
     },
     mounted: function () {
         // initialize options
-        this.change_view_mode(0);
         this.change_graph_mode(0);
     }
 }

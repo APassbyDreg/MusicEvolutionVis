@@ -11,12 +11,13 @@
 
     <link rel="stylesheet" href="./libs/Bootstrap/css/bootstrap.css">
     <link rel="stylesheet" href="./libs/MDB5/css/mdb.min.css">
-    <link rel="stylesheet" href="./libs/vue-slider-component/theme/material.css">
+    <link rel="stylesheet" href="./libs/vue-slider-component/theme/default.css">
 
     <link rel="stylesheet" href="./src/css/layout.css">
     <link rel="stylesheet" href="./src/css/color.css">
     <link rel="stylesheet" href="./src/css/tableview.css">
     <link rel="stylesheet" href="./src/css/graphview.css">
+    <link rel="stylesheet" href="./src/css/controls.css">
 </head>
 
 <body>
@@ -33,26 +34,34 @@
             <div id="table-main">
                 <!-- 这里就是左边的表格了 -->
             </div>
-            <div id="table-slider">
-                <div id="slider-value">
-                    <div class="form-outline range-input">
-                        <input id="start-year" class="form-control active" 
-                               v-model="time_range[0]"
-                               @change="rangeChange"/>
-                        <label class="form-label" for="start-year">Start</label>
+            <div id="table-slider" class="container">
+                <div id="table-slider-bg"></div>
+                <div id="table-slider-value" class="row">
+                    <div class="col-5 p-0">
+                        <div class="form-outline range-input w-100">
+                            <input id="start-year" class="form-control active text-center" v-model="time_range[0]" @change="rangeChange" />
+                            <label class="form-label" for="start-year">Start</label>
+                        </div>
                     </div>
-                    ~ 
-                    <div class="form-outline range-input">
-                        <input id="end-year" class="form-control active" 
-                               v-model="time_range[1]"
-                               @change="rangeChange"/>
-                        <label class="form-label" for="end-year">End</label>
+                    <div class="col-2 text-center">
+                        ~
+                    </div>
+                    <div class="col-5 p-0">
+                        <div class="form-outline range-input w-100">
+                            <input id="end-year" class="form-control active text-center" v-model="time_range[1]" @change="rangeChange" />
+                            <label class="form-label" for="end-year">End</label>
+                        </div>
                     </div>
                 </div>
-                <v-slider v-model="time_range" 
-                          :min="1921"
-                          :max="2020"
-                          :step="1"/>
+                <div id="table-slider-rail" class="row">
+                    <div class="col-12">
+                        <v-slider v-model="time_range" 
+                                  :min="1921" 
+                                  :max="2020" 
+                                  :step="1"
+                                  @change="rangeChange" />
+                    </div>
+                </div>
             </div>
             <div id="table-decoration">
 
@@ -69,22 +78,14 @@
         </div>
 
         <div id="controls">
-            <label class="control-label">Time Display</label>
-            <div id="view-mode-switch" class="btn-group control-btn" role="group">
-                <button v-for="(name, i) in view_mode_list"
-                        class="btn btn-sm btn-primary"
-                        @click="change_view_mode(i)">
-                    {{name}}
-                </button>
-            </div>
-            <div style="height: 8px;"></div>
-            <label class="control-label">Effect Type</label>
-            <div id="graph-mode-switch" class="btn-group control-btn" role="group">
-                <button v-for="(name, i) in graph_mode_list"
-                        class="btn btn-sm btn-primary" 
-                        @click="change_graph_mode(i)">
-                    {{name}}
-                </button>
+            <div id="controls-bg"></div>
+            <div id="controls-graph-mode">
+                <div class="control-label fw-bold">Edge Type:</div>
+                <div id="graph-mode-switch" class="btn-group control-btn" role="group">
+                    <button v-for="(name, i) in graph_mode_list" class="btn btn-sm btn-primary" @click="change_graph_mode(i)">
+                        {{name}}
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -105,8 +106,6 @@
     <script src="./src/js/main.js"></script>
     <script src="./src/js/loader.js"></script>
     <script src="./src/js/table.js"></script>
-
-    <script src="./assets/data/full_music_data.json"></script>
 </body>
 
 </html>
