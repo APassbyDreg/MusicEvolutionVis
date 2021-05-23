@@ -96,11 +96,13 @@ function set_out_graph_opt(start, end, using_genres) {
             size = value / 25;
             if (size > 8) size = 8;
             if (size < 1) size = 1
+            curve = (i < j)? 0.2 : 0.5;
             link_data.push({source: String(i),
                             target: String(j),
                             value: value,
                             lineStyle: {
-                                width: size
+                                width: size,
+                                curveness: curve
                             }});
         }
     }
@@ -116,9 +118,6 @@ function set_out_graph_opt(start, end, using_genres) {
                 data: graph.nodes,
                 links: graph.links,
                 categories: graph.categories,
-                label: {
-                    position: 'right'
-                },
                 circular: {
                     rotateLabel: true
                 },label: {
@@ -127,15 +126,13 @@ function set_out_graph_opt(start, end, using_genres) {
                     formatter: '{b}'
                 },
                 lineStyle: {
-                    color: 'source',
-                    curveness: 0.3
+                    color: "source"
                 },
                 // 高亮
                 emphasis: {
                     focus: 'adjacency',
                     blurScope: 'coordinateSystem'
                 },
-                autoCurveness: 0.01,
                 draggable: true,
                 edgeSymbol: ['none', 'arrow'], // 边的样式
                 edgeSymbolSize: 15,
