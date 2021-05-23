@@ -1,3 +1,5 @@
+const scale_fact = 0.4;
+
 var port_part = document.getElementById("graph-bar");
 var port_chart = echarts.init(port_part);
 
@@ -48,7 +50,7 @@ function draw_bra(start, end, portion_csv) {
             // bug is here
         }
         // scale sum_numto avoid thin lines
-        sum_num = Math.pow(sum_num, 0.4);
+        sum_num = Math.pow(sum_num, scale_fact);
         total += sum_num;
         new_part = {
             name: genre_list[i],
@@ -58,7 +60,14 @@ function draw_bra(start, end, portion_csv) {
                 show: false
             },
             emphasis: {
-                focus: 'series'
+                focus: 'series',
+            },
+            tooltip: {
+                formatter: (v) => {
+                    console.log(v);
+                    var orig = Math.round(Math.pow(v.data, 1 / scale_fact));
+                    return `<b>${v.seriesName}:</b> ${orig}`;
+                }
             },
             data: [sum_num]
         };
