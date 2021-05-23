@@ -41,8 +41,9 @@ function draw_bra(start, end, portion_csv) {
     for (var i = 0; i < genre_list.length; i++) {
         var sum_num = 0;
         for (var j = start - 1920; j <= end - 1920; j++) {
-            sum_num += 1;
-            // sum_num += portion_csv[i+1][j];
+            // sum_num += 1;
+            var trans_num = parseInt(portion_csv[j][i + 1]);
+            sum_num += trans_num;
             // bug is here
         }
         new_part = {
@@ -50,7 +51,7 @@ function draw_bra(start, end, portion_csv) {
             type: 'bar',
             stack: 'total',
             label: {
-                show: false
+                show: true
             },
             emphasis: {
                 focus: 'series'
@@ -66,6 +67,13 @@ async function init_bar() {
     await readCSV("./assets/data/music_portion.csv");
     portion_csv = window.__loaded_csv;
     port_opt = draw_bra(1921, 2020, portion_csv);
+    if (port_opt && typeof port_opt === 'object') {
+        my_chart.setOption(port_opt);
+    }
+}
+
+function update_bar(start, end) {
+    port_opt = draw_bra(start, end, portion_csv);
     if (port_opt && typeof port_opt === 'object') {
         my_chart.setOption(port_opt);
     }

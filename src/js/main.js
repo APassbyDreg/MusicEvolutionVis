@@ -28,6 +28,7 @@ let appconf = {
             this.time_range = (start > end) ? [end, start] : [start, end];
             update_table(start, end);
             update_graph(start, end, this.graph_mode);
+            update_bar(start, end);
         }
     },
     computed: {
