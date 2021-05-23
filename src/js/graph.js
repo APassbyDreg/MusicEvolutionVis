@@ -9,7 +9,7 @@ function set_in_graph_opt(start, end) {
 };
 
 // 按流派划分图
-function set_out_graph_opt(start, end) {
+function set_out_graph_opt(start, end, using_genres) {
     var graph_option;
     var ori_cate_data = ["Electronic", "R&B", "Vocal", "Pop/Rock", "Religious", "Blues", "Country", "Jazz", "Latin", "New Age", "Folk", "International", "Reggae", "Comedy/Spoken", "Easy Listening", "Classical", "Avant-Garde", "Stage & Screen", "Children's"];
     cate_data = ori_cate_data.map(function(cate) {
@@ -33,13 +33,14 @@ function set_out_graph_opt(start, end) {
 
     var max_value = 0;
     var min_value = 9999;
-    // nodes
+    // node data
     for (var key in portion_influence_data) {
         if (Number(key) < start || Number(key) > end) {
             continue;
         }
         year_data = portion_influence_data[key];
         for (var i = 0; i < ori_cate_data.length; i++) {
+            if (!using_genres[i]) continue;
             var cate = ori_cate_data[i];
             if (year_data[cate] == undefined) {
                 continue;
@@ -50,6 +51,7 @@ function set_out_graph_opt(start, end) {
                 if (i == j || portion_data[ori_cate_data[j]] == undefined) {
                     continue;
                 }
+                if (!using_genres[j]) continue;
                 node_value += portion_data[ori_cate_data[j]]; 
             }
             node_data[i]["value"] = node_data[i]["value"] + node_value;
@@ -68,14 +70,13 @@ function set_out_graph_opt(start, end) {
         }
         node_data[i]["symbolSize"] = size;
     }
-    console.log(max_value, min_value)
-    console.log(node_data);
-
-
+    // console.log(node_data);
+    // link data
     for (var i = 0; i < ori_cate_data.length; i++) {
+        if (!using_genres[i]) continue;
         var src_cate = ori_cate_data[i];
         for (var j = 0; j < ori_cate_data.length; j++) {
-            if (i == j) continue;
+            if (i == j || !using_genres[j]) continue;
             var value = 0;
             var tar_cate = ori_cate_data[j];
             for (var key in portion_influence_data) {
@@ -103,7 +104,7 @@ function set_out_graph_opt(start, end) {
                             }});
         }
     }
-    console.log(link_data);
+    // console.log(link_data);
 
     var graph = {nodes: node_data, links: link_data, categories: cate_data}
     graph_option = {
@@ -145,12 +146,8 @@ function set_out_graph_opt(start, end) {
     return graph_option;
 };
 
-function update_graph(start, end, graph_mode) {
-    if (graph_mode == 0) {
-        opt = set_out_graph_opt(start, end);
-    } else {
-        opt = set_in_graph_opt(start, end);
-    }
+function update_graph(start, end, using_genres) {
+    opt = set_out_graph_opt(start, end, using_genres)
     graph_Chart.setOption(opt)
 }
 
@@ -159,7 +156,7 @@ async function init_graph() {
     portion_influence_data = window.__loaded_json;
     // await readJson("./assets/data/artist_influence_data.json");
     // artist_influence_data = window.__loaded_json
-    opt = set_out_graph_opt(1941, 1961);
+    opt = set_out_graph_opt(1941, 1961, Array(19).fill(true));
     graph_Chart.setOption(opt);
 }
   
