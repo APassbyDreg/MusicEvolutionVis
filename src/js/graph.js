@@ -2,9 +2,63 @@ var graph_dom = document.getElementById("graph-main");
 var graph_Chart = echarts.init(graph_dom);
 var graph_mode = "Outgoing";
 
+// 点击事件，切换到音乐家间的影响关系
+graph_Chart.on('click', function (param) {
+    // console.log(param)
+    var chosen_genre = param.data.name;
+    var start = param.data.start;
+    var end = param.data.end;
+    opt = set_in_graph_opt(start, end, chosen_genre);
+    // graph_Chart.setOption(opt);
+})
+
 // 按艺术家划分图
-function set_in_graph_opt(start, end) {
+function set_in_graph_opt(start, end, genre) {
     var graph_option;
+    var node_dict = {};
+    var artist_id_dict = {};
+    var artist_id = 0;
+    var link_data = [];
+
+    for (year in artist_influence_data) {
+        if (year < start || year > end) continue;
+        influence_map = artist_influence_data[year][genre];
+        for (artist in influence_map) {
+            if (node_dict[artist] == undefined) {
+                var artist_map = {
+                    id: artist_id,
+                    name: artist,
+                    value: influence_map[artist].length,
+                    start: start,
+                    end: end,
+                    genre: genre,
+                    symbolSize: 0
+                }
+                node_dict[artist] = artist_map;
+                artist_id_dict[artist] = artist_id;
+                artist_id += 1;
+            } else {
+                node_dict[artist].value += influence_map[artist].length;
+            }
+        }
+    }
+    var node_data = [];
+    var max_value = 0;
+    var min_value = 9999;
+    for (key in node_dict) {
+        v = node_dict[key].value;
+        if (v > max_value) max_value = v;
+        else if (v < min_value) min_value = v;
+    }
+    for (key in node_dict) {
+        var n = node_dict[key];
+        var size = 35 * (n.value - min_value) / (max_value - min_value);
+        if (size < 10) size = 10;
+        n.symbolSize = size;
+        node_data.push(n);
+    }
+    
+
     return graph_option;
 };
 
@@ -15,8 +69,7 @@ function set_out_graph_opt(start, end, using_genres) {
     cate_data = ori_cate_data.map(function(cate) {
         return {name: cate};
     });
-    start = (start / 10 - 1) * 10;
-    end = (end / 10 + 1) * 10
+
     // 初始化node,link数据
     var node_data = new Array();
     var link_data = new Array();
@@ -26,7 +79,9 @@ function set_out_graph_opt(start, end, using_genres) {
             name: cate_data[i].name,
             category: i,
             symbolSize: 20,
-            value: 0
+            value: 0,
+            start: start,
+            end: end
         }
         node_data.push(node)
     }
@@ -144,6 +199,8 @@ function set_out_graph_opt(start, end, using_genres) {
 };
 
 function update_graph(start, end, using_genres) {
+    start = parseInt(start / 10) * 10;
+    end = (parseInt(end / 10) + 1) * 10;
     opt = set_out_graph_opt(start, end, using_genres)
     graph_Chart.setOption(opt)
 }
@@ -151,9 +208,9 @@ function update_graph(start, end, using_genres) {
 async function init_graph() {
     await readJson("./assets/data/portion_influence_node.json");
     portion_influence_data = window.__loaded_json;
-    // await readJson("./assets/data/artist_influence_data.json");
-    // artist_influence_data = window.__loaded_json
-    opt = set_out_graph_opt(1941, 1961, Array(19).fill(true));
+    await readJson("./assets/data/artist_influence_data.json");
+    artist_influence_data = window.__loaded_json
+    opt = set_out_graph_opt(1921, 2020, Array(19).fill(true));
     graph_Chart.setOption(opt);
 }
   
