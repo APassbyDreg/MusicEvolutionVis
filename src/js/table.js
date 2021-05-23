@@ -1,5 +1,5 @@
 var table_dom = document.getElementById("table-main");
-var table_myChart = echarts.init(table_dom);
+var table_chart = echarts.init(table_dom);
 
 var table_option;
 
@@ -105,7 +105,7 @@ async function init_table(){
     table_option.series.data = table_data;
     table_option.visualMap.max = table_range_cnt;
     if (table_option && typeof table_option === 'object') {
-        table_myChart.setOption(table_option);
+        table_chart.setOption(table_option);
     }
     console.log(table_data)
 }
@@ -132,7 +132,7 @@ function update_table(start, end){
     table_option.series.data = table_data;
     table_option.visualMap.max = table_range_cnt;
     if (table_option && typeof table_option === 'object') {
-        table_myChart.setOption(table_option);
+        table_chart.setOption(table_option);
     }
     // table_data = table_data.map(function (item) {
     //     return [item[1], item[0], item[2] || '-'];
@@ -140,5 +140,5 @@ function update_table(start, end){
 }
 
 if (table_option && typeof table_option === 'object') {
-    table_myChart.setOption(table_option);
+    table_chart.setOption(table_option);
 }

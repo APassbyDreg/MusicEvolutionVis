@@ -1,5 +1,5 @@
 var port_part = document.getElementById("graph-bar");
-var my_chart = echarts.init(port_part);
+var port_chart = echarts.init(port_part);
 
 var portion_csv;
 var genre_list = ["Electronic", "R&B", "Vocal", "Pop/Rock", "Religious", "Blues", "Country", "Jazz", "Latin", "New Age", "Folk", "International", "Reggae", "Comedy/Spoken", "Easy Listening", "Classical", "Avant-Garde", "Stage & Screen", "Children's"];
@@ -7,28 +7,28 @@ var genre_list = ["Electronic", "R&B", "Vocal", "Pop/Rock", "Religious", "Blues"
 function draw_bra(start, end, portion_csv) {
     port_option = {
         tooltip: {
-            trigger: 'axis',
-            axisPointer: {
-                type: 'shadow'
-            }
+            // trigger: 'axis',
+            // axisPointer: {
+            //     type: 'shadow'
+            // }
         },
         legend: {
             data: genre_list,
             show: false
         },
         grid: {
-            left: '-5%',
-            right: '-5%',
+            left: '-10px',
+            right: '-10px',
             bottom: '0%',
-            top: '-8%',
-            containLabel: true
+            top: '0%',
+            containLabel: false
         },
         xAxis: {
             type: 'category',
             data: ['portion'],
             axisLabel: {
                 show: false
-            }
+            },
         },
         yAxis: {
             type: 'value',
@@ -38,6 +38,7 @@ function draw_bra(start, end, portion_csv) {
         },
         series: []
     };
+    let total = 0;
     for (var i = 0; i < genre_list.length; i++) {
         var sum_num = 0;
         for (var j = start - 1920; j <= end - 1920; j++) {
@@ -46,12 +47,15 @@ function draw_bra(start, end, portion_csv) {
             sum_num += trans_num;
             // bug is here
         }
+        // scale sum_numto avoid thin lines
+        sum_num = Math.pow(sum_num, 0.4);
+        total += sum_num;
         new_part = {
             name: genre_list[i],
             type: 'bar',
             stack: 'total',
             label: {
-                show: true
+                show: false
             },
             emphasis: {
                 focus: 'series'
@@ -60,6 +64,7 @@ function draw_bra(start, end, portion_csv) {
         };
         port_option["series"].push(new_part);
     }
+    port_option.yAxis.max = total;
     return port_option;
 }
 
@@ -68,13 +73,13 @@ async function init_bar() {
     portion_csv = window.__loaded_csv;
     port_opt = draw_bra(1921, 2020, portion_csv);
     if (port_opt && typeof port_opt === 'object') {
-        my_chart.setOption(port_opt);
+        port_chart.setOption(port_opt);
     }
 }
 
 function update_bar(start, end) {
     port_opt = draw_bra(start, end, portion_csv);
     if (port_opt && typeof port_opt === 'object') {
-        my_chart.setOption(port_opt);
+        port_chart.setOption(port_opt);
     }
 }

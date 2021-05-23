@@ -1,5 +1,5 @@
 var graph_dom = document.getElementById("graph-main");
-var graph_Chart = echarts.init(graph_dom);
+var graph_chart = echarts.init(graph_dom);
 var graph_mode = "Outgoing";
 
 // 按艺术家划分图
@@ -26,7 +26,10 @@ function set_out_graph_opt(start, end, using_genres) {
             name: cate_data[i].name,
             category: i,
             symbolSize: 20,
-            value: 0
+            value: 0,
+            label: {
+                show: false
+            }
         }
         node_data.push(node)
     }
@@ -136,7 +139,6 @@ function set_out_graph_opt(start, end, using_genres) {
                 draggable: true,
                 edgeSymbol: ['none', 'arrow'], // 边的样式
                 edgeSymbolSize: 15,
-                center: [280, 280]
             }
         ]
     };
@@ -145,7 +147,7 @@ function set_out_graph_opt(start, end, using_genres) {
 
 function update_graph(start, end, using_genres) {
     opt = set_out_graph_opt(start, end, using_genres)
-    graph_Chart.setOption(opt)
+    graph_chart.setOption(opt)
 }
 
 async function init_graph() {
@@ -154,6 +156,6 @@ async function init_graph() {
     // await readJson("./assets/data/artist_influence_data.json");
     // artist_influence_data = window.__loaded_json
     opt = set_out_graph_opt(1941, 1961, Array(19).fill(true));
-    graph_Chart.setOption(opt);
+    graph_chart.setOption(opt);
 }
   

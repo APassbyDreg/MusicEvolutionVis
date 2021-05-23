@@ -15,7 +15,10 @@
 
 #genres-select {
     padding: 10px;
-    padding-left: calc(10px + 0.4rem);
+}
+
+.genre-color-badge {
+    margin-right: 0.5rem;
 }
 
 .genre-check-label {
