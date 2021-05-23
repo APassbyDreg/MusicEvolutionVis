@@ -1,5 +1,5 @@
 var graph_dom = document.getElementById("graph-main");
-var graph_Chart = echarts.init(graph_dom);
+var graph_chart = echarts.init(graph_dom);
 var graph_mode = "Outgoing";
 
 // 点击事件，切换到音乐家间的影响关系
@@ -191,7 +191,6 @@ function set_out_graph_opt(start, end, using_genres) {
                 draggable: true,
                 edgeSymbol: ['none', 'arrow'], // 边的样式
                 edgeSymbolSize: 15,
-                center: [280, 280]
             }
         ]
     };
@@ -202,7 +201,7 @@ function update_graph(start, end, using_genres) {
     start = parseInt(start / 10) * 10;
     end = (parseInt(end / 10) + 1) * 10;
     opt = set_out_graph_opt(start, end, using_genres)
-    graph_Chart.setOption(opt)
+    graph_chart.setOption(opt)
 }
 
 async function init_graph() {

@@ -9,6 +9,8 @@ let appconf = {
             graph_mode: 0,
             genres: ["Electronic", "R&B", "Vocal", "Pop/Rock", "Religious", "Blues", "Country", "Jazz", "Latin", "New Age", "Folk", "International", "Reggae", "Comedy/Spoken", "Easy Listening", "Classical", "Avant-Garde", "Stage & Screen", "Children's"],
             using_genres: Array(19).fill(true),
+            inspecting_genre: -1,
+            genre_colors: ['#e78b8b', '#e78ba8', '#e78bc5', '#e78be2', '#cf8be7', '#b28be7', '#948be7', '#8b9ee7', '#8bbbe7', '#8bd8e7', '#8be7d8', '#8be7bb', '#8be79e', '#94e78b', '#b2e78b', '#cfe78b', '#e7e28b', '#e7c58b', '#e7a88b']
         }
     },
     methods: {
@@ -55,3 +57,9 @@ async function init_page() {
     await init_table();
 }
 window.onload = init_page;
+
+window.onresize = () => {
+    graph_chart.resize();
+    table_chart.resize();
+    port_chart.resize();
+}
