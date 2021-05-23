@@ -3,7 +3,7 @@ var graph_chart = echarts.init(graph_dom);
 var graph_mode = "Outgoing";
 
 // 按艺术家划分图
-function set_in_graph_opt(start, end) {
+function set_in_graph_opt() {
     var graph_option;
     return graph_option;
 };

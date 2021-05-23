@@ -20,9 +20,10 @@ let appconf = {
             $("#graph-mode-switch button")[mode].classList.add("active");
         },
         grene_change: function(idx) {
-            console.log("genres", this.genres[idx], "toggled");
-            console.log(this.using_genres)
+            // console.log("genres", this.genres[idx], "toggled");
+            // console.log(this.using_genres)
             update_graph(this.start, this.end, this.using_genres);
+            update_table(this.start, this.end, this.using_genres);
         },
         range_change: function() {
             let start = (typeof(this.time_range[0]) === "number") ? this.time_range[0] : parseInt(this.time_range[0]);
@@ -30,7 +31,7 @@ let appconf = {
             start = Math.max(1921, Math.min(2020, start));
             end = Math.max(1921, Math.min(2020, end));
             this.time_range = (start > end) ? [end, start] : [start, end];
-            update_table(start, end);
+            update_table(start, end, this.using_genres);
             update_graph(start, end, this.using_genres);
             update_bar(start, end);
         }

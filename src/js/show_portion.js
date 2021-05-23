@@ -62,7 +62,7 @@ function draw_bra(start, end, portion_csv) {
             },
             tooltip: {
                 formatter: (v) => {
-                    console.log(v);
+                    // console.log(v);
                     var orig = Math.round(Math.pow(v.data, 1 / scale_fact));
                     return `<b>${v.seriesName}:</b> ${orig}`;
                 }
