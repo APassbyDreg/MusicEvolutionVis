@@ -44,10 +44,8 @@ function draw_bra(start, end, portion_csv) {
     for (var i = 0; i < genre_list.length; i++) {
         var sum_num = 0;
         for (var j = start - 1920; j <= end - 1920; j++) {
-            // sum_num += 1;
             var trans_num = parseInt(portion_csv[j][i + 1]);
             sum_num += trans_num;
-            // bug is here
         }
         // scale sum_numto avoid thin lines
         sum_num = Math.pow(sum_num, scale_fact);
