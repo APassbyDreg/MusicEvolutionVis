@@ -8,12 +8,14 @@ function set_in_graph_opt(start, end, genre) {
     var node_dict = {};
     var artist_id_dict = {};
     var artist_id = 0;
-    var max_num = 30;
+    var max_num = 40;
+    var cate_set = new Set();
 
     for (year in artist_influence_data) {
         if (year < start || year > end) continue;
         influence_map = artist_influence_data[year][genre];
         for (artist in influence_map) {
+            cate_set.add({name: artist});
             if (artist_id_dict[artist] == undefined) {
                 artist_id_dict[artist] = artist_id.toString();
                 artist_id += 1
@@ -25,7 +27,7 @@ function set_in_graph_opt(start, end, genre) {
                     value: influence_map[artist].length,
                     start: start,
                     end: end,
-                    category: genre,
+                    category: artist,
                     symbolSize: 10,
                 }
                 node_dict[artist] = artist_map;
@@ -34,6 +36,7 @@ function set_in_graph_opt(start, end, genre) {
             }
 
             influence_map[artist].forEach(element => {
+                cate_set.add({name: artist});
                 if (artist_id_dict[element] == undefined) {
                     artist_id_dict[element] = artist_id.toString();
                     artist_id += 1;
@@ -44,19 +47,24 @@ function set_in_graph_opt(start, end, genre) {
     }
 
     var node_data_tmp = new Array();
+    var max_value = 0
     for (key in node_dict) {
         var n = node_dict[key];
-        var size = n.value / 2;
-        if (size < 20) size = 20;
-        if (size > 40) size = 40;
+        if (n.value > max_value) max_value = n.value;
+        var size = n.value;
+        if (size < 15) size = 15;
+        if (size > 60) size = 60;
         n.symbolSize = size;
         node_data_tmp.push(n);
     }
     node_data_tmp.sort(function (a, b) {
         return  b.value - a.value;
     });
-    var node_data = node_data_tmp.slice(0, 30);
+    var node_data = node_data_tmp.splice(0, max_num);
+    var categ_data = Array.from(cate_set)
+    var force = (max_value / 10 > 10) ? 10 : max_value / 10; 
     console.log(node_data);
+
     var link_set = new Set();
     for (year in artist_influence_data) {
         influence_map = artist_influence_data[year][genre];
@@ -64,17 +72,8 @@ function set_in_graph_opt(start, end, genre) {
         for (artist in influence_map) {
             if (node_data.find(function (node) { return (artist == node.name)})) {
                 influence_map[artist].forEach(function (element) {
-                    link_set.add({source: artist_id_dict[artist], target: artist_id_dict[element]});
-                    if (!node_data.find(function (node) {return (element == node.name)})) {
-                        node_data.push({
-                            id: artist_id_dict[element],
-                            name: element,
-                            value: 1,
-                            start: start,
-                            end: end,
-                            category: genre,
-                            symbolSize: 20,
-                        });
+                    if (node_data.find(function (node) {return (element == node.name)})) {
+                        link_set.add({source: artist_id_dict[artist], target: artist_id_dict[element]});
                     }
                 })
             }
@@ -84,7 +83,7 @@ function set_in_graph_opt(start, end, genre) {
     // console.log(node_data);
     // console.log(link_data);
 
-    var graph = {nodes: node_data, links: link_data};
+    var graph = {nodes: node_data, links: link_data, categories:categ_data};
     graph_option = {
         tooltip: {},
         series: [
@@ -93,6 +92,7 @@ function set_in_graph_opt(start, end, genre) {
                 layout: 'force',
                 data: graph.nodes,
                 links: graph.links,
+                categories: graph.categories,
                 label: {
                     show: true,
                     position: 'right',
@@ -102,14 +102,14 @@ function set_in_graph_opt(start, end, genre) {
                     color: "source",
                     curveness: 0.3
                 },
-                // 高亮
                 force: {
-                    repulsion: 200
+                    repulsion: force * 100
                 },
                 emphasis: {
                     focus: 'adjacency',
                     blurScope: 'coordinateSystem'
                 },
+                draggable: true,
                 edgeSymbol: ['none', 'arrow'], // 边的样式
                 edgeSymbolSize: 10,
             }
@@ -183,7 +183,7 @@ function set_out_graph_opt(start, end, using_genres) {
         }
         node_data[i]["symbolSize"] = size;
     }
-    console.log(node_data);
+    // console.log(node_data);
     // link data
     for (var i = 0; i < ori_cate_data.length; i++) {
         if (!using_genres[i]) continue;
@@ -219,7 +219,7 @@ function set_out_graph_opt(start, end, using_genres) {
                             }});
         }
     }
-    console.log(link_data);
+    // console.log(link_data);
 
     var graph = {nodes: node_data, links: link_data, categories: cate_data}
     graph_option = {
@@ -273,6 +273,5 @@ async function init_graph() {
     await readJson("./assets/data/artist_influence_data.json");
     artist_influence_data = window.__loaded_json
     set_out_graph_opt(1921, 2020, Array(19).fill(true));
-    
 }
   
