@@ -1,7 +1,7 @@
 var table_dom = document.getElementById("table-main");
 var table_chart = echarts.init(table_dom);
 
-// 生成纵列degree
+// 生成纵列(degree)
 var table_grids = 11;   // 纵列的刻度，即分成几格
 var table_arr = new Array(table_grids);
 for (var i = 0; i < table_arr.length; i++) {
@@ -10,10 +10,11 @@ for (var i = 0; i < table_arr.length; i++) {
 var degree = table_arr;
 // 生成横列（属性）
 var attrs = ["danceability", "energy", "valence", "tempo", "loudness", "mode", "key", "acousticness", "instrumentalness", "liveness", "speechiness", "explicit", "duration_ms", "popularity"];
+// 所有流派信息
 var genres = ["Electronic", "R&B;", "Vocal", "Pop/Rock", "Religious", "Blues", "Country", "Jazz", "Latin", "New Age", "Folk", "International", "Reggae", "Comedy/Spoken", "Easy Listening", "Classical", "Avant-Garde", "Stage & Screen", "Children's", "Unknown"];
 // 表格数据
-var full_table_data;
-var full_table_data_genre;
+var full_table_data;    // 百年所有数据，不分流派
+var full_table_data_genre;  // 按年统计，按流派分类的数据
 var table_data = new Array(attrs.length*table_grids); //这个是直接给table用的数据，[纵坐标，横坐标，值]
 
 // 表格数据起止年份
@@ -83,9 +84,7 @@ var table_option = {
     }]
 };
 
-// 读取表格数据, 目前的是三元组[横坐标，纵坐标，值]，后续还要处理一下文件。
-// 目前我统计在了"attr_by_year_for_table.json"中，里面统计了每年的各个attr，
-// 每个属性都被分成了table_grids份，代表从低到高的table_grids个区间内的分布
+// 表格数据初始化
 async function init_table(){
     await readJson("./assets/data/attr_by_year_for_table.json")
     full_table_data = window.__loaded_json;
@@ -98,7 +97,7 @@ async function init_table(){
     }
     table_range_cnt = 0;
     for (i = table_start; i < table_end; i++){
-        if (full_table_data[i+""] != undefined){
+        if (full_table_data[i+""]){
             table_range_cnt += full_table_data[i+""]["cnt"];
             for (k = 0; k < attrs.length; k++){
                 for (j = 0; j < table_grids; j++){
@@ -106,7 +105,7 @@ async function init_table(){
                 }
             }
         }
-     }
+    }
     table_option.series.data = table_data;
     table_option.visualMap.max = table_range_cnt;
     if (table_option && typeof table_option === 'object') {
@@ -114,8 +113,9 @@ async function init_table(){
     }
 }
 
-// 每次更改区间时候更改表格数据
+// 每次更改时间区间或者流派信息时候更改表格数据
 function update_table(start, end, selected_genre){
+    // 更新时间区间
     table_start = start;
     table_end = end;
     // 对数值进行清零
@@ -127,7 +127,8 @@ function update_table(start, end, selected_genre){
     // 重新计算区间内的数值
     table_range_cnt = 0;
     for (i = table_start; i <= table_end; i++){
-        if (full_table_data_genre[i+""] != undefined){
+        if (full_table_data_genre[i+""]){
+            // 统计流派信息
             for (var ii=0; ii < genres.length; ii++){
                 if (selected_genre[ii]){
                     genre = genres[ii]
@@ -141,13 +142,10 @@ function update_table(start, end, selected_genre){
             }
         }
     }
+    // 更新数据域
     table_option.series.data = table_data;
     table_option.visualMap.max = table_range_cnt;
     if (table_option && typeof table_option === 'object') {
         table_chart.setOption(table_option);
     }
-}
-
-if (table_option && typeof table_option === 'object') {
-    table_chart.setOption(table_option);
 }
