@@ -1,8 +1,6 @@
 var table_dom = document.getElementById("table-main");
 var table_chart = echarts.init(table_dom);
 
-var table_option;
-
 // 生成纵列degree
 var table_grids = 11;   // 纵列的刻度，即分成几格
 var table_arr = new Array(table_grids);
@@ -16,17 +14,19 @@ var genres = ["Electronic", "R&B;", "Vocal", "Pop/Rock", "Religious", "Blues", "
 // 表格数据
 var full_table_data;
 var full_table_data_genre;
-var table_data = new Array(attrs.length*table_grids);
+var table_data = new Array(attrs.length*table_grids); //这个是直接给table用的数据，[纵坐标，横坐标，值]
 
+// 表格数据起止年份
 var table_start = 1921;
 var table_end = 2021;
 
 // 用于确定表格内数据的尺度
-var table_min = 0;
-var table_max = 100000;
 var table_range_cnt = 0;  //用于统计该区间内的乐曲数量
+
+var table_color = ['#e6cda8', '#de8c5c', '#f3772e', '#ee6666', '#ca3535'];
 // 表格的样式的设置
-table_option = {
+var table_option = {
+    gradientColor: table_color,
     tooltip: {
         position: 'bottom'
     },
@@ -58,10 +58,9 @@ table_option = {
             show: true
         }
     },
-    // 这也是个可以选区间的控件，不知道要不要留。是根据值的大小来筛选的
     visualMap: {
-        min: table_min,
-        max: table_max,
+        min: 0,
+        max: 98340,
         calculable: true,
         left: 'right',
         bottom: 'center',
@@ -70,7 +69,6 @@ table_option = {
         text: ['High', 'Low'],
     },
     series: [{
-        // name: 'Punch Card',
         type: 'heatmap',
         data: table_data,
         label: {
@@ -100,12 +98,12 @@ async function init_table(){
     }
     table_range_cnt = 0;
     for (i = table_start; i < table_end; i++){
-        if (full_table_data[i+""] == undefined) continue;
-        table_range_cnt += full_table_data[i+""]["cnt"];
-        // console.log(genre)
-        for (k = 0; k < attrs.length; k++){
-            for (j = 0; j < table_grids; j++){
-                table_data[k*table_grids+j][2] += full_table_data[i+""][attrs[k]][j];
+        if (full_table_data[i+""] != undefined){
+            table_range_cnt += full_table_data[i+""]["cnt"];
+            for (k = 0; k < attrs.length; k++){
+                for (j = 0; j < table_grids; j++){
+                    table_data[k*table_grids+j][2] += full_table_data[i+""][attrs[k]][j];
+                }
             }
         }
      }
@@ -117,7 +115,7 @@ async function init_table(){
 }
 
 // 每次更改区间时候更改表格数据
-async function update_table(start, end, selected_genre){
+function update_table(start, end, selected_genre){
     if (start != undefined) table_start = start;
     if (end != undefined) table_end = end;
 
@@ -130,21 +128,17 @@ async function update_table(start, end, selected_genre){
     // 重新计算区间内的数值
     table_range_cnt = 0;
     for (i = table_start; i <= table_end; i++){
-        if (full_table_data_genre[i+""] == undefined) continue;
-        // table_range_cnt += full_table_data_genre[i+""]["cnt"];
-        for (var ii=0; ii < genres.length; ii++){
-            genre_flag = selected_genre[ii];
-            // console.log(genre_flag)
-            if (genre_flag == false){
-                continue;
-            }else{
-                genre = genres[ii]
-                table_range_cnt += full_table_data_genre[i+""][genre]["cnt"]
-                for (k = 0; k < attrs.length; k++){
-                    for (j = 0; j < table_grids; j++){
-                        table_data[k*table_grids+j][2] += full_table_data_genre[i+""][genre][attrs[k]][j];
-                    }
-                }    
+        if (full_table_data_genre[i+""] != undefined){
+            for (var ii=0; ii < genres.length; ii++){
+                if (selected_genre[ii]){
+                    genre = genres[ii]
+                    table_range_cnt += full_table_data_genre[i+""][genre]["cnt"]
+                    for (k = 0; k < attrs.length; k++){
+                        for (j = 0; j < table_grids; j++){
+                            table_data[k*table_grids+j][2] += full_table_data_genre[i+""][genre][attrs[k]][j];
+                        }
+                    }    
+                }
             }
         }
     }
@@ -153,9 +147,6 @@ async function update_table(start, end, selected_genre){
     if (table_option && typeof table_option === 'object') {
         table_chart.setOption(table_option);
     }
-    // table_data = table_data.map(function (item) {
-    //     return [item[1], item[0], item[2] || '-'];
-    // });
 }
 
 if (table_option && typeof table_option === 'object') {
