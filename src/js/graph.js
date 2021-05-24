@@ -2,64 +2,122 @@ var graph_dom = document.getElementById("graph-main");
 var graph_chart = echarts.init(graph_dom);
 var graph_mode = "Outgoing";
 
-// 点击事件，切换到音乐家间的影响关系
-graph_Chart.on('click', function (param) {
-    // console.log(param)
-    var chosen_genre = param.data.name;
-    var start = param.data.start;
-    var end = param.data.end;
-    opt = set_in_graph_opt(start, end, chosen_genre);
-    // graph_Chart.setOption(opt);
-})
-
 // 按艺术家划分图
 function set_in_graph_opt(start, end, genre) {
     var graph_option;
     var node_dict = {};
     var artist_id_dict = {};
     var artist_id = 0;
-    var link_data = [];
+    var max_num = 30;
 
     for (year in artist_influence_data) {
         if (year < start || year > end) continue;
         influence_map = artist_influence_data[year][genre];
         for (artist in influence_map) {
+            if (artist_id_dict[artist] == undefined) {
+                artist_id_dict[artist] = artist_id.toString();
+                artist_id += 1
+            }
             if (node_dict[artist] == undefined) {
                 var artist_map = {
-                    id: artist_id,
+                    id: artist_id_dict[artist],
                     name: artist,
                     value: influence_map[artist].length,
                     start: start,
                     end: end,
-                    genre: genre,
-                    symbolSize: 0
+                    category: genre,
+                    symbolSize: 10,
                 }
                 node_dict[artist] = artist_map;
-                artist_id_dict[artist] = artist_id;
-                artist_id += 1;
             } else {
                 node_dict[artist].value += influence_map[artist].length;
             }
+
+            influence_map[artist].forEach(element => {
+                if (artist_id_dict[element] == undefined) {
+                    artist_id_dict[element] = artist_id.toString();
+                    artist_id += 1;
+                }
+                // link_set.add({source: artist_id_dict[artist], target: artist_id_dict[element]});
+            });
         }
     }
-    var node_data = [];
-    var max_value = 0;
-    var min_value = 9999;
-    for (key in node_dict) {
-        v = node_dict[key].value;
-        if (v > max_value) max_value = v;
-        else if (v < min_value) min_value = v;
-    }
+
+    var node_data_tmp = new Array();
     for (key in node_dict) {
         var n = node_dict[key];
-        var size = 35 * (n.value - min_value) / (max_value - min_value);
-        if (size < 10) size = 10;
+        var size = n.value / 2;
+        if (size < 20) size = 20;
+        if (size > 40) size = 40;
         n.symbolSize = size;
-        node_data.push(n);
+        node_data_tmp.push(n);
     }
-    
+    node_data_tmp.sort(function (a, b) {
+        return  b.value - a.value;
+    });
+    var node_data = node_data_tmp.slice(0, 30);
+    console.log(node_data);
+    var link_set = new Set();
+    for (year in artist_influence_data) {
+        influence_map = artist_influence_data[year][genre];
+        if (year < start || year > end) continue;
+        for (artist in influence_map) {
+            if (node_data.find(function (node) { return (artist == node.name)})) {
+                influence_map[artist].forEach(function (element) {
+                    link_set.add({source: artist_id_dict[artist], target: artist_id_dict[element]});
+                    if (!node_data.find(function (node) {return (element == node.name)})) {
+                        node_data.push({
+                            id: artist_id_dict[element],
+                            name: element,
+                            value: 1,
+                            start: start,
+                            end: end,
+                            category: genre,
+                            symbolSize: 20,
+                        });
+                    }
+                })
+            }
+        }
+    }
+    var link_data = Array.from(link_set);
+    // console.log(node_data);
+    // console.log(link_data);
 
-    return graph_option;
+    var graph = {nodes: node_data, links: link_data};
+    graph_option = {
+        tooltip: {},
+        series: [
+            {
+                type: 'graph',
+                layout: 'force',
+                data: graph.nodes,
+                links: graph.links,
+                label: {
+                    show: true,
+                    position: 'right',
+                    formatter: '{b}'
+                },
+                lineStyle: {
+                    color: "source",
+                    curveness: 0.3
+                },
+                // 高亮
+                force: {
+                    repulsion: 200
+                },
+                emphasis: {
+                    focus: 'adjacency',
+                    blurScope: 'coordinateSystem'
+                },
+                edgeSymbol: ['none', 'arrow'], // 边的样式
+                edgeSymbolSize: 10,
+            }
+        ]
+    };
+    graph_chart.clear();
+    graph_chart.setOption(graph_option);
+    graph_chart.off("click");
 };
 
 // 按流派划分图
@@ -125,7 +183,7 @@ function set_out_graph_opt(start, end, using_genres) {
         }
         node_data[i]["symbolSize"] = size;
     }
-    // console.log(node_data);
+    console.log(node_data);
     // link data
     for (var i = 0; i < ori_cate_data.length; i++) {
         if (!using_genres[i]) continue;
@@ -161,7 +219,7 @@ function set_out_graph_opt(start, end, using_genres) {
                             }});
         }
     }
-    // console.log(link_data);
+    console.log(link_data);
 
     var graph = {nodes: node_data, links: link_data, categories: cate_data}
     graph_option = {
@@ -194,14 +252,19 @@ function set_out_graph_opt(start, end, using_genres) {
             }
         ]
     };
-    return graph_option;
+    graph_chart.clear();
+    graph_chart.setOption(graph_option);
+    graph_chart.on("click", function (params) {
+        genre = params.data.name;
+        console.log(genre);
+        set_in_graph_opt(start, end, genre);
+    })
 };
 
 function update_graph(start, end, using_genres) {
     start = parseInt(start / 10) * 10;
     end = (parseInt(end / 10) + 1) * 10;
-    opt = set_out_graph_opt(start, end, using_genres)
-    graph_chart.setOption(opt)
+    set_out_graph_opt(start, end, using_genres);
 }
 
 async function init_graph() {
@@ -209,7 +272,7 @@ async function init_graph() {
     portion_influence_data = window.__loaded_json;
     await readJson("./assets/data/artist_influence_data.json");
     artist_influence_data = window.__loaded_json
-    opt = set_out_graph_opt(1921, 2020, Array(19).fill(true));
-    graph_Chart.setOption(opt);
+    set_out_graph_opt(1921, 2020, Array(19).fill(true));
+    
 }
   

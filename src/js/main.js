@@ -21,7 +21,7 @@ let appconf = {
         },
         grene_change: function(idx) {
             console.log("genres", this.genres[idx], "toggled");
-            console.log(this.using_genres)
+            // console.log(this.using_genres)
             update_graph(this.start, this.end, this.using_genres);
         },
         range_change: function() {
