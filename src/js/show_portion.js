@@ -6,7 +6,23 @@ var port_chart = echarts.init(port_part);
 var portion_csv;
 var genre_list = ["Electronic", "R&B", "Vocal", "Pop/Rock", "Religious", "Blues", "Country", "Jazz", "Latin", "New Age", "Folk", "International", "Reggae", "Comedy/Spoken", "Easy Listening", "Classical", "Avant-Garde", "Stage & Screen", "Children's"];
 
-function draw_bra(start, end, portion_csv) {
+function draw_bra(start, end, portion_csv, select_genre) {
+    now_genre_list = genre_list.concat();
+    for (var i = 0; i < select_genre.length; i++) {
+        genre_flag = select_genre[i];
+        if (genre_flag == false) {
+            remove_genre = genre_list[i];
+            var remove_idx = 0;
+            for (var ii = 0; ii < genre_list.length; ii++) {
+                if (now_genre_list[ii] == remove_genre) {
+                    remove_idx = ii;
+                    break;
+                }
+            } // 没查到返回列表元素下标的函数
+            now_genre_list.splice(remove_idx, 1);
+            // console.log(now_genre_list);
+        }
+    }
     port_option = {
         tooltip: {
             // trigger: 'axis',
@@ -15,7 +31,7 @@ function draw_bra(start, end, portion_csv) {
             // }
         },
         legend: {
-            data: genre_list,
+            data: now_genre_list,
             show: false
         },
         grid: {
@@ -69,7 +85,12 @@ function draw_bra(start, end, portion_csv) {
             },
             data: [sum_num]
         };
-        port_option["series"].push(new_part);
+        genre_flag = select_genre[i];
+        // console.log(genre_flag);
+        if (genre_flag == true) {
+            port_option["series"].push(new_part);
+            // total += sum_num;
+        }
     }
     port_option.yAxis.max = total;
     return port_option;
@@ -78,14 +99,16 @@ function draw_bra(start, end, portion_csv) {
 async function init_bar() {
     await readCSV("./assets/data/music_portion.csv");
     portion_csv = window.__loaded_csv;
-    port_opt = draw_bra(1921, 2020, portion_csv);
+    basic_select_genre = Array(19).fill(true);
+    port_opt = draw_bra(1921, 2020, portion_csv, basic_select_genre);
     if (port_opt && typeof port_opt === 'object') {
         port_chart.setOption(port_opt);
     }
 }
 
-function update_bar(start, end) {
-    port_opt = draw_bra(start, end, portion_csv);
+function update_bar(start, end, select_genre) {
+    port_opt = draw_bra(start, end, portion_csv, select_genre);
+    console.log(port_opt);
     if (port_opt && typeof port_opt === 'object') {
         port_chart.setOption(port_opt);
     }
