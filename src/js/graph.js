@@ -123,7 +123,7 @@ function set_in_graph_opt(start, end, genre) {
 // 按流派划分图
 function set_out_graph_opt(start, end, using_genres) {
     var graph_option;
-    var ori_cate_data = ["Electronic", "R&B", "Vocal", "Pop/Rock", "Religious", "Blues", "Country", "Jazz", "Latin", "New Age", "Folk", "International", "Reggae", "Comedy/Spoken", "Easy Listening", "Classical", "Avant-Garde", "Stage & Screen", "Children's"];
+    var ori_cate_data = ["Electronic", "R&B;", "Vocal", "Pop/Rock", "Religious", "Blues", "Country", "Jazz", "Latin", "New Age", "Folk", "International", "Reggae", "Comedy/Spoken", "Easy Listening", "Classical", "Avant-Garde", "Stage & Screen", "Children's"];
     cate_data = ori_cate_data.map(function(cate) {
         return {name: cate};
     });
