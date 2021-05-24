@@ -22,9 +22,9 @@ let appconf = {
         grene_change: function(idx) {
             // console.log("genres", this.genres[idx], "toggled");
             // console.log(this.using_genres)
-            update_graph(this.start, this.end, this.using_genres);
-            update_table(this.using_genres);
-            update_bar(this.start, this.end, this.using_genres);
+            update_graph(this.time_range[0], this.time_range[1], this.using_genres);
+            update_table(this.time_range[0], this.time_range[1], this.using_genres);
+            update_bar(this.time_range[0], this.time_range[1], this.using_genres);
         },
         range_change: function() {
             let start = (typeof(this.time_range[0]) === "number") ? this.time_range[0] : parseInt(this.time_range[0]);
@@ -32,7 +32,7 @@ let appconf = {
             start = Math.max(1921, Math.min(2020, start));
             end = Math.max(1921, Math.min(2020, end));
             this.time_range = (start > end) ? [end, start] : [start, end];
-            update_table_time(start, end, this.using_genres);
+            update_table(start, end, this.using_genres);
             update_graph(start, end, this.using_genres);
             update_bar(start, end, this.using_genres);
         }

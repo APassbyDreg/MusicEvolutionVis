@@ -114,15 +114,10 @@ async function init_table(){
     }
 }
 
-function update_table_time(start, end, selected_genre){
+// 每次更改区间时候更改表格数据
+function update_table(start, end, selected_genre){
     table_start = start;
     table_end = end;
-    update_table(selected_genre)
-}
-
-
-// 每次更改区间时候更改表格数据
-function update_table(selected_genre){
     // 对数值进行清零
     for (i = 0; i < attrs.length; i++){
         for (j = 0; j < table_grids; j++){
