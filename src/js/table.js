@@ -91,7 +91,8 @@ table_option = {
 async function init_table(){
     await readJson("./assets/data/attr_by_year_for_table.json")
     full_table_data = window.__loaded_json;
-
+    await readJson("./assets/data/attr_by_year_with_genre.json")
+    full_table_data_genre = window.__loaded_json;
     for (i = 0; i < attrs.length; i++){
         for (j = 0; j < table_grids; j++){
             table_data[i*table_grids+j] = [i, j, 0];
@@ -119,8 +120,7 @@ async function init_table(){
 async function update_table(start, end, selected_genre){
     if (start != undefined) table_start = start;
     if (end != undefined) table_end = end;
-    await readJson("./assets/data/attr_by_year_with_genre.json")
-    full_table_data_genre = window.__loaded_json;
+
     // 对数值进行清零
     for (i = 0; i < attrs.length; i++){
         for (j = 0; j < table_grids; j++){
@@ -134,7 +134,7 @@ async function update_table(start, end, selected_genre){
         // table_range_cnt += full_table_data_genre[i+""]["cnt"];
         for (var ii=0; ii < genres.length; ii++){
             genre_flag = selected_genre[ii];
-            console.log(genre_flag)
+            // console.log(genre_flag)
             if (genre_flag == false){
                 continue;
             }else{
