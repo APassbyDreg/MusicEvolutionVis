@@ -23,7 +23,7 @@ let appconf = {
             // console.log("genres", this.genres[idx], "toggled");
             // console.log(this.using_genres)
             update_graph(this.start, this.end, this.using_genres);
-            update_table(this.start, this.end, this.using_genres);
+            update_table(this.using_genres);
             update_bar(this.start, this.end, this.using_genres);
         },
         range_change: function() {
@@ -32,7 +32,7 @@ let appconf = {
             start = Math.max(1921, Math.min(2020, start));
             end = Math.max(1921, Math.min(2020, end));
             this.time_range = (start > end) ? [end, start] : [start, end];
-            update_table(start, end, this.using_genres);
+            update_table_time(start, end, this.using_genres);
             update_graph(start, end, this.using_genres);
             update_bar(start, end, this.using_genres);
         }
