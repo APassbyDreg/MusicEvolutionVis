@@ -5,9 +5,9 @@ var port_chart = echarts.init(port_part);
 
 var portion_csv;
 var genre_list = ["Electronic", "R&B", "Vocal", "Pop/Rock", "Religious", "Blues", "Country", "Jazz", "Latin", "New Age", "Folk", "International", "Reggae", "Comedy/Spoken", "Easy Listening", "Classical", "Avant-Garde", "Stage & Screen", "Children's"];
+var now_genre_list = genre_list.concat();
 
 function draw_bra(start, end, portion_csv, select_genre) {
-    now_genre_list = genre_list.concat();
     for (var i = 0; i < select_genre.length; i++) {
         genre_flag = select_genre[i];
         if (genre_flag == false) {
@@ -65,7 +65,7 @@ function draw_bra(start, end, portion_csv, select_genre) {
         }
         // scale sum_numto avoid thin lines
         sum_num = Math.pow(sum_num, scale_fact);
-        total += sum_num;
+        // total += sum_num;
         new_part = {
             name: genre_list[i],
             type: 'bar',
@@ -89,7 +89,7 @@ function draw_bra(start, end, portion_csv, select_genre) {
         // console.log(genre_flag);
         if (genre_flag == true) {
             port_option["series"].push(new_part);
-            // total += sum_num;
+            total += sum_num;
         }
     }
     port_option.yAxis.max = total;
@@ -100,6 +100,7 @@ async function init_bar() {
     await readCSV("./assets/data/music_portion.csv");
     portion_csv = window.__loaded_csv;
     basic_select_genre = Array(19).fill(true);
+    // basic_select_genre[0] = false
     port_opt = draw_bra(1921, 2020, portion_csv, basic_select_genre);
     if (port_opt && typeof port_opt === 'object') {
         port_chart.setOption(port_opt);
@@ -107,9 +108,12 @@ async function init_bar() {
 }
 
 function update_bar(start, end, select_genre) {
+    console.log(select_genre);
     port_opt = draw_bra(start, end, portion_csv, select_genre);
     console.log(port_opt);
     if (port_opt && typeof port_opt === 'object') {
-        port_chart.setOption(port_opt);
+        // port_chart.clear();
+        port_chart.setOption(port_opt, true);
     }
+
 }
