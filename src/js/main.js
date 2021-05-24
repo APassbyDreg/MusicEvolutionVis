@@ -24,7 +24,7 @@ let appconf = {
             // console.log(this.using_genres)
             update_graph(this.time_range[0], this.time_range[1], this.using_genres);
             update_table(this.time_range[0], this.time_range[1], this.using_genres);
-            update_bar(this.time_range[0], this.time_range[1], this.using_genres);
+            update_bar(this.time_range[0], this.time_range[1], this.using_genres, this.genre_colors);
         },
         range_change: function() {
             let start = (typeof(this.time_range[0]) === "number") ? this.time_range[0] : parseInt(this.time_range[0]);
@@ -34,7 +34,7 @@ let appconf = {
             this.time_range = (start > end) ? [end, start] : [start, end];
             update_table(start, end, this.using_genres);
             update_graph(start, end, this.using_genres);
-            update_bar(start, end, this.using_genres);
+            update_bar(start, end, this.using_genres, this.genre_colors);
         }
     },
     computed: {
