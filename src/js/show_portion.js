@@ -1,4 +1,5 @@
 const scale_fact = 0.4;
+const show_artist_num = 15;
 
 var port_part = document.getElementById("graph-bar");
 var port_chart = echarts.init(port_part);
@@ -102,16 +103,19 @@ function draw_bra(start, end, portion_csv, select_genre, color_list) {
 }
 
 function draw_artist_bar(start, end, port_json, input_genre) {
+    let need_genre_dict = port_json[input_genre];
+    let now_artists_list = [];
+    let now_artists_dict = {}; // 统计最终输入option数据
     port_option = {
         color: now_port_colors,
         tooltip: {
-            trigger: 'axis',
-            axisPointer: {
-                type: 'shadow'
-            }
+            // trigger: 'axis',
+            // axisPointer: {
+            //     type: 'shadow'
+            // }
         },
         legend: {
-            data: ['test'],
+            data: now_artists_list,
             show: false
         },
         grid: {
@@ -134,8 +138,29 @@ function draw_artist_bar(start, end, port_json, input_genre) {
                 show: false
             }
         },
-        series: [new_part = {
-            name: 'test',
+        series: []
+    };
+
+    for (var i = start; i <= end; i++) {
+        year_str = i.toString();
+        if (need_genre_dict.hasOwnProperty(year_str)) {
+            let artist_year_dict = need_genre_dict[year_str]; // 中间变量，记录该genre某一年的情况
+            for (var artist in artist_year_dict) {
+                // console.log(artist_year_dict[artist]);
+                if (now_artists_dict.hasOwnProperty(artist)) {
+                    now_artists_dict[artist] += artist_year_dict[artist];
+                } else {
+                    now_artists_dict[artist] = artist_year_dict[artist];
+                }
+            }
+        }
+    }
+    var now_artists_num = 0;
+    var total_length = 0;
+    for (var artist in now_artists_dict) {
+        input_num = Math.pow(now_artists_dict[artist], scale_fact);
+        new_part = {
+            name: artist,
             type: 'bar',
             stack: 'total',
             label: {
@@ -151,9 +176,16 @@ function draw_artist_bar(start, end, port_json, input_genre) {
                     return `<b>${v.seriesName}:</b> ${orig}`;
                 }
             },
-            data: [10]
-        }]
-    };
+            data: [input_num]
+        };
+        total_length += input_num;
+        port_option["series"].push(new_part);
+        now_artists_num += 1;
+        if (now_artists_num >= show_artist_num) {
+            break;
+        }
+    }
+    port_option.yAxis.max = total_length;
     return port_option;
 }
 
@@ -161,18 +193,21 @@ async function init_bar() {
     genre_colors = ['#e78b8b', '#e78ba8', '#e78bc5', '#e78be2', '#cf8be7', '#b28be7', '#948be7', '#8b9ee7', '#8bbbe7', '#8bd8e7', '#8be7d8', '#8be7bb', '#8be79e', '#94e78b', '#b2e78b', '#cfe78b', '#e7e28b', '#e7c58b', '#e7a88b'];
     await readCSV("./assets/data/music_portion.csv");
     portion_csv = window.__loaded_csv;
+    await readJson("./assets/data/genre_artists_portion.json")
+    artist_json_bar = window.__loaded_json;
     basic_select_genre = Array(19).fill(true);
     // basic_select_genre[0] = false
     port_opt = draw_bra(1921, 2020, portion_csv, basic_select_genre, genre_colors);
     if (port_opt && typeof port_opt === 'object') {
         port_chart.setOption(port_opt);
     }
+
 }
 
 function update_bar(start, end, select_genre, color_list) {
-    console.log(select_genre);
+    // console.log(select_genre);
     port_opt = draw_bra(start, end, portion_csv, select_genre, color_list);
-    console.log(port_opt);
+    // console.log(port_opt);
     if (port_opt && typeof port_opt === 'object') {
         port_chart.setOption(port_opt, true);
     }
