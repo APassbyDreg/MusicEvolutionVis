@@ -185,6 +185,9 @@ function draw_artist_bar(start, end, port_json, input_genre) {
             break;
         }
     }
+    port_option["series"].sort(function(first, second) {
+        return (second["data"][0] - first["data"][0]);
+    });
     port_option.yAxis.max = total_length;
     return port_option;
 }

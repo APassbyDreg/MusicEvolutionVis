@@ -109,6 +109,7 @@ body {
     border-radius: 10px;
     background-color: whitesmoke;
     padding: 10px;
+    pointer-events: all;
 }
 
 #controls {
@@ -118,7 +119,7 @@ body {
     width: 15vw;
     padding: 10px;
     border-radius: 10px;
-    background-color: rgba(0,0,0,0.2);
+    background-color: rgba(0, 0, 0, 0.2);
 }
 
 #controls-bg {
