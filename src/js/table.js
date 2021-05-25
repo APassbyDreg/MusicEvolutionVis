@@ -15,6 +15,8 @@ var full_table_data;    // 百年所有数据，不分流派
 var full_table_data_genre;  // 按年统计，按流派分类的数据
 var table_data; //这个是直接给table用的数据，[纵坐标，横坐标，值]
 table_data = new Array(table_xrange*table_yrange);
+var table_mode = 'all'; // 标记表格类型，是'all'属性图，还是单一属性'year_trend'
+var table_attr; //标记年趋势视图下是哪个属性信息
 // 表格数据起止年份
 var table_start = 1921;
 var table_end = 2021;
@@ -119,6 +121,14 @@ async function init_table(){
 
 // 每次更改时间区间或者流派信息时候更改表格数据
 function update_table(start, end, selected_genres){
+    if (app.inspecting_genre){
+        console.log(selected_genres)
+        var idx = genres.findIndex(value=>value == app.inspecting_genre)
+        for (i = 0; i < selected_genres.length; i++){
+            selected_genres[i] = false;
+        }
+        selected_genres[idx] = true;
+    }
     // 更新选择的流派
     table_genres = selected_genres;
     // 更新时间区间
@@ -131,23 +141,48 @@ function update_table(start, end, selected_genres){
         }
     }
     // 重新计算区间内的数值
-    table_range_cnt = 0;
-    for (i = table_start; i <= table_end; i++){
-        if (full_table_data_genre[i+""]){
-            // 统计流派信息
-            for (var ii=0; ii < genres.length; ii++){
-                if (table_genres[ii]){
-                    genre = genres[ii]
-                    table_range_cnt += full_table_data_genre[i+""][genre]["cnt"];
-                    for (k = 0; k < attrs.length; k++){
-                        for (j = 0; j < table_yrange; j++){
-                            table_data[k*table_yrange+j][2] += full_table_data_genre[i+""][genre][attrs[k]][j];
-                        }
-                    }    
+    if (table_mode == 'all'){
+        table_range_cnt = 0;
+        for (i = table_start; i <= table_end; i++){
+            if (full_table_data_genre[i+""]){
+                // 统计流派信息
+                for (var ii=0; ii < genres.length; ii++){
+                    if (table_genres[ii]){
+                        genre = genres[ii]
+                        table_range_cnt += full_table_data_genre[i+""][genre]["cnt"];
+                        for (k = 0; k < attrs.length; k++){
+                            for (j = 0; j < table_yrange; j++){
+                                table_data[k*table_yrange+j][2] += full_table_data_genre[i+""][genre][attrs[k]][j];
+                            }
+                        }    
+                    }
                 }
             }
+        }    
+    }else if (table_mode == 'year_trend'){
+        var year_range = table_end - table_start;
+        var table_year = new Array(year_range);
+        table_range_cnt = 0;
+        for (i = 0; i < year_range; i++){
+            year_i = start+i;
+            table_year[i] = year_i+"";
+            var year_cnt = 0
+            if (full_table_data_genre[year_i+""]){
+                for (var ii = 0; ii < genres.length; ii++){
+                    if(table_genres[ii]){
+                        genre = genres[ii]
+                        year_cnt += full_table_data_genre[year_i+""][genre]["cnt"];
+                        for (j = 0; j < table_yrange; j++){
+                            table_data[i*table_yrange+j][2] += full_table_data_genre[year_i+""][genre][table_attr+""][j];
+                        }
+                    }
+                }
+            }
+            table_range_cnt = Math.max(table_range_cnt, year_cnt);
         }
+        table_option.xAxis.data = table_year;
     }
+    
     // 更新数据域
     var series = [{
         type: 'heatmap',
@@ -169,6 +204,8 @@ function update_table(start, end, selected_genres){
 }
 
 function change_table_attr(start, end, attr){
+    table_attr = attr;
+    table_mode = 'year_trend';
     var year_range = end-start;
     table_xrange = year_range;
     table_data = new Array(table_xrange*table_yrange);
@@ -196,7 +233,6 @@ function change_table_attr(start, end, attr){
         }
         table_range_cnt = Math.max(table_range_cnt, year_cnt);
     }
-    // console.log(full_table_data_genre[year_i+""]["Country"][attr])
     var series = [{
         type: 'heatmap',
         data: table_data,

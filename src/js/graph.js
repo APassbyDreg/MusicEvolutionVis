@@ -258,6 +258,7 @@ function set_out_graph_opt(start, end, using_genres) {
         app.inspecting_genre = genre;
         set_in_graph_opt(start, end, genre);
         update_artist_bar(start, end, genre);
+        update_table(start, end, using_genres);
     })
 };
 
