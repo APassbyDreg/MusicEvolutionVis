@@ -31,7 +31,7 @@ let appconf = {
             `
                 使用流派更改时的函数
             `
-            update_graph(this.time_range[0], this.time_range[1], this.using_genres);
+            update_graph();
             update_table(this.time_range[0], this.time_range[1], this.using_genres);
             update_bar(this.time_range[0], this.time_range[1], this.using_genres, this.genre_colors);
         },
@@ -45,7 +45,7 @@ let appconf = {
             end = Math.max(1921, Math.min(2020, end));
             this.time_range = (start > end) ? [end, start] : [start, end];
             update_table(start, end, this.using_genres);
-            update_graph(start, end, this.using_genres);
+            update_graph();
             update_bar(start, end, this.using_genres, this.genre_colors);
         },
         focus_musician: function (name) {
@@ -57,19 +57,26 @@ let appconf = {
             let genre = "xxxx";         // 需要设置该音乐家所属的流派
             this.select_genre(genre);
         },
-        select_genre: function (name) {
+        select_genre: function (name="") {
             `
                 这个函数用来全局派发更改选定的流派的事件（包括从图中点击、点击弹幕、从流派中返回）
             `
 
             inspecting_genre = name;    // 把这个值先改了以便别的部分调取
             inspecting_musician = ""    // 可能需要清除这个值
-
-            // 更改graph
-
-            // 更改bar
-
-            // 更改table
+            
+            if (inspecting_genre == "") {
+                // 从流派返回
+                this.using_genres = Array(19).fill(true)
+                set_out_graph_opt(this.time_range[0], this.time_range[1], this.using_genres);
+                init_bar();
+                init_table();   
+            } else {
+                // 图中点击
+                set_in_graph_opt(this.time_range[0], this.time_range[1], inspecting_genre);
+                update_artist_bar(this.time_range[0], this.time_range[1], inspecting_genre);
+                update_table(this.time_range[0], this.time_range[1], this.using_genres);
+            }
         }
     },
     computed: {

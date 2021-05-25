@@ -256,13 +256,16 @@ function set_out_graph_opt(start, end, using_genres) {
     graph_chart.on("click", function(params) {
         genre = params.data.name;
         app.inspecting_genre = genre;
-        set_in_graph_opt(start, end, genre);
-        update_artist_bar(start, end, genre);
-        update_table(start, end, using_genres);
+        // set_in_graph_opt(app.time_range[0], app.time_range[1], genre);
+        app.select_genre(genre);
     })
 };
 
-function update_graph(start, end, using_genres) {
+function update_graph() {
+    var start = app.time_range[0];
+    var end = app.time_range[1];
+    var using_genres = app.using_genres;
+
     start = parseInt(start / 10) * 10;
     end = (parseInt(end / 10) + 1) * 10;
     set_out_graph_opt(start, end, using_genres);
@@ -273,5 +276,6 @@ async function init_graph() {
     portion_influence_data = window.__loaded_json;
     await readJson("./assets/data/artist_influence_data.json");
     artist_influence_data = window.__loaded_json
+
     set_out_graph_opt(1921, 2020, Array(19).fill(true));
 }

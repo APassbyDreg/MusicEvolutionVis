@@ -80,6 +80,8 @@ var table_option = {
 
 // 表格数据初始化
 async function init_table(){
+    table_start = app.time_range[0];
+    table_end = app.time_range[1];
     await readJson("./assets/data/attr_by_year_for_table.json")
     full_table_data = window.__loaded_json;
     await readJson("./assets/data/attr_by_year_with_genre.json")

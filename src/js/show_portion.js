@@ -246,7 +246,7 @@ async function init_bar() {
     artist_json_bar = window.__loaded_json;
     basic_select_genre = Array(19).fill(true);
     // basic_select_genre[0] = false
-    port_opt = draw_bra(1921, 2020, portion_csv, basic_select_genre, genre_colors);
+    port_opt = draw_bra(app.time_range[0], app.time_range[1], portion_csv, basic_select_genre, genre_colors);
     if (port_opt && typeof port_opt === 'object') {
         port_chart.setOption(port_opt);
     }
