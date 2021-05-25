@@ -1,30 +1,32 @@
 var table_dom = document.getElementById("table-main");
 var table_chart = echarts.init(table_dom);
-
-// 生成纵列(degree)
-var table_grids = 11;   // 纵列的刻度，即分成几格
-var table_arr = new Array(table_grids);
-for (var i = 0; i < table_arr.length; i++) {
-    table_arr[i]=i-5+"";
-};
-var degree = table_arr;
-// 生成横列（属性）
 var attrs = ["danceability", "energy", "valence", "tempo", "loudness", "mode", "key", "acousticness", "instrumentalness", "liveness", "speechiness", "explicit", "duration_ms", "popularity"];
 // 所有流派信息
 var genres = ["Electronic", "R&B;", "Vocal", "Pop/Rock", "Religious", "Blues", "Country", "Jazz", "Latin", "New Age", "Folk", "International", "Reggae", "Comedy/Spoken", "Easy Listening", "Classical", "Avant-Garde", "Stage & Screen", "Children's", "Unknown"];
+// 表格坐标轴尺度
+var table_yrange = 11;   // 纵列的刻度，即分成几格
+var table_xrange = attrs.length;
+
+var i = 0
+var table_arr = new Array(table_yrange)
+
 // 表格数据
 var full_table_data;    // 百年所有数据，不分流派
 var full_table_data_genre;  // 按年统计，按流派分类的数据
-var table_data = new Array(attrs.length*table_grids); //这个是直接给table用的数据，[纵坐标，横坐标，值]
-
+var table_data; //这个是直接给table用的数据，[纵坐标，横坐标，值]
+table_data = new Array(table_xrange*table_yrange);
 // 表格数据起止年份
 var table_start = 1921;
 var table_end = 2021;
+
+// 选择的流派
+var table_genres = new Array(genres.length).fill(true);
 
 // 用于确定表格内数据的尺度
 var table_range_cnt = 0;  //用于统计该区间内的乐曲数量
 
 var table_color = ['#e6cda8', '#de8c5c', '#f3772e', '#ee6666', '#ca3535'];
+// var table_color = [bright_color, mid_color, dark_color]
 // 表格的样式的设置
 var table_option = {
     gradientColor: table_color,
@@ -54,7 +56,10 @@ var table_option = {
     },
     yAxis: {
         type: 'category',
-        data: degree,
+        data: table_arr,
+        axisLabel: {
+            show: false,
+        },
         splitArea: {
             show: true
         }
@@ -68,20 +73,7 @@ var table_option = {
         itemHeight: '200%',
         itemWidth: '30%',
         text: ['High', 'Low'],
-    },
-    series: [{
-        type: 'heatmap',
-        data: table_data,
-        label: {
-            show: true
-        },
-        emphasis: {
-            itemStyle: {
-                shadowBlur: 10,
-                shadowColor: 'rgba(0, 0, 0, 0.5)'
-            }
-        }
-    }]
+    }
 };
 
 // 表格数据初始化
@@ -91,8 +83,8 @@ async function init_table(){
     await readJson("./assets/data/attr_by_year_with_genre.json")
     full_table_data_genre = window.__loaded_json;
     for (i = 0; i < attrs.length; i++){
-        for (j = 0; j < table_grids; j++){
-            table_data[i*table_grids+j] = [i, j, 0];
+        for (j = 0; j < table_yrange; j++){
+            table_data[i*table_yrange+j] = [i, j, 0];
         }
     }
     table_range_cnt = 0;
@@ -100,28 +92,42 @@ async function init_table(){
         if (full_table_data[i+""]){
             table_range_cnt += full_table_data[i+""]["cnt"];
             for (k = 0; k < attrs.length; k++){
-                for (j = 0; j < table_grids; j++){
-                    table_data[k*table_grids+j][2] += full_table_data[i+""][attrs[k]][j];
+                for (j = 0; j < table_yrange; j++){
+                    table_data[k*table_yrange+j][2] += full_table_data[i+""][attrs[k]][j];
                 }
             }
         }
     }
-    table_option.series.data = table_data;
+    var series = [{
+        type: 'heatmap',
+        data: table_data,
+        emphasis: {
+            itemStyle: {
+                shadowBlur: 10,
+                shadowColor: 'rgba(0, 0, 0, 0.5)'
+            }
+        }
+    }]
+    table_option.series = series;
     table_option.visualMap.max = table_range_cnt;
-    if (table_option && typeof table_option === 'object') {
-        table_chart.setOption(table_option);
-    }
+    table_chart.setOption(table_option);
+    table_chart.on("click", function(params) {
+        var attr = attrs[params.data[0]];
+        change_table_attr(table_start, table_end, attr);
+    })
 }
 
 // 每次更改时间区间或者流派信息时候更改表格数据
-function update_table(start, end, selected_genre){
+function update_table(start, end, selected_genres){
+    // 更新选择的流派
+    table_genres = selected_genres;
     // 更新时间区间
     table_start = start;
     table_end = end;
     // 对数值进行清零
     for (i = 0; i < attrs.length; i++){
-        for (j = 0; j < table_grids; j++){
-            table_data[i*table_grids+j][2] = 0;
+        for (j = 0; j < table_yrange; j++){
+            table_data[i*table_yrange+j][2] = 0;
         }
     }
     // 重新计算区间内的数值
@@ -130,12 +136,12 @@ function update_table(start, end, selected_genre){
         if (full_table_data_genre[i+""]){
             // 统计流派信息
             for (var ii=0; ii < genres.length; ii++){
-                if (selected_genre[ii]){
+                if (table_genres[ii]){
                     genre = genres[ii]
-                    table_range_cnt += full_table_data_genre[i+""][genre]["cnt"]
+                    table_range_cnt += full_table_data_genre[i+""][genre]["cnt"];
                     for (k = 0; k < attrs.length; k++){
-                        for (j = 0; j < table_grids; j++){
-                            table_data[k*table_grids+j][2] += full_table_data_genre[i+""][genre][attrs[k]][j];
+                        for (j = 0; j < table_yrange; j++){
+                            table_data[k*table_yrange+j][2] += full_table_data_genre[i+""][genre][attrs[k]][j];
                         }
                     }    
                 }
@@ -143,9 +149,68 @@ function update_table(start, end, selected_genre){
         }
     }
     // 更新数据域
-    table_option.series.data = table_data;
+    var series = [{
+        type: 'heatmap',
+        data: table_data,
+        emphasis: {
+            itemStyle: {
+                shadowBlur: 10,
+                shadowColor: 'rgba(0, 0, 0, 0.5)'
+            }
+        }
+    }]
+    table_option.series = series;
     table_option.visualMap.max = table_range_cnt;
-    if (table_option && typeof table_option === 'object') {
-        table_chart.setOption(table_option);
+    table_chart.setOption(table_option);
+    table_chart.on("click", function(params) {
+        var attr = attrs[params.data[0]];
+        change_table_attr(table_start, table_end, attr);
+    })
+}
+
+function change_table_attr(start, end, attr){
+    var year_range = end-start;
+    table_xrange = year_range;
+    table_data = new Array(table_xrange*table_yrange);
+    for (i = 0; i < table_xrange; i++){
+        for (j = 0; j < table_yrange; j++){
+            table_data[i*table_yrange+j] = [i, j, 0];
+        }
     }
+    var table_year = new Array(year_range);
+    table_range_cnt = 0;
+    for (i = 0; i < year_range; i++){
+        year_i = start+i;
+        table_year[i] = year_i+"";
+        var year_cnt = 0
+        if (full_table_data_genre[year_i+""]){
+            for (var ii = 0; ii < genres.length; ii++){
+                if(table_genres[ii]){
+                    genre = genres[ii]
+                    year_cnt += full_table_data_genre[year_i+""][genre]["cnt"];
+                    for (j = 0; j < table_yrange; j++){
+                        table_data[i*table_yrange+j][2] += full_table_data_genre[year_i+""][genre][attr+""][j];
+                    }
+                }
+            }
+        }
+        table_range_cnt = Math.max(table_range_cnt, year_cnt);
+    }
+    // console.log(full_table_data_genre[year_i+""]["Country"][attr])
+    var series = [{
+        type: 'heatmap',
+        data: table_data,
+        emphasis: {
+            itemStyle: {
+                shadowBlur: 10,
+                shadowColor: 'rgba(0, 0, 0, 0.5)'
+            }
+        }
+    }]
+    table_option.series = series;
+    table_option.visualMap.max = table_range_cnt;
+    table_option.xAxis.data = table_year;
+    table_option.xAxis.axisLabel.interval = '1';
+    table_chart.setOption(table_option);
+    table_chart.off("click");
 }

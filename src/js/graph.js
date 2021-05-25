@@ -63,7 +63,7 @@ function set_in_graph_opt(start, end, genre) {
     var node_data = node_data_tmp.splice(0, max_num);
     var categ_data = Array.from(cate_set)
     var force = (max_value / 10 > 10) ? 10 : max_value / 10;
-    console.log(node_data);
+    // console.log(node_data);
 
     var link_set = new Set();
     for (year in artist_influence_data) {
