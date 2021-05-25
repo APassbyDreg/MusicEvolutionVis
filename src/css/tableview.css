@@ -2,3 +2,35 @@
     width: 40%;
     display: inline-block;
 }
+
+#table-slider {
+    z-index: 100;
+    pointer-events: fill;
+    position: inherit;
+    top: 85%;
+    right: 10%;
+    width: 35%;
+    padding: 18px 15px 10px 15px;
+    border-radius: 15px;
+    background-color: rgb(240, 245, 255);
+}
+
+#table-slider-animate {
+    z-index: 100;
+    pointer-events: fill;
+    margin-top: 10px;
+}
+
+#table-slider-bg {
+    z-index: 0;
+    opacity: 0.4;
+    width: 100%;
+    height: 100%;
+    position: inherit;
+    left: 0;
+    top: 0;
+    border-radius: 15px;
+    filter: sepia(1.0) hue-rotate(125deg) grayscale(75%);
+    background-image: url("../../assets/textures/pexels-henry-&-co-2341290.jpg");
+    background-size: cover;
+}

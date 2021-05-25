@@ -18,6 +18,8 @@ function time_animation() {
             app.range_change();
         }
         else {
+            app.time_range = [1921, 2020];
+            app.range_change();
             animation_state = false;
             clearInterval(animation_timer);
         }

@@ -11,9 +11,9 @@ let appconf = {
             graph_mode: 0,
             genres: ["Electronic", "R&B;", "Vocal", "Pop/Rock", "Religious", "Blues", "Country", "Jazz", "Latin", "New Age", "Folk", "International", "Reggae", "Comedy/Spoken", "Easy Listening", "Classical", "Avant-Garde", "Stage & Screen", "Children's"],
             using_genres: Array(19).fill(true),
-            inspecting_genre: -1,
+            inspecting_genre: "",
             genre_colors: ['#e78b8b', '#e78ba8', '#e78bc5', '#e78be2', '#cf8be7', '#b28be7', '#948be7', '#8b9ee7', '#8bbbe7', '#8bd8e7', '#8be7d8', '#8be7bb', '#8be79e', '#94e78b', '#b2e78b', '#cfe78b', '#e7e28b', '#e7c58b', '#e7a88b'],
-            musicians: []
+            musicians: [],
         }
     },
     methods: {
@@ -38,6 +38,9 @@ let appconf = {
             update_table(start, end, this.using_genres);
             update_graph(start, end, this.using_genres);
             update_bar(start, end, this.using_genres, this.genre_colors);
+        },
+        focus_musician: function (name) {
+            console.log(name);
         }
     },
     computed: {

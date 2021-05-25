@@ -2,3 +2,24 @@
     width: 100%;
     height: 100%;
 }
+
+#graph-back {
+    cursor: pointer;
+    pointer-events: fill;
+    position: inherit;
+    left: calc((90% - 60vh) / 1.6);
+    top: 5%;
+    width: 8%;
+    height: 8%;
+    transition: all ease 0.25s;
+}
+
+#graph-back:hover {
+    transform: scale(1.25) rotate(-10deg);
+}
+
+#graph-back-icon {
+    pointer-events: fill;
+    width: 100%;
+    height: 100%;
+}

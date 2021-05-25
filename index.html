@@ -24,11 +24,15 @@
 <body>
     <div id="app">
         <div id="musicians-danmaku">
-            <div class="danmaku-row" v-for="i in 30">
-                <span v-for="n in musicians.slice((i-1)*30, i*30)" class="danmaku-cell">
+            <div class="danmaku-row" v-for="i in 40">
+                <span v-for="n in musicians.slice((i-1)*25, i*25)" 
+                      class="danmaku-cell"
+                      @click="focus_musician(n)">
                     {{n}}
                 </span>
-                <span v-for="n in musicians.slice((i-1)*30, i*30)" class="danmaku-cell">
+                <span v-for="n in musicians.slice((i-1)*25, i*25)" 
+                      class="danmaku-cell"
+                      @click="focus_musician(n)">
                     {{n}}
                 </span>
             </div>
@@ -55,7 +59,7 @@
                 <!-- 我好像成功了 -->
             </div>
             <div id="table-slider" class="container">
-                <div id="table-slider-bg"></div>
+                <!-- <div id="table-slider-bg"></div> -->
                 <div id="table-slider-value" class="row">
                     <div class="col-5 p-0">
                         <div class="form-outline range-input w-100">
@@ -78,6 +82,9 @@
                         <v-slider v-model="time_range" :min="1921" :max="2020" :step="1" @change="range_change" />
                     </div>
                 </div>
+                <div id="table-slider-animate">
+                    <button class="w-100 btn btn-sm btn-primary" onclick="start_animation(time_animation, 100)">Animate</button>
+                </div>
             </div>
             <!-- <div id="table-decoration">
                 被表格的筛选控件取代了
@@ -93,6 +100,9 @@
                 <div id="graph-bar-main">
 
                 </div>
+            </div>
+            <div id="graph-back" v-show="inspecting_genre.length > 0" onclick="">
+                <img src="./assets/icons/aui-icon-back.svg" id="graph-back-icon">
             </div>
         </div>
 

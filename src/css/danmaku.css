@@ -2,10 +2,13 @@
     white-space: nowrap;
     display: inline-block;
     z-index: -200;
-    line-height: 4vh;
+    line-height: 2.5vh;
 }
 
 #musicians-danmaku {
+    opacity: 0;
+    transform: rotate(345deg) scale(1.6);
+    transition: all ease 1s;
     z-index: -200;
     width: 100%;
     height: 100%;
@@ -17,12 +20,13 @@
     cursor: pointer;
     margin-right: 16px;
     font-weight: bold;
-    font-size: 2.5vh;
-    color: black;
-    opacity: 0.3;
+    font-size: 1.8vh;
+    color: rgb(54, 35, 7);
+    opacity: 0.2;
     transition: all ease 0.4s;
 }
 
 .danmaku-cell:hover {
-    opacity: 0.9;
+    opacity: 0.8;
+    color: black;
 }

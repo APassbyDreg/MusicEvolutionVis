@@ -12,9 +12,10 @@ async function initDanmaku() {
 }
 
 function start_danmaku () {
+    $("#musicians-danmaku").css("opacity", "1");
     for (let i = 0; i < 50; i++) {
         let selector = `.danmaku-row:eq(${i})`;
-        danmaku_loop(selector, 100000);
+        danmaku_loop(selector, 200000);
     }
 }
 
