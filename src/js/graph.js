@@ -15,7 +15,7 @@ function set_in_graph_opt(start, end, genre) {
         if (year < start || year > end) continue;
         influence_map = artist_influence_data[year][genre];
         for (artist in influence_map) {
-            cate_set.add({name: artist});
+            cate_set.add({ name: artist });
             if (artist_id_dict[artist] == undefined) {
                 artist_id_dict[artist] = artist_id.toString();
                 artist_id += 1
@@ -36,7 +36,7 @@ function set_in_graph_opt(start, end, genre) {
             }
 
             influence_map[artist].forEach(element => {
-                cate_set.add({name: artist});
+                cate_set.add({ name: artist });
                 if (artist_id_dict[element] == undefined) {
                     artist_id_dict[element] = artist_id.toString();
                     artist_id += 1;
@@ -57,12 +57,12 @@ function set_in_graph_opt(start, end, genre) {
         n.symbolSize = size;
         node_data_tmp.push(n);
     }
-    node_data_tmp.sort(function (a, b) {
-        return  b.value - a.value;
+    node_data_tmp.sort(function(a, b) {
+        return b.value - a.value;
     });
     var node_data = node_data_tmp.splice(0, max_num);
     var categ_data = Array.from(cate_set)
-    var force = (max_value / 10 > 10) ? 10 : max_value / 10; 
+    var force = (max_value / 10 > 10) ? 10 : max_value / 10;
     console.log(node_data);
 
     var link_set = new Set();
@@ -70,10 +70,10 @@ function set_in_graph_opt(start, end, genre) {
         influence_map = artist_influence_data[year][genre];
         if (year < start || year > end) continue;
         for (artist in influence_map) {
-            if (node_data.find(function (node) { return (artist == node.name)})) {
-                influence_map[artist].forEach(function (element) {
-                    if (node_data.find(function (node) {return (element == node.name)})) {
-                        link_set.add({source: artist_id_dict[artist], target: artist_id_dict[element]});
+            if (node_data.find(function(node) { return (artist == node.name) })) {
+                influence_map[artist].forEach(function(element) {
+                    if (node_data.find(function(node) { return (element == node.name) })) {
+                        link_set.add({ source: artist_id_dict[artist], target: artist_id_dict[element] });
                     }
                 })
             }
@@ -83,37 +83,35 @@ function set_in_graph_opt(start, end, genre) {
     // console.log(node_data);
     // console.log(link_data);
 
-    var graph = {nodes: node_data, links: link_data, categories:categ_data};
+    var graph = { nodes: node_data, links: link_data, categories: categ_data };
     graph_option = {
         tooltip: {},
-        series: [
-            {
-                type: 'graph',
-                layout: 'force',
-                data: graph.nodes,
-                links: graph.links,
-                categories: graph.categories,
-                label: {
-                    show: true,
-                    position: 'right',
-                    formatter: '{b}'
-                },
-                lineStyle: {
-                    color: "source",
-                    curveness: 0.3
-                },
-                force: {
-                    repulsion: force * 100
-                },
-                emphasis: {
-                    focus: 'adjacency',
-                    blurScope: 'coordinateSystem'
-                },
-                draggable: true,
-                edgeSymbol: ['none', 'arrow'], // 边的样式
-                edgeSymbolSize: 10,
-            }
-        ]
+        series: [{
+            type: 'graph',
+            layout: 'force',
+            data: graph.nodes,
+            links: graph.links,
+            categories: graph.categories,
+            label: {
+                show: true,
+                position: 'right',
+                formatter: '{b}'
+            },
+            lineStyle: {
+                color: "source",
+                curveness: 0.3
+            },
+            force: {
+                repulsion: force * 100
+            },
+            emphasis: {
+                focus: 'adjacency',
+                blurScope: 'coordinateSystem'
+            },
+            draggable: true,
+            edgeSymbol: ['none', 'arrow'], // 边的样式
+            edgeSymbolSize: 10,
+        }]
     };
     graph_chart.clear();
     graph_chart.setOption(graph_option);
@@ -125,7 +123,7 @@ function set_out_graph_opt(start, end, using_genres) {
     var graph_option;
     var ori_cate_data = ["Electronic", "R&B;", "Vocal", "Pop/Rock", "Religious", "Blues", "Country", "Jazz", "Latin", "New Age", "Folk", "International", "Reggae", "Comedy/Spoken", "Easy Listening", "Classical", "Avant-Garde", "Stage & Screen", "Children's"];
     cate_data = ori_cate_data.map(function(cate) {
-        return {name: cate};
+        return { name: cate };
     });
 
     // 初始化node,link数据
@@ -165,7 +163,7 @@ function set_out_graph_opt(start, end, using_genres) {
                     continue;
                 }
                 if (!using_genres[j]) continue;
-                node_value += portion_data[ori_cate_data[j]]; 
+                node_value += portion_data[ori_cate_data[j]];
             }
             node_data[i]["value"] = node_data[i]["value"] + node_value;
             if (node_value > max_value) {
@@ -177,7 +175,7 @@ function set_out_graph_opt(start, end, using_genres) {
     }
 
     for (var i = 0; i < ori_cate_data.length; i++) {
-        var size =40 * (1.0 * (node_data[i]["value"] - min_value)) / (max_value - min_value)
+        var size = 40 * (1.0 * (node_data[i]["value"] - min_value)) / (max_value - min_value)
         if (size < 20) {
             size = 20;
         }
@@ -209,55 +207,57 @@ function set_out_graph_opt(start, end, using_genres) {
             size = value / 25;
             if (size > 8) size = 8;
             if (size < 1) size = 1
-            curve = (i < j)? 0.2 : 0.5;
-            link_data.push({source: String(i),
-                            target: String(j),
-                            value: value,
-                            lineStyle: {
-                                width: size,
-                                curveness: curve
-                            }});
+            curve = (i < j) ? 0.2 : 0.5;
+            link_data.push({
+                source: String(i),
+                target: String(j),
+                value: value,
+                lineStyle: {
+                    width: size,
+                    curveness: curve
+                }
+            });
         }
     }
     // console.log(link_data);
 
-    var graph = {nodes: node_data, links: link_data, categories: cate_data}
+    var graph = { nodes: node_data, links: link_data, categories: cate_data }
     graph_option = {
         tooltip: {},
-        series: [
-            {
-                type: 'graph',
-                layout: 'circular',
-                data: graph.nodes,
-                links: graph.links,
-                categories: graph.categories,
-                circular: {
-                    rotateLabel: true
-                },label: {
-                    show: true,
-                    position: 'right',
-                    formatter: '{b}'
-                },
-                lineStyle: {
-                    color: "source"
-                },
-                // 高亮
-                emphasis: {
-                    focus: 'adjacency',
-                    blurScope: 'coordinateSystem'
-                },
-                draggable: true,
-                edgeSymbol: ['none', 'arrow'], // 边的样式
-                edgeSymbolSize: 15,
-            }
-        ]
+        series: [{
+            type: 'graph',
+            layout: 'circular',
+            data: graph.nodes,
+            links: graph.links,
+            categories: graph.categories,
+            circular: {
+                rotateLabel: true
+            },
+            label: {
+                show: true,
+                position: 'right',
+                formatter: '{b}'
+            },
+            lineStyle: {
+                color: "source"
+            },
+            // 高亮
+            emphasis: {
+                focus: 'adjacency',
+                blurScope: 'coordinateSystem'
+            },
+            draggable: true,
+            edgeSymbol: ['none', 'arrow'], // 边的样式
+            edgeSymbolSize: 15,
+        }]
     };
     graph_chart.clear();
     graph_chart.setOption(graph_option);
-    graph_chart.on("click", function (params) {
+    graph_chart.on("click", function(params) {
         genre = params.data.name;
         console.log(genre);
         set_in_graph_opt(start, end, genre);
+        update_artist_bar(start, end, genre);
     })
 };
 
@@ -274,4 +274,3 @@ async function init_graph() {
     artist_influence_data = window.__loaded_json
     set_out_graph_opt(1921, 2020, Array(19).fill(true));
 }
-  
