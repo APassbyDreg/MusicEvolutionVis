@@ -1,3 +1,5 @@
+const { loadModule } = window['vue3-sfc-loader'];
+
 let appconf = {
     data() {
         return {
@@ -10,7 +12,8 @@ let appconf = {
             genres: ["Electronic", "R&B;", "Vocal", "Pop/Rock", "Religious", "Blues", "Country", "Jazz", "Latin", "New Age", "Folk", "International", "Reggae", "Comedy/Spoken", "Easy Listening", "Classical", "Avant-Garde", "Stage & Screen", "Children's"],
             using_genres: Array(19).fill(true),
             inspecting_genre: -1,
-            genre_colors: ['#e78b8b', '#e78ba8', '#e78bc5', '#e78be2', '#cf8be7', '#b28be7', '#948be7', '#8b9ee7', '#8bbbe7', '#8bd8e7', '#8be7d8', '#8be7bb', '#8be79e', '#94e78b', '#b2e78b', '#cfe78b', '#e7e28b', '#e7c58b', '#e7a88b']
+            genre_colors: ['#e78b8b', '#e78ba8', '#e78bc5', '#e78be2', '#cf8be7', '#b28be7', '#948be7', '#8b9ee7', '#8bbbe7', '#8bd8e7', '#8be7d8', '#8be7bb', '#8be79e', '#94e78b', '#b2e78b', '#cfe78b', '#e7e28b', '#e7c58b', '#e7a88b'],
+            musicians: []
         }
     },
     methods: {
@@ -38,11 +41,10 @@ let appconf = {
         }
     },
     computed: {
-
+        
     },
     mounted: function() {
         // initialize options
-        // this.change_view_mode(0);
         this.change_graph_mode(0);
     }
 }
@@ -57,6 +59,7 @@ async function init_page() {
     await init_bar();
     await init_graph();
     await init_table();
+    await initDanmaku();
 }
 window.onload = init_page;
 

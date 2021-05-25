@@ -18,14 +18,33 @@
     <link rel="stylesheet" href="./src/css/tableview.css">
     <link rel="stylesheet" href="./src/css/graphview.css">
     <link rel="stylesheet" href="./src/css/controls.css">
+    <link rel="stylesheet" href="./src/css/danmaku.css">
 </head>
 
 <body>
     <div id="app">
+        <div id="musicians-danmaku">
+            <div class="danmaku-row" v-for="i in 30">
+                <span v-for="n in musicians.slice((i-1)*30, i*30)" class="danmaku-cell">
+                    {{n}}
+                </span>
+                <span v-for="n in musicians.slice((i-1)*30, i*30)" class="danmaku-cell">
+                    {{n}}
+                </span>
+            </div>
+        </div>
+
         <div id="bg">
-            <img id="guitar-img" src="./assets/guitar/guitar_07.svg" alt="">
+            <svg id="guitar-img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 211.2124 284.8559">
+                <path d="M395.4023,435.97c-16.519.3828-58.0849,3.4814-69.1005,32.125-11.0166,28.6406,15.4228,49.874,15.4228,68.0518,0,18.1757-47.3706,43.71-47.3706,100.4453,0,56.7334,49.0425,84.1494,106.8062,84.1494,59.4677,0,104.4062-30.3984,104.4062-88.6817,0-55.2978-47.3711-69.9531-47.3711-92.5371,0-22.582,15.9746-38.5566,15.9746-51.2255s-.5517-18.7276-7.7119-18.7276-10.6758,16.12-27.9209,16.12-25.6764-24.3865-26.0586-39.8056C412.2073,434.9428,402.582,435.8037,395.4023,435.97Z"
+                      transform="translate(-294.354 -435.8853)" 
+                      style="fill: #271707;"
+                      pointer-events="fill"/>
+            </svg>
+            <!-- <img id="guitar-img" src="./assets/guitar/guitar_07.svg" alt=""> -->
             <div id="bg-notes"></div>
         </div>
+
 
         <div id="table-view">
             <div id="table-title">
@@ -116,11 +135,11 @@
     </div>
 
     <script src="./libs/Vue/vue.global.js"></script>
-    <script src="./libs/httpVueLoader.js"></script>
     <script src="./libs/d3js/d3.js"></script>
     <script src="./libs/echarts/echarts.js"></script>
     <script src="./libs/vue-echarts.js"></script>
     <script src="./libs/vue-slider-component/vue-slider-component.umd.js"></script>
+    <script src="./libs/vue3-sfc-loader.js"></script>
     <script src="./libs/MDB5/js/mdb.min.js"></script>
     <script src="./libs/Bootstrap/js/bootstrap.bundle.js"></script>
     <script src="./libs/jQuery/jquery.js"></script>
@@ -131,6 +150,8 @@
     <script src="./src/js/table.js"></script>
     <script src="./src/js/graph.js"></script>
     <script src="./src/js/show_portion.js"></script>
+    <script src="./src/js/animation.js"></script>
+    <script src="./src/js/names_danmaku.js"></script>
 
 </body>
 
