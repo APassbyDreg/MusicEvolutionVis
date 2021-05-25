@@ -6,16 +6,18 @@ let appconf = {
             // 属性值
             attrs: ["danceability", "energy", "valence", "tempo", "loudness", "mode", "key", "acousticness", "instrumentalness", "liveness", "speechiness", "explicit", "duration_ms", "popularity"],
             graph_mode_list: ["In", "Out", "Both"],
+            table_mode_list: ["Attrs", "Timeline"],
             genres: ["Electronic", "R&B;", "Vocal", "Pop/Rock", "Religious", "Blues", "Country", "Jazz", "Latin", "New Age", "Folk", "International", "Reggae", "Comedy/Spoken", "Easy Listening", "Classical", "Avant-Garde", "Stage & Screen", "Children's"],
             genre_colors: ['#e78b8b', '#e78ba8', '#e78bc5', '#e78be2', '#cf8be7', '#b28be7', '#948be7', '#8b9ee7', '#8bbbe7', '#8bd8e7', '#8be7d8', '#8be7bb', '#8be79e', '#94e78b', '#b2e78b', '#cfe78b', '#e7e28b', '#e7c58b', '#e7a88b'],
             musicians: [],
             // APP 状态值
             time_range: [1921, 2020],           // 时间区域
             graph_mode: 0,                      // 边状态
+            table_mode: 0,                      // 表状态
             using_genres: Array(19).fill(true), // 被使用的流派
             inspecting_genre: "",               // 图显示细节所属的流派
             inspecting_musician: "",            // 图的中心音乐家
-            inspecting_attr: "",                // 表展示的属性视图的属性
+            inspecting_attr: 0,                 // 表展示的属性视图的属性
         }
     },
     methods: {
@@ -27,13 +29,31 @@ let appconf = {
             $("#graph-mode-switch button").removeClass("active");
             $("#graph-mode-switch button")[mode].classList.add("active");
         },
-        grene_change: function(idx) {
+        change_table_mode: function(mode) {
+            `
+                图中显示边状态更改时的函数
+            `
+            this.graph_mode = mode;
+            $("#table-mode-switch button").removeClass("active");
+            $("#table-mode-switch button")[mode].classList.add("active");
+            if (mode == 1) {
+                $("#table-mode-switch button")[2].classList.add("active");
+            }
+        },
+        grene_change: function() {
             `
                 使用流派更改时的函数
             `
             update_graph();
             update_table(this.time_range[0], this.time_range[1], this.using_genres);
             update_bar(this.time_range[0], this.time_range[1], this.using_genres, this.genre_colors);
+        },
+        attr_change: function(idx) {
+            `
+                展示属性变化时的函数
+            `
+            this.change_table_mode(1);
+            this.inspecting_attr = idx - 1;
         },
         range_change: function() {
             `
@@ -62,10 +82,10 @@ let appconf = {
                 这个函数用来全局派发更改选定的流派的事件（包括从图中点击、点击弹幕、从流派中返回）
             `
 
-            inspecting_genre = name;    // 把这个值先改了以便别的部分调取
-            inspecting_musician = ""    // 可能需要清除这个值
+            this.inspecting_genre = name;    // 把这个值先改了以便别的部分调取
+            this.inspecting_musician = ""    // 可能需要清除这个值
             
-            if (inspecting_genre == "") {
+            if (this.inspecting_genre == "") {
                 // 从流派返回
                 this.using_genres = Array(19).fill(true)
                 set_out_graph_opt(this.time_range[0], this.time_range[1], this.using_genres);
@@ -73,8 +93,8 @@ let appconf = {
                 init_table();   
             } else {
                 // 图中点击
-                set_in_graph_opt(this.time_range[0], this.time_range[1], inspecting_genre);
-                update_artist_bar(this.time_range[0], this.time_range[1], inspecting_genre);
+                set_in_graph_opt(this.time_range[0], this.time_range[1], this.inspecting_genre);
+                update_artist_bar(this.time_range[0], this.time_range[1], this.inspecting_genre);
                 update_table(this.time_range[0], this.time_range[1], this.using_genres);
             }
         }
@@ -85,6 +105,7 @@ let appconf = {
     mounted: function() {
         // initialize options
         this.change_graph_mode(0);
+        this.change_table_mode(0);
     }
 }
 

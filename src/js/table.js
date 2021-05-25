@@ -123,6 +123,7 @@ async function init_table(){
 
 // 每次更改时间区间或者流派信息时候更改表格数据
 function update_table(start, end, selected_genres){
+    // TODO: 修改为从 app 读取内容，使用局部变量储存中间信息
     if (app.inspecting_genre){
         console.log(selected_genres)
         var idx = genres.findIndex(value=>value == app.inspecting_genre)
