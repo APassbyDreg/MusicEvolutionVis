@@ -119,24 +119,23 @@ async function init_table(){
 // 每次更改时间区间或者流派信息时候更改表格数据
 function update_table(){
     // 更新选择的流派、模式
-    table_genres = app.using_genres;
     table_mode = app.table_mode_list[app.table_mode];
     if (app.inspecting_genre){
+        var tmp_genres = new Array(table_genres.length).fill(false)
         var idx = genres.findIndex(value=>value == app.inspecting_genre)
-        for (i = 0; i < table_genres.length; i++){
-            table_genres[i] = false;
-        }
-        table_genres[idx] = true;
+        tmp_genres[idx] = true;
+        table_genres = tmp_genres;
+    }else{
+        table_genres = app.using_genres;
     }
     // 更新时间区间
     table_start = app.time_range[0];
     table_end = app.time_range[1];
-    table_xrange = table_end-table_start
-    
     
     // 重新计算区间内的数值
     if (table_mode == 'Attrs'){
         // 对数值进行清零
+        table_xrange = attrs.length;
         for (i = 0; i < table_xrange; i++){
             for (j = 0; j < table_yrange; j++){
                 table_data[i*table_yrange+j][2] = 0;
@@ -157,8 +156,11 @@ function update_table(){
                 }
             }
         }
+        table_option.xAxis.data = attrs;
+        table_option.xAxis.axisLabel.interval = '0';
     }else if (table_mode == 'Timeline'){
         var year_range = table_end - table_start;
+        table_xrange = year_range;
         table_data = new Array(table_xrange*table_yrange);
         for (i = 0; i < table_xrange; i++){
             for (j = 0; j < table_yrange; j++){
@@ -182,6 +184,7 @@ function update_table(){
             }
         }
         table_option.xAxis.data = table_year;
+        table_option.xAxis.axisLabel.interval = '1';
     }
     // 更新数据域
     var series = [{
