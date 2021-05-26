@@ -234,7 +234,7 @@ function draw_artist_bar(start, end, port_json, input_genre) {
     }
     port_option.yAxis.max = total_length;
     port_option.color = now_port_colors;
-    console.log(port_option);
+    // console.log(port_option);
     return port_option;
 }
 
