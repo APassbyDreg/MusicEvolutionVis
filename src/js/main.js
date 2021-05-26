@@ -104,8 +104,8 @@ let appconf = {
     },
     mounted: function() {
         // initialize options
-        this.change_graph_mode(0);
-        this.change_table_mode(0);
+        $("#table-mode-switch button")[0].classList.add("active");
+        $("#graph-mode-switch button")[0].classList.add("active");
     }
 }
 
