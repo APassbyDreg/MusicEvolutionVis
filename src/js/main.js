@@ -22,6 +22,16 @@ let appconf = {
         }
     },
     methods: {
+        reset: function () {
+            this.inspecting_attr = 0;
+            this.inspecting_musician = "";
+            this.inspecting_genre = "";
+            this.using_genres = Array(19).fill(true);
+            this.time_range = [1921, 2020];
+            this.change_graph_mode(0);
+            this.change_table_mode(0);
+            this.range_change();
+        },
         change_graph_mode: function(mode) {
             `
                 图中显示边状态更改时的函数

@@ -9,7 +9,7 @@
     position: inherit;
     top: 85%;
     right: 10%;
-    width: 35%;
+    width: 30%;
     padding: 18px 15px 10px 15px;
     border-radius: 15px;
     background-color: rgb(240, 245, 255);
@@ -33,4 +33,16 @@
     filter: sepia(1.0) hue-rotate(125deg) grayscale(75%);
     background-image: url("../../assets/textures/pexels-henry-&-co-2341290.jpg");
     background-size: cover;
+}
+
+#table-title {
+    pointer-events: all;
+    position: inherit;
+    top: 10%;
+    right: 0%;
+    width: 50%;
+    height: 10%;
+    color: white;
+    font-size: 4vh;
+    text-align: right;
 }

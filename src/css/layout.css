@@ -48,17 +48,7 @@ body {
     left: 0;
     top: calc(50vh - min(30vh, 15vw));
     height: min(60vh, 30vw);
-    width: 50vw;
-}
-
-#table-title {
-    position: inherit;
-    top: 5%;
-    width: 90%;
-    height: 10%;
-    color: white;
-    font-size: 5vh;
-    text-align: right;
+    width: 55vw;
 }
 
 #table-main {
