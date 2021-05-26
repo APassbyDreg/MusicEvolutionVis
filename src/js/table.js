@@ -71,25 +71,27 @@ var table_option = {
         itemHeight: '200%',
         itemWidth: '30%',
         text: ['High', 'Low'],
-    }
+    },
 };
 
 // 表格数据初始化
 async function init_table(){
+    app.title = "好短"
     table_start = app.time_range[0];
     table_end = app.time_range[1];
+    table_xrange = attrs.length;
     await readJson("./assets/data/attr_by_year_for_table.json")
     full_table_data = window.__loaded_json;
     await readJson("./assets/data/attr_by_year_with_genre.json")
     full_table_data_genre = window.__loaded_json;
-    for (i = 0; i < attrs.length; i++){
+    for (i = 0; i < table_xrange; i++){
         for (j = 0; j < table_yrange; j++){
             table_data[i*table_yrange+j] = [i, j, 0];
         }
     }
     for (i = table_start; i < table_end; i++){
         if (full_table_data[i+""]){
-            for (k = 0; k < attrs.length; k++){
+            for (k = 0; k < table_xrange; k++){
                 for (j = 0; j < table_yrange; j++){
                     table_data[k*table_yrange+j][2] += full_table_data[i+""][attrs[k]][j];
                 }
@@ -104,11 +106,13 @@ async function init_table(){
                 shadowBlur: 10,
                 shadowColor: 'rgba(0, 0, 0, 0.5)'
             }
-        }
+        },
     }]
     var col3 = table_data.map(function(value,index) { return value[2]; });
     table_option.series = series;
     table_option.visualMap.max = Math.max.apply(null, col3);
+    table_option.xAxis.data = attrs;
+    table_option.xAxis.axisLabel.interval = '0';
     table_chart.setOption(table_option);
     table_chart.on("click", function(params) {
         app.inspecting_attr = params.data[0];
@@ -147,7 +151,7 @@ function update_table(){
                 for (var ii=0; ii < genres.length; ii++){
                     if (table_genres[ii]){
                         genre = genres[ii]
-                        for (k = 0; k < attrs.length; k++){
+                        for (k = 0; k < table_xrange; k++){
                             for (j = 0; j < table_yrange; j++){
                                 table_data[k*table_yrange+j][2] += full_table_data_genre[i+""][genre][attrs[k]][j];
                             }
@@ -158,6 +162,7 @@ function update_table(){
         }
         table_option.xAxis.data = attrs;
         table_option.xAxis.axisLabel.interval = '0';
+        app.title = "好短"
     }else if (table_mode == 'Timeline'){
         var year_range = table_end - table_start;
         table_xrange = year_range;
@@ -212,6 +217,7 @@ function change_table_attr(){
     table_attr = attrs[param_idx];
     app.inspecting_attr = param_idx;
     app.table_mode = 1
+    app.title = table_attr;
     table_mode = 'Timeline';
     var year_range = table_end-table_start;
     table_xrange = year_range;
@@ -222,23 +228,19 @@ function change_table_attr(){
         }
     }
     var table_year = new Array(year_range);
-    table_range_cnt = 0;
     for (i = 0; i < year_range; i++){
         year_i = table_start+i;
         table_year[i] = year_i+"";
-        var year_cnt = 0
         if (full_table_data_genre[year_i+""]){
             for (var ii = 0; ii < genres.length; ii++){
                 if(table_genres[ii]){
                     genre = genres[ii]
-                    year_cnt += full_table_data_genre[year_i+""][genre]["cnt"];
                     for (j = 0; j < table_yrange; j++){
                         table_data[i*table_yrange+j][2] += full_table_data_genre[year_i+""][genre][table_attr+""][j];
                     }
                 }
             }
         }
-        table_range_cnt = Math.max(table_range_cnt, year_cnt);
     }
     var series = [{
         type: 'heatmap',
@@ -250,8 +252,9 @@ function change_table_attr(){
             }
         }
     }]
+    var col3 = table_data.map(function(value,index) { return value[2]; });
     table_option.series = series;
-    table_option.visualMap.max = table_range_cnt;
+    table_option.visualMap.max = Math.max.apply(null, col3);
     table_option.xAxis.data = table_year;
     table_option.xAxis.axisLabel.interval = '1';
     table_chart.setOption(table_option);

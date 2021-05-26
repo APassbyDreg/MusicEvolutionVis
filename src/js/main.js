@@ -92,7 +92,7 @@ let appconf = {
                 this.using_genres = Array(19).fill(true)
                 set_out_graph_opt(this.time_range[0], this.time_range[1], this.using_genres);
                 init_bar();
-                init_table();   
+                update_table();   
             } else {
                 // 图中点击
                 set_in_graph_opt(this.time_range[0], this.time_range[1], this.inspecting_genre);
