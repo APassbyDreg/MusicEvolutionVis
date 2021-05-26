@@ -7,15 +7,14 @@ var genres = ["Electronic", "R&B;", "Vocal", "Pop/Rock", "Religious", "Blues", "
 var table_yrange = 11;   // 纵列的刻度，即分成几格
 var table_xrange = attrs.length;
 
-var i = 0
+var i = 0;
 var table_arr = new Array(table_yrange)
 
 // 表格数据
 var full_table_data;    // 百年所有数据，不分流派
 var full_table_data_genre;  // 按年统计，按流派分类的数据
-var table_data; //这个是直接给table用的数据，[纵坐标，横坐标，值]
-table_data = new Array(table_xrange*table_yrange);
-var table_mode = 'all'; // 标记表格类型，是'all'属性图，还是单一属性'year_trend'
+var table_data = new Array(table_xrange*table_yrange);; //这个是直接给table用的数据，[纵坐标，横坐标，值]
+var table_mode = 'Attrs'; // 标记表格类型，是'Attrs'属性图，还是单一属性'Timeline'
 var table_attr; //标记年趋势视图下是哪个属性信息
 // 表格数据起止年份
 var table_start = 1921;
@@ -23,9 +22,6 @@ var table_end = 2021;
 
 // 选择的流派
 var table_genres = new Array(genres.length).fill(true);
-
-// 用于确定表格内数据的尺度
-var table_range_cnt = 0;  //用于统计该区间内的乐曲数量
 
 var table_color = ['#e6cda8', '#de8c5c', '#f3772e', '#ee6666', '#ca3535'];
 // var table_color = [bright_color, mid_color, dark_color]
@@ -91,10 +87,8 @@ async function init_table(){
             table_data[i*table_yrange+j] = [i, j, 0];
         }
     }
-    table_range_cnt = 0;
     for (i = table_start; i < table_end; i++){
         if (full_table_data[i+""]){
-            table_range_cnt += full_table_data[i+""]["cnt"];
             for (k = 0; k < attrs.length; k++){
                 for (j = 0; j < table_yrange; j++){
                     table_data[k*table_yrange+j][2] += full_table_data[i+""][attrs[k]][j];
@@ -112,47 +106,48 @@ async function init_table(){
             }
         }
     }]
+    var col3 = table_data.map(function(value,index) { return value[2]; });
     table_option.series = series;
-    table_option.visualMap.max = table_range_cnt;
+    table_option.visualMap.max = Math.max.apply(null, col3);
     table_chart.setOption(table_option);
     table_chart.on("click", function(params) {
-        var attr = attrs[params.data[0]];
-        change_table_attr(table_start, table_end, attr);
+        app.inspecting_attr = params.data[0];
+        change_table_attr(params.data[0]);
     })
 }
 
 // 每次更改时间区间或者流派信息时候更改表格数据
-function update_table(start, end, selected_genres){
-    // TODO: 修改为从 app 读取内容，使用局部变量储存中间信息
+function update_table(){
+    // 更新选择的流派、模式
+    table_genres = app.using_genres;
+    table_mode = app.table_mode_list[app.table_mode];
     if (app.inspecting_genre){
-        console.log(selected_genres)
         var idx = genres.findIndex(value=>value == app.inspecting_genre)
-        for (i = 0; i < selected_genres.length; i++){
-            selected_genres[i] = false;
+        for (i = 0; i < table_genres.length; i++){
+            table_genres[i] = false;
         }
-        selected_genres[idx] = true;
+        table_genres[idx] = true;
     }
-    // 更新选择的流派
-    table_genres = selected_genres;
     // 更新时间区间
-    table_start = start;
-    table_end = end;
-    // 对数值进行清零
-    for (i = 0; i < attrs.length; i++){
-        for (j = 0; j < table_yrange; j++){
-            table_data[i*table_yrange+j][2] = 0;
-        }
-    }
+    table_start = app.time_range[0];
+    table_end = app.time_range[1];
+    table_xrange = table_end-table_start
+    
+    
     // 重新计算区间内的数值
-    if (table_mode == 'all'){
-        table_range_cnt = 0;
+    if (table_mode == 'Attrs'){
+        // 对数值进行清零
+        for (i = 0; i < table_xrange; i++){
+            for (j = 0; j < table_yrange; j++){
+                table_data[i*table_yrange+j][2] = 0;
+            }
+        }
         for (i = table_start; i <= table_end; i++){
             if (full_table_data_genre[i+""]){
                 // 统计流派信息
                 for (var ii=0; ii < genres.length; ii++){
                     if (table_genres[ii]){
                         genre = genres[ii]
-                        table_range_cnt += full_table_data_genre[i+""][genre]["cnt"];
                         for (k = 0; k < attrs.length; k++){
                             for (j = 0; j < table_yrange; j++){
                                 table_data[k*table_yrange+j][2] += full_table_data_genre[i+""][genre][attrs[k]][j];
@@ -161,31 +156,33 @@ function update_table(start, end, selected_genres){
                     }
                 }
             }
-        }    
-    }else if (table_mode == 'year_trend'){
+        }
+    }else if (table_mode == 'Timeline'){
         var year_range = table_end - table_start;
+        table_data = new Array(table_xrange*table_yrange);
+        for (i = 0; i < table_xrange; i++){
+            for (j = 0; j < table_yrange; j++){
+                table_data[i*table_yrange+j] = [i, j, 0];
+            }
+        }
         var table_year = new Array(year_range);
-        table_range_cnt = 0;
+        table_attr = attrs[app.inspecting_attr];
         for (i = 0; i < year_range; i++){
-            year_i = start+i;
+            year_i = table_start+i;
             table_year[i] = year_i+"";
-            var year_cnt = 0
             if (full_table_data_genre[year_i+""]){
                 for (var ii = 0; ii < genres.length; ii++){
                     if(table_genres[ii]){
                         genre = genres[ii]
-                        year_cnt += full_table_data_genre[year_i+""][genre]["cnt"];
                         for (j = 0; j < table_yrange; j++){
                             table_data[i*table_yrange+j][2] += full_table_data_genre[year_i+""][genre][table_attr+""][j];
                         }
                     }
                 }
             }
-            table_range_cnt = Math.max(table_range_cnt, year_cnt);
         }
         table_option.xAxis.data = table_year;
     }
-    
     // 更新数据域
     var series = [{
         type: 'heatmap',
@@ -197,19 +194,23 @@ function update_table(start, end, selected_genres){
             }
         }
     }]
+    var col3 = table_data.map(function(value,index) { return value[2]; });
     table_option.series = series;
-    table_option.visualMap.max = table_range_cnt;
+    table_option.visualMap.max = Math.max.apply(null, col3);
     table_chart.setOption(table_option);
     table_chart.on("click", function(params) {
-        var attr = attrs[params.data[0]];
-        change_table_attr(table_start, table_end, attr);
+        app.inspecting_attr = params.data[0];
+        change_table_attr();
     })
 }
 
-function change_table_attr(start, end, attr){
-    table_attr = attr;
-    table_mode = 'year_trend';
-    var year_range = end-start;
+function change_table_attr(){
+    var param_idx = app.inspecting_attr;
+    table_attr = attrs[param_idx];
+    app.inspecting_attr = param_idx;
+    app.table_mode = 1
+    table_mode = 'Timeline';
+    var year_range = table_end-table_start;
     table_xrange = year_range;
     table_data = new Array(table_xrange*table_yrange);
     for (i = 0; i < table_xrange; i++){
@@ -220,7 +221,7 @@ function change_table_attr(start, end, attr){
     var table_year = new Array(year_range);
     table_range_cnt = 0;
     for (i = 0; i < year_range; i++){
-        year_i = start+i;
+        year_i = table_start+i;
         table_year[i] = year_i+"";
         var year_cnt = 0
         if (full_table_data_genre[year_i+""]){
@@ -229,7 +230,7 @@ function change_table_attr(start, end, attr){
                     genre = genres[ii]
                     year_cnt += full_table_data_genre[year_i+""][genre]["cnt"];
                     for (j = 0; j < table_yrange; j++){
-                        table_data[i*table_yrange+j][2] += full_table_data_genre[year_i+""][genre][attr+""][j];
+                        table_data[i*table_yrange+j][2] += full_table_data_genre[year_i+""][genre][table_attr+""][j];
                     }
                 }
             }

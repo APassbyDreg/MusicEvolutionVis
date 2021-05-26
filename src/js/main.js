@@ -13,7 +13,7 @@ let appconf = {
             // APP 状态值
             time_range: [1921, 2020],           // 时间区域
             graph_mode: 0,                      // 边状态
-            table_mode: 0,                      // 表状态
+            table_mode: 0,                      // 表状态， '0'是Attr图，'1'是Timeline变化图
             using_genres: Array(19).fill(true), // 被使用的流派
             inspecting_genre: "",               // 图显示细节所属的流派
             inspecting_musician: "",            // 图的中心音乐家
@@ -31,9 +31,10 @@ let appconf = {
         },
         change_table_mode: function(mode) {
             `
-                图中显示边状态更改时的函数
+                图中显示表格模式更改时的函数
             `
-            this.graph_mode = mode;
+            this.table_mode = mode;
+            // update_table();
             $("#table-mode-switch button").removeClass("active");
             $("#table-mode-switch button")[mode].classList.add("active");
             if (mode == 1) {
@@ -45,7 +46,7 @@ let appconf = {
                 使用流派更改时的函数
             `
             update_graph();
-            update_table(this.time_range[0], this.time_range[1], this.using_genres);
+            update_table();
             update_bar(this.time_range[0], this.time_range[1], this.using_genres, this.genre_colors);
         },
         attr_change: function(idx) {
@@ -54,6 +55,7 @@ let appconf = {
             `
             this.change_table_mode(1);
             this.inspecting_attr = idx - 1;
+            change_table_attr();
         },
         range_change: function() {
             `
@@ -64,7 +66,7 @@ let appconf = {
             start = Math.max(1921, Math.min(2020, start));
             end = Math.max(1921, Math.min(2020, end));
             this.time_range = (start > end) ? [end, start] : [start, end];
-            update_table(start, end, this.using_genres);
+            update_table();
             update_graph();
             update_bar(start, end, this.using_genres, this.genre_colors);
         },
@@ -81,7 +83,6 @@ let appconf = {
             `
                 这个函数用来全局派发更改选定的流派的事件（包括从图中点击、点击弹幕、从流派中返回）
             `
-
             this.inspecting_genre = name;    // 把这个值先改了以便别的部分调取
             this.inspecting_musician = ""    // 可能需要清除这个值
             
@@ -95,7 +96,7 @@ let appconf = {
                 // 图中点击
                 set_in_graph_opt(this.time_range[0], this.time_range[1], this.inspecting_genre);
                 update_artist_bar(this.time_range[0], this.time_range[1], this.inspecting_genre);
-                update_table(this.time_range[0], this.time_range[1], this.using_genres);
+                update_table();
             }
         }
     },
