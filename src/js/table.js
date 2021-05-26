@@ -24,9 +24,6 @@ var table_end = 2021;
 // 选择的流派
 var table_genres = new Array(genres.length).fill(true);
 
-// 用于确定表格内数据的尺度
-var table_range_cnt = 0;  //用于统计该区间内的乐曲数量
-
 var table_color = ['#e6cda8', '#de8c5c', '#f3772e', '#ee6666', '#ca3535'];
 // var table_color = [bright_color, mid_color, dark_color]
 // 表格的样式的设置
@@ -91,10 +88,8 @@ async function init_table(){
             table_data[i*table_yrange+j] = [i, j, 0];
         }
     }
-    table_range_cnt = 0;
     for (i = table_start; i < table_end; i++){
         if (full_table_data[i+""]){
-            table_range_cnt += full_table_data[i+""]["cnt"];
             for (k = 0; k < attrs.length; k++){
                 for (j = 0; j < table_yrange; j++){
                     table_data[k*table_yrange+j][2] += full_table_data[i+""][attrs[k]][j];
@@ -112,8 +107,9 @@ async function init_table(){
             }
         }
     }]
+    var col3 = table_data.map(function(value,index) { return value[2]; });
     table_option.series = series;
-    table_option.visualMap.max = table_range_cnt;
+    table_option.visualMap.max = Math.max.apply(null, col3);
     table_chart.setOption(table_option);
     table_chart.on("click", function(params) {
         var attr = attrs[params.data[0]];
@@ -122,14 +118,9 @@ async function init_table(){
 }
 
 // 每次更改时间区间或者流派信息时候更改表格数据
-<<<<<<< HEAD
 function update_table(){
     // 更新选择的流派
     table_genres = app.using_genres;
-=======
-function update_table(start, end, selected_genres){
-    // TODO: 修改为从 app 读取内容，使用局部变量储存中间信息
->>>>>>> bf98d91907665ae9791023bbafb02a77b6e1f0d5
     if (app.inspecting_genre){
         var idx = genres.findIndex(value=>value == app.inspecting_genre)
         for (i = 0; i < table_genres.length; i++){
@@ -141,21 +132,19 @@ function update_table(start, end, selected_genres){
     table_start = app.time_range[0];
     table_end = app.time_range[1];
     // 对数值进行清零
-    for (i = 0; i < attrs.length; i++){
+    for (i = 0; i < table_xrange; i++){
         for (j = 0; j < table_yrange; j++){
             table_data[i*table_yrange+j][2] = 0;
         }
     }
     // 重新计算区间内的数值
     if (table_mode == 'all'){
-        table_range_cnt = 0;
         for (i = table_start; i <= table_end; i++){
             if (full_table_data_genre[i+""]){
                 // 统计流派信息
                 for (var ii=0; ii < genres.length; ii++){
                     if (table_genres[ii]){
                         genre = genres[ii]
-                        table_range_cnt += full_table_data_genre[i+""][genre]["cnt"];
                         for (k = 0; k < attrs.length; k++){
                             for (j = 0; j < table_yrange; j++){
                                 table_data[k*table_yrange+j][2] += full_table_data_genre[i+""][genre][attrs[k]][j];
@@ -164,27 +153,23 @@ function update_table(start, end, selected_genres){
                     }
                 }
             }
-        }    
+        }
     }else if (table_mode == 'year_trend'){
         var year_range = table_end - table_start;
         var table_year = new Array(year_range);
-        table_range_cnt = 0;
         for (i = 0; i < year_range; i++){
             year_i = table_start+i;
             table_year[i] = year_i+"";
-            var year_cnt = 0
             if (full_table_data_genre[year_i+""]){
                 for (var ii = 0; ii < genres.length; ii++){
                     if(table_genres[ii]){
                         genre = genres[ii]
-                        year_cnt += full_table_data_genre[year_i+""][genre]["cnt"];
                         for (j = 0; j < table_yrange; j++){
                             table_data[i*table_yrange+j][2] += full_table_data_genre[year_i+""][genre][table_attr+""][j];
                         }
                     }
                 }
             }
-            table_range_cnt = Math.max(table_range_cnt, year_cnt);
         }
         table_option.xAxis.data = table_year;
     }
@@ -199,8 +184,9 @@ function update_table(start, end, selected_genres){
             }
         }
     }]
+    var col3 = table_data.map(function(value,index) { return value[2]; });
     table_option.series = series;
-    table_option.visualMap.max = table_range_cnt;
+    table_option.visualMap.max = Math.max.apply(null, col3);
     table_chart.setOption(table_option);
     table_chart.on("click", function(params) {
         var attr = attrs[params.data[0]];
