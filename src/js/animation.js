@@ -21,7 +21,7 @@ function time_animation() {
         else {
             animation_state = false;
             clearInterval(animation_timer);
-            $("#reset-btn").addClass("disabled");
+            $("#reset-btn").removeClass("disabled");
         }
     }
 }
