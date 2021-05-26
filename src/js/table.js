@@ -131,8 +131,6 @@ function update_table(){
     // 更新时间区间
     table_start = app.time_range[0];
     table_end = app.time_range[1];
-    table_xrange = table_end-table_start
-    
     
     // 重新计算区间内的数值
     if (table_mode == 'Attrs'){
@@ -159,6 +157,7 @@ function update_table(){
         }
     }else if (table_mode == 'Timeline'){
         var year_range = table_end - table_start;
+        table_xrange = year_range;
         table_data = new Array(table_xrange*table_yrange);
         for (i = 0; i < table_xrange; i++){
             for (j = 0; j < table_yrange; j++){
