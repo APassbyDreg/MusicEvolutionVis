@@ -7,6 +7,7 @@ function start_animation(animation, speed) {
 
 function time_animation() {
     if (!animation_state) {
+        $("#reset-btn").addClass("disabled");
         app.time_range = [1921, 1930];
         app.range_change();
         animation_state = true;
@@ -18,10 +19,9 @@ function time_animation() {
             app.range_change();
         }
         else {
-            app.time_range = [1921, 2020];
-            app.range_change();
             animation_state = false;
             clearInterval(animation_timer);
+            $("#reset-btn").addClass("disabled");
         }
     }
 }

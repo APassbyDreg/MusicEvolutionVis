@@ -18,6 +18,7 @@ let appconf = {
             inspecting_genre: "",               // 图显示细节所属的流派
             inspecting_musician: "",            // 图的中心音乐家
             inspecting_attr: 0,                 // 表展示的属性视图的属性
+            title: "TITLE"                      // 表题
         }
     },
     methods: {

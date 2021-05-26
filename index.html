@@ -52,7 +52,7 @@
 
         <div id="table-view">
             <div id="table-title">
-                Title
+                {{title}}
             </div>
             <div id="table-main">
                 <!-- 这里就是左边的表格了 -->
@@ -81,8 +81,9 @@
                         <v-slider v-model="time_range" :min="1921" :max="2020" :step="1" @change="range_change" />
                     </div>
                 </div>
-                <div id="table-slider-animate">
-                    <button class="w-100 btn btn-sm btn-primary" onclick="start_animation(time_animation, 100)">Animate</button>
+                <div id="table-slider-animate" class="btn-group w-100">
+                    <button id="animate-btn" class="w-100 btn btn-sm btn-primary" onclick="start_animation(time_animation, 100)">Animate</button>
+                    <button id="reset-btn" class="w-100 btn btn-sm btn-primary" @click="time_range=[1921,2020]; range_change()">Reset</button>
                 </div>
             </div>
             <!-- <div id="table-decoration">
