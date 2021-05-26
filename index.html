@@ -101,8 +101,8 @@
 
                 </div>
             </div>
-            <div id="graph-back" v-show="inspecting_genre.length > 0" onclick="">
-                <img src="./assets/icons/aui-icon-back.svg" id="graph-back-icon">
+            <div id="graph-back" v-show="inspecting_genre.length > 0" onclick="app.select_genre()">
+                <img src="./assets/icons/back-white.svg" id="graph-back-icon">
             </div>
         </div>
 
@@ -117,16 +117,50 @@
                 </div>
             </div>
             <div style="height: 0.4rem;"></div>
+            <div id="controls-table-mode">
+                <div class="control-label fw-bold">Table Display:</div>
+                <div id="table-mode-switch" class="btn-group control-btn" role="group">
+                    <button class="btn btn-sm btn-primary" @click="change_table_mode(0)">
+                        Attributes
+                    </button>
+                    <div class="btn-group w-50">
+                        <button type="button" class="btn btn-sm btn-primary" @click="change_table_mode(1)">
+                            Time
+                        </button>
+                        <button class="btn btn-sm btn-primary dropdown-toggle dropdown-toggle-split" 
+                                type="button" 
+                                data-bs-toggle="dropdown"
+                                aria-expanded="false" 
+                                id="attr-dropdown">
+                            <span class="visually-hidden">toggle-dropdown</span>
+                        </button>
+                        <div class="dropdown-menu w-100" aria-labelledby="attr-dropdown">
+                            <div id="genres-select" class="container">
+                                <div v-for="i in attrs.length" class="row">
+                                    <div class="form-check-inline">
+                                        <div class="float-start genre-check-label">{{attrs[i-1]}}</div>
+                                        <input class="float-end form-check-input" 
+                                               type="radio" 
+                                               :checked="inspecting_attr == i-1"
+                                               @click="attr_change(i)" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="height: 0.4rem;"></div>
             <div id="controls-genre-chosen" class="control-group">
                 <div class="control-label fw-bold">Genres:</div>
                 <div class="dropdown">
                     <button class="btn btn-sm btn-primary dropdown-toggle w-100" 
                             type="button"  
                             data-bs-toggle="dropdown" 
-                            aria-expanded="false" id="dropdownMenuButton">
+                            aria-expanded="false" id="genre-dropdown">
                         Select Genres
                     </button>
-                    <div class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton">
+                    <div class="dropdown-menu w-100" aria-labelledby="genre-dropdown">
                         <div id="genres-select" class="container">
                             <div v-for="i in genres.length" class="row">
                                 <div class="form-check-inline">
@@ -134,7 +168,7 @@
                                         &nbsp;
                                     </div>
                                     <div class="float-start genre-check-label">{{genres[i-1]}}</div>
-                                    <input class="float-end form-check-input" type="checkbox" v-model="using_genres[i-1]" @change="grene_change(i-1)" />
+                                    <input class="float-end form-check-input" type="checkbox" v-model="using_genres[i-1]" @change="grene_change()" />
                                 </div>
                             </div>
                         </div>

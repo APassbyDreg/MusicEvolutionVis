@@ -9,13 +9,15 @@
     position: inherit;
     left: calc((90% - 60vh) / 1.6);
     top: 5%;
-    width: 8%;
-    height: 8%;
-    transition: all ease 0.25s;
+    width: 5%;
+    height: 5%;
+    opacity: 0.5;
+    transition: all ease 0.2s;
 }
 
 #graph-back:hover {
-    transform: scale(1.25) rotate(-10deg);
+    transform: scale(1.1);
+    opacity: 0.8;
 }
 
 #graph-back-icon {

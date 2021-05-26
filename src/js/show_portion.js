@@ -8,6 +8,27 @@ var portion_csv;
 var artist_json_bar; // 用于绘制音乐家portion
 var genre_list = ["Electronic", "R&B", "Vocal", "Pop/Rock", "Religious", "Blues", "Country", "Jazz", "Latin", "New Age", "Folk", "International", "Reggae", "Comedy/Spoken", "Easy Listening", "Classical", "Avant-Garde", "Stage & Screen", "Children's"];
 // var now_genre_list = genre_list.concat();
+var bar_color_dict = {
+    "Electronic": '#e78b8b',
+    "R&B;": '#e78ba8',
+    "Vocal": '#e78bc5',
+    "Pop/Rock": '#e78be2',
+    "Religious": '#cf8be7',
+    "Blues": '#b28be7',
+    "Country": '#948be7',
+    "Jazz": '#8b9ee7',
+    "Latin": '#8bbbe7',
+    "New Age": '#8bd8e7',
+    "Folk": '#8be7d8',
+    "International": '#8be7bb',
+    "Reggae": '#8be79e',
+    "Comedy/Spoken": '#94e78b',
+    "Easy Listening": '#b2e78b',
+    "Classical": '#cfe78b',
+    "Avant-Garde": '#e7e28b',
+    "Stage & Screen": '#e7c58b',
+    "Children's": '#e7a88b'
+};
 
 function draw_bra(start, end, portion_csv, select_genre, color_list) {
     now_genre_list = genre_list.concat();
@@ -103,9 +124,12 @@ function draw_bra(start, end, portion_csv, select_genre, color_list) {
 }
 
 function draw_artist_bar(start, end, port_json, input_genre) {
+    // 由于规划设计中音乐家之间的影响作用不大，因此此处更改为被其他genre影响的比例
     let need_genre_dict = port_json[input_genre];
     let now_artists_list = [];
     let now_artists_dict = {}; // 统计最终输入option数据
+    let now_influence_genres = {}; // 修改后最终输入option的数据
+    var now_port_colors = [];
     port_option = {
         color: now_port_colors,
         tooltip: {
@@ -141,26 +165,43 @@ function draw_artist_bar(start, end, port_json, input_genre) {
         series: []
     };
 
-    for (var i = start; i <= end; i++) {
-        year_str = i.toString();
-        if (need_genre_dict.hasOwnProperty(year_str)) {
-            let artist_year_dict = need_genre_dict[year_str]; // 中间变量，记录该genre某一年的情况
-            for (var artist in artist_year_dict) {
-                // console.log(artist_year_dict[artist]);
-                if (now_artists_dict.hasOwnProperty(artist)) {
-                    now_artists_dict[artist] += artist_year_dict[artist];
-                } else {
-                    now_artists_dict[artist] = artist_year_dict[artist];
+    // for (var i = start; i <= end; i++) {
+    //     year_str = i.toString();
+    //     if (need_genre_dict.hasOwnProperty(year_str)) {
+    //         let artist_year_dict = need_genre_dict[year_str]; // 中间变量，记录该genre某一年的情况
+    //         for (var artist in artist_year_dict) {
+    //             // console.log(artist_year_dict[artist]);
+    //             if (now_artists_dict.hasOwnProperty(artist)) {
+    //                 now_artists_dict[artist] += artist_year_dict[artist];
+    //             } else {
+    //                 now_artists_dict[artist] = artist_year_dict[artist];
+    //             }
+    //         }
+    //     }
+    // }
+
+    for (var year in portion_influence_data) {
+        if (parseInt(year) >= start && parseInt(year) <= end) {
+            for (var genre in portion_influence_data[year]) {
+                now_genre_influ_list = portion_influence_data[year][genre];
+                if (now_genre_influ_list.hasOwnProperty(input_genre) && genre != input_genre) {
+                    if (now_influence_genres.hasOwnProperty(genre)) {
+                        now_influence_genres[genre] += now_genre_influ_list[input_genre];
+                    } else {
+                        now_influence_genres[genre] = now_genre_influ_list[input_genre];
+                    }
                 }
             }
         }
     }
-    var now_artists_num = 0;
+    // console.log(now_influence_genres);
+
+    // var now_artists_num = 0;
     var total_length = 0;
-    for (var artist in now_artists_dict) {
-        input_num = Math.pow(now_artists_dict[artist], scale_fact);
+    for (var genre in now_influence_genres) {
+        input_num = Math.pow(now_influence_genres[genre], scale_fact);
         new_part = {
-            name: artist,
+            name: genre,
             type: 'bar',
             stack: 'total',
             label: {
@@ -180,15 +221,20 @@ function draw_artist_bar(start, end, port_json, input_genre) {
         };
         total_length += input_num;
         port_option["series"].push(new_part);
-        now_artists_num += 1;
-        if (now_artists_num >= show_artist_num) {
-            break;
-        }
+        // now_artists_num += 1;
+        // if (now_artists_num >= show_artist_num) {
+        //     break;
+        // }
     }
     port_option["series"].sort(function(first, second) {
         return (second["data"][0] - first["data"][0]);
     });
+    for (var i = 0; i < port_option["series"].length; i++) {
+        now_port_colors.push(bar_color_dict[port_option["series"][i]["name"]]);
+    }
     port_option.yAxis.max = total_length;
+    port_option.color = now_port_colors;
+    console.log(port_option);
     return port_option;
 }
 
@@ -200,7 +246,7 @@ async function init_bar() {
     artist_json_bar = window.__loaded_json;
     basic_select_genre = Array(19).fill(true);
     // basic_select_genre[0] = false
-    port_opt = draw_bra(1921, 2020, portion_csv, basic_select_genre, genre_colors);
+    port_opt = draw_bra(app.time_range[0], app.time_range[1], portion_csv, basic_select_genre, genre_colors);
     if (port_opt && typeof port_opt === 'object') {
         port_chart.setOption(port_opt);
     }

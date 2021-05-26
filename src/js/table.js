@@ -80,6 +80,8 @@ var table_option = {
 
 // 表格数据初始化
 async function init_table(){
+    table_start = app.time_range[0];
+    table_end = app.time_range[1];
     await readJson("./assets/data/attr_by_year_for_table.json")
     full_table_data = window.__loaded_json;
     await readJson("./assets/data/attr_by_year_with_genre.json")
@@ -120,9 +122,14 @@ async function init_table(){
 }
 
 // 每次更改时间区间或者流派信息时候更改表格数据
+<<<<<<< HEAD
 function update_table(){
     // 更新选择的流派
     table_genres = app.using_genres;
+=======
+function update_table(start, end, selected_genres){
+    // TODO: 修改为从 app 读取内容，使用局部变量储存中间信息
+>>>>>>> bf98d91907665ae9791023bbafb02a77b6e1f0d5
     if (app.inspecting_genre){
         var idx = genres.findIndex(value=>value == app.inspecting_genre)
         for (i = 0; i < table_genres.length; i++){
