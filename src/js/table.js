@@ -120,20 +120,19 @@ async function init_table(){
 }
 
 // 每次更改时间区间或者流派信息时候更改表格数据
-function update_table(start, end, selected_genres){
-    if (app.inspecting_genre){
-        console.log(selected_genres)
-        var idx = genres.findIndex(value=>value == app.inspecting_genre)
-        for (i = 0; i < selected_genres.length; i++){
-            selected_genres[i] = false;
-        }
-        selected_genres[idx] = true;
-    }
+function update_table(){
     // 更新选择的流派
-    table_genres = selected_genres;
+    table_genres = app.using_genres;
+    if (app.inspecting_genre){
+        var idx = genres.findIndex(value=>value == app.inspecting_genre)
+        for (i = 0; i < table_genres.length; i++){
+            table_genres[i] = false;
+        }
+        table_genres[idx] = true;
+    }
     // 更新时间区间
-    table_start = start;
-    table_end = end;
+    table_start = app.time_range[0];
+    table_end = app.time_range[1];
     // 对数值进行清零
     for (i = 0; i < attrs.length; i++){
         for (j = 0; j < table_yrange; j++){
@@ -164,7 +163,7 @@ function update_table(start, end, selected_genres){
         var table_year = new Array(year_range);
         table_range_cnt = 0;
         for (i = 0; i < year_range; i++){
-            year_i = start+i;
+            year_i = table_start+i;
             table_year[i] = year_i+"";
             var year_cnt = 0
             if (full_table_data_genre[year_i+""]){
@@ -182,7 +181,6 @@ function update_table(start, end, selected_genres){
         }
         table_option.xAxis.data = table_year;
     }
-    
     // 更新数据域
     var series = [{
         type: 'heatmap',

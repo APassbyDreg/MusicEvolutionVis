@@ -32,7 +32,7 @@ let appconf = {
                 使用流派更改时的函数
             `
             update_graph(this.time_range[0], this.time_range[1], this.using_genres);
-            update_table(this.time_range[0], this.time_range[1], this.using_genres);
+            update_table();
             update_bar(this.time_range[0], this.time_range[1], this.using_genres, this.genre_colors);
         },
         range_change: function() {
@@ -44,7 +44,7 @@ let appconf = {
             start = Math.max(1921, Math.min(2020, start));
             end = Math.max(1921, Math.min(2020, end));
             this.time_range = (start > end) ? [end, start] : [start, end];
-            update_table(start, end, this.using_genres);
+            update_table();
             update_graph(start, end, this.using_genres);
             update_bar(start, end, this.using_genres, this.genre_colors);
         },
@@ -61,7 +61,6 @@ let appconf = {
             `
                 这个函数用来全局派发更改选定的流派的事件（包括从图中点击、点击弹幕、从流派中返回）
             `
-
             inspecting_genre = name;    // 把这个值先改了以便别的部分调取
             inspecting_musician = ""    // 可能需要清除这个值
 
