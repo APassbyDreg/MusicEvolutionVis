@@ -34,7 +34,7 @@ let appconf = {
                 图中显示表格模式更改时的函数
             `
             this.table_mode = mode;
-            // update_table();
+            update_table();
             $("#table-mode-switch button").removeClass("active");
             $("#table-mode-switch button")[mode].classList.add("active");
             if (mode == 1) {
