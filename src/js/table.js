@@ -35,7 +35,7 @@ var table_option = {
     },
     grid: {
         height: '85%',
-        width: '90%',
+        width: '85%',
         top: '11%',
         left: '5%',
     },
@@ -70,9 +70,13 @@ var table_option = {
         },
         splitArea: {
             show: true
+        },
+        axisTick: {
+            show: false
         }
     },
     visualMap: {
+        show: false,
         min: 0,
         max: 98340,
         calculable: true,
@@ -108,7 +112,7 @@ async function init_table(){
         }else{
             app.inspecting_attr = params.data[0];
         }
-        change_table_attr(params.data[0]);
+        change_table_attr();
     })
 }
 
