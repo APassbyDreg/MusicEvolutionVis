@@ -253,17 +253,17 @@ async function init_bar() {
 
 }
 
-function update_bar(start, end, select_genre, color_list) {
+function update_bar() {
     // console.log(select_genre);
-    port_opt = draw_bra(start, end, portion_csv, select_genre, color_list);
+    port_opt = draw_bra(app.time_range[0], app.time_range[1], portion_csv, app.using_genres, app.genre_colors);
     // console.log(port_opt);
     if (port_opt && typeof port_opt === 'object') {
         port_chart.setOption(port_opt, true);
     }
 }
 
-function update_artist_bar(start, end, select_genre) {
-    opt = draw_artist_bar(start, end, artist_json_bar, select_genre);
+function update_artist_bar() {
+    opt = draw_artist_bar(app.time_range[0], app.time_range[1], artist_json_bar, app.inspecting_genre);
     if (opt && typeof opt === 'object') {
         port_chart.setOption(opt, true);
     }

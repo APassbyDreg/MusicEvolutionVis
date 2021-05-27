@@ -11,18 +11,18 @@ let appconf = {
             genre_colors: ['#e78b8b', '#e78ba8', '#e78bc5', '#e78be2', '#cf8be7', '#b28be7', '#948be7', '#8b9ee7', '#8bbbe7', '#8bd8e7', '#8be7d8', '#8be7bb', '#8be79e', '#94e78b', '#b2e78b', '#cfe78b', '#e7e28b', '#e7c58b', '#e7a88b'],
             musicians: [],
             // APP 状态值
-            time_range: [1921, 2020],           // 时间区域
-            graph_mode: 0,                      // 边状态
-            table_mode: 0,                      // 表状态， '0'是Attr图，'1'是Timeline变化图
+            time_range: [1921, 2020], // 时间区域
+            graph_mode: 0, // 边状态
+            table_mode: 0, // 表状态， '0'是Attr图，'1'是Timeline变化图
             using_genres: Array(19).fill(true), // 被使用的流派
-            inspecting_genre: "",               // 图显示细节所属的流派
-            inspecting_musician: "",            // 图的中心音乐家
-            inspecting_attr: 0,                 // 表展示的属性视图的属性
-            title: "TITLE"                      // 表题
+            inspecting_genre: "", // 图显示细节所属的流派
+            inspecting_musician: "", // 图的中心音乐家
+            inspecting_attr: 0, // 表展示的属性视图的属性
+            title: "TITLE" // 表题
         }
     },
     methods: {
-        reset: function () {
+        reset: function() {
             this.inspecting_attr = 0;
             this.inspecting_musician = "";
             this.inspecting_genre = "";
@@ -58,7 +58,7 @@ let appconf = {
             `
             update_graph();
             update_table();
-            update_bar(this.time_range[0], this.time_range[1], this.using_genres, this.genre_colors);
+            update_bar();
         },
         attr_change: function(idx) {
             `
@@ -79,40 +79,40 @@ let appconf = {
             this.time_range = (start > end) ? [end, start] : [start, end];
             update_table();
             update_graph();
-            update_bar(start, end, this.using_genres, this.genre_colors);
+            update_bar();
         },
-        focus_musician: function (name) {
+        focus_musician: function(name) {
             `
                 当弹幕被点击时触发的事件
             `
-            this.inspecting_musician = name;    // 这个值标识了选中的音乐家名字
+            this.inspecting_musician = name; // 这个值标识了选中的音乐家名字
             console.log(name);
-            let genre = name2genre_map[name];         // 需要设置该音乐家所属的流派
+            let genre = name2genre_map[name]; // 需要设置该音乐家所属的流派
             console.log(genre);
             this.select_genre(genre);
         },
-        select_genre: function (name="") {
+        select_genre: function(name = "") {
             `
                 这个函数用来全局派发更改选定的流派的事件（包括从图中点击、点击弹幕、从流派中返回）
             `
-            this.inspecting_genre = name;    // 把这个值先改了以便别的部分调取
-            
+            this.inspecting_genre = name; // 把这个值先改了以便别的部分调取
+
             if (this.inspecting_genre == "") {
                 // 从流派返回
                 this.inspecting_musician = ""
                 set_out_graph_opt();
                 init_bar();
-                update_table();   
+                update_table();
             } else {
                 // 图中点击
                 set_in_graph_opt();
-                update_artist_bar(this.time_range[0], this.time_range[1], this.inspecting_genre);
+                update_artist_bar();
                 update_table();
             }
         }
     },
     computed: {
-        
+
     },
     mounted: function() {
         // initialize options
