@@ -87,7 +87,8 @@ let appconf = {
             `
             this.inspecting_musician = name;    // 这个值标识了选中的音乐家名字
             console.log(name);
-            let genre = "xxxx";         // 需要设置该音乐家所属的流派
+            let genre = name2genre_map[name];         // 需要设置该音乐家所属的流派
+            console.log(genre);
             this.select_genre(genre);
         },
         select_genre: function (name="") {
@@ -95,17 +96,16 @@ let appconf = {
                 这个函数用来全局派发更改选定的流派的事件（包括从图中点击、点击弹幕、从流派中返回）
             `
             this.inspecting_genre = name;    // 把这个值先改了以便别的部分调取
-            this.inspecting_musician = ""    // 可能需要清除这个值
             
             if (this.inspecting_genre == "") {
                 // 从流派返回
-                this.using_genres = Array(19).fill(true)
-                set_out_graph_opt(this.time_range[0], this.time_range[1], this.using_genres);
+                this.inspecting_musician = ""
+                set_out_graph_opt();
                 init_bar();
                 update_table();   
             } else {
                 // 图中点击
-                set_in_graph_opt(this.time_range[0], this.time_range[1], this.inspecting_genre);
+                set_in_graph_opt();
                 update_artist_bar(this.time_range[0], this.time_range[1], this.inspecting_genre);
                 update_table();
             }
