@@ -104,12 +104,13 @@ body {
 
 #controls {
     position: absolute;
-    right: 6vh;
-    bottom: 3vh;
+    right: 4vh;
+    bottom: 2vh;
     width: 15vw;
     padding: 10px;
     border-radius: 10px;
     background-color: rgba(0, 0, 0, 0.2);
+    transform: scale(0.9);
 }
 
 #controls-bg {

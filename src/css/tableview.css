@@ -8,11 +8,12 @@
     pointer-events: fill;
     position: inherit;
     top: 85%;
-    right: 10%;
+    right: 5%;
     width: 30%;
     padding: 18px 15px 10px 15px;
     border-radius: 15px;
     background-color: rgb(240, 245, 255);
+    transform: scale(0.9);
 }
 
 #table-slider-animate {
