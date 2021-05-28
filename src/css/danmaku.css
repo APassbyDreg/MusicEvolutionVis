@@ -17,6 +17,7 @@
 }
 
 .danmaku-cell {
+    pointer-events: all;
     cursor: pointer;
     margin-right: 16px;
     font-weight: bold;

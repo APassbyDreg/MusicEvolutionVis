@@ -37,137 +37,136 @@
                 </span>
             </div>
         </div>
+        
+        <div id="bg-notes"></div>
 
-        <div id="bg">
-            <svg id="guitar-img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 211.2124 284.8559">
-                <path d="M395.4023,435.97c-16.519.3828-58.0849,3.4814-69.1005,32.125-11.0166,28.6406,15.4228,49.874,15.4228,68.0518,0,18.1757-47.3706,43.71-47.3706,100.4453,0,56.7334,49.0425,84.1494,106.8062,84.1494,59.4677,0,104.4062-30.3984,104.4062-88.6817,0-55.2978-47.3711-69.9531-47.3711-92.5371,0-22.582,15.9746-38.5566,15.9746-51.2255s-.5517-18.7276-7.7119-18.7276-10.6758,16.12-27.9209,16.12-25.6764-24.3865-26.0586-39.8056C412.2073,434.9428,402.582,435.8037,395.4023,435.97Z"
-                      transform="translate(-294.354 -435.8853)" 
-                      style="fill: #351e08;"
-                      pointer-events="fill"/>
-            </svg>
-            <!-- <img id="guitar-img" src="./assets/guitar/guitar_07.svg" alt=""> -->
-            <div id="bg-notes"></div>
-        </div>
-
-
-        <div id="table-view">
-            <div id="table-title">
-                {{title}}
+        <div id="content">
+            <div id="bg">
+                <svg id="guitar-img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 211.2124 284.8559">
+                    <path
+                        d="M395.4023,435.97c-16.519.3828-58.0849,3.4814-69.1005,32.125-11.0166,28.6406,15.4228,49.874,15.4228,68.0518,0,18.1757-47.3706,43.71-47.3706,100.4453,0,56.7334,49.0425,84.1494,106.8062,84.1494,59.4677,0,104.4062-30.3984,104.4062-88.6817,0-55.2978-47.3711-69.9531-47.3711-92.5371,0-22.582,15.9746-38.5566,15.9746-51.2255s-.5517-18.7276-7.7119-18.7276-10.6758,16.12-27.9209,16.12-25.6764-24.3865-26.0586-39.8056C412.2073,434.9428,402.582,435.8037,395.4023,435.97Z"
+                        transform="translate(-294.354 -435.8853)" style="fill: #351e08;" pointer-events="fill" />
+                </svg>
+                <!-- <img id="guitar-img" src="./assets/guitar/guitar_07.svg" alt=""> -->
             </div>
-            <div id="table-main">
-                <!-- 这里就是左边的表格了 -->
-            </div>
-            <div id="table-slider" class="container">
-                <!-- <div id="table-slider-bg"></div> -->
-                <div id="table-slider-value" class="row">
-                    <div class="col-5 p-0">
-                        <div class="form-outline range-input w-100">
-                            <input id="start-year" class="form-control active text-center" v-model="time_range[0]" @change="range_change" />
-                            <label class="form-label" for="start-year">Start</label>
+            <div id="table-view">
+                <div id="table-title">
+                    {{title}}
+                </div>
+                <div id="table-main">
+                    <!-- 这里就是左边的表格了 -->
+                </div>
+                <div id="table-slider" class="container">
+                    <!-- <div id="table-slider-bg"></div> -->
+                    <div id="table-slider-value" class="row">
+                        <div class="col-5 p-0">
+                            <div class="form-outline range-input w-100">
+                                <input id="start-year" class="form-control active text-center" v-model="time_range[0]"
+                                    @change="range_change" />
+                                <label class="form-label" for="start-year">Start</label>
+                            </div>
+                        </div>
+                        <div class="col-2 text-center">
+                            ~
+                        </div>
+                        <div class="col-5 p-0">
+                            <div class="form-outline range-input w-100">
+                                <input id="end-year" class="form-control active text-center" v-model="time_range[1]"
+                                    @change="range_change" />
+                                <label class="form-label" for="end-year">End</label>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-2 text-center">
-                        ~
-                    </div>
-                    <div class="col-5 p-0">
-                        <div class="form-outline range-input w-100">
-                            <input id="end-year" class="form-control active text-center" v-model="time_range[1]" @change="range_change" />
-                            <label class="form-label" for="end-year">End</label>
+                    <div id="table-slider-rail" class="row">
+                        <div class="col-12">
+                            <v-slider v-model="time_range" :min="1921" :max="2020" :step="1" @change="range_change" />
                         </div>
                     </div>
-                </div>
-                <div id="table-slider-rail" class="row">
-                    <div class="col-12">
-                        <v-slider v-model="time_range" :min="1921" :max="2020" :step="1" @change="range_change" />
+                    <div id="table-slider-animate" class="btn-group w-100">
+                        <button id="animate-btn" class="w-100 btn btn-sm btn-primary" @click="toggle_animation">
+                            {{animating ? 'Stop' : 'Animate'}}
+                        </button>
+                        <button id="reset-btn" class="w-100 btn btn-sm btn-primary" @click="reset">Reset</button>
                     </div>
                 </div>
-                <div id="table-slider-animate" class="btn-group w-100">
-                    <button id="animate-btn" class="w-100 btn btn-sm btn-primary" onclick="start_animation(time_animation, 100)">Animate</button>
-                    <button id="reset-btn" class="w-100 btn btn-sm btn-primary" @click="reset">Reset</button>
+                <div id="table-decoration">
                 </div>
             </div>
-            <div id="table-decoration">
-            </div>
-        </div>
-
-        <div id="graph-view">
-            <div id="graph-main">
-
-            </div>
-            <div id="graph-bar">
-                <!-- 此处用于显示目标年份内各流派音乐所占比例，详见'show_portion.js' -->
-                <div id="graph-bar-main">
-
+            
+            <div id="graph-view">
+                <div id="graph-main">
+            
+                </div>
+                <div id="graph-bar">
+                    <!-- 此处用于显示目标年份内各流派音乐所占比例，详见'show_portion.js' -->
+                    <div id="graph-bar-main">
+            
+                    </div>
+                </div>
+                <div id="graph-back" v-show="inspecting_genre.length > 0" onclick="app.select_genre()">
+                    <img src="./assets/icons/back-white.svg" id="graph-back-icon">
                 </div>
             </div>
-            <div id="graph-back" v-show="inspecting_genre.length > 0" onclick="app.select_genre()">
-                <img src="./assets/icons/back-white.svg" id="graph-back-icon">
-            </div>
-        </div>
-
-        <div id="controls">
-            <div id="controls-bg"></div>
-            <div id="controls-graph-mode" class="control-group">
-                <div class="control-label fw-bold">Edge Type:</div>
-                <div id="graph-mode-switch" class="btn-group control-btn" role="group">
-                    <button v-for="(name, i) in graph_mode_list" class="btn btn-sm btn-primary" @click="change_graph_mode(i)">
-                        {{name}}
-                    </button>
-                </div>
-            </div>
-            <div style="height: 0.4rem;"></div>
-            <div id="controls-table-mode">
-                <div class="control-label fw-bold">Table Display:</div>
-                <div id="table-mode-switch" class="btn-group control-btn" role="group">
-                    <button class="btn btn-sm btn-primary" @click="change_table_mode(0)">
-                        Attributes
-                    </button>
-                    <div class="btn-group w-50">
-                        <button type="button" class="btn btn-sm btn-primary" @click="change_table_mode(1)">
-                            Time
+            
+            <div id="controls">
+                <div id="controls-bg"></div>
+                <div id="controls-graph-mode" class="control-group">
+                    <div class="control-label fw-bold">Edge Type:</div>
+                    <div id="graph-mode-switch" class="btn-group control-btn" role="group">
+                        <button v-for="(name, i) in graph_mode_list" class="btn btn-sm btn-primary" @click="change_graph_mode(i)">
+                            {{name}}
                         </button>
-                        <button class="btn btn-sm btn-primary dropdown-toggle dropdown-toggle-split" 
-                                type="button" 
-                                data-bs-toggle="dropdown"
-                                aria-expanded="false" 
-                                id="attr-dropdown">
-                            <span class="visually-hidden">toggle-dropdown</span>
+                    </div>
+                </div>
+                <div style="height: 0.4rem;"></div>
+                <div id="controls-table-mode">
+                    <div class="control-label fw-bold">Table Display:</div>
+                    <div id="table-mode-switch" class="btn-group control-btn" role="group">
+                        <button class="btn btn-sm btn-primary" @click="change_table_mode(0)">
+                            Attributes
                         </button>
-                        <div class="dropdown-menu w-100" aria-labelledby="attr-dropdown">
-                            <div id="genres-select" class="container">
-                                <div v-for="i in attrs.length" class="row">
-                                    <div class="form-check-inline">
-                                        <div class="float-start genre-check-label">{{attrs[i-1]}}</div>
-                                        <input class="float-end form-check-input" 
-                                               type="radio" 
-                                               :checked="inspecting_attr == i-1"
-                                               @click="attr_change(i)" />
+                        <div class="btn-group w-50">
+                            <button type="button" class="btn btn-sm btn-primary" @click="change_table_mode(1)">
+                                Time
+                            </button>
+                            <button class="btn btn-sm btn-primary dropdown-toggle dropdown-toggle-split" type="button"
+                                data-bs-toggle="dropdown" aria-expanded="false" id="attr-dropdown">
+                                <span class="visually-hidden">toggle-dropdown</span>
+                            </button>
+                            <div class="dropdown-menu w-100" aria-labelledby="attr-dropdown">
+                                <div id="genres-select" class="container">
+                                    <div v-for="i in attrs.length" class="row">
+                                        <div class="form-check-inline">
+                                            <div class="float-start genre-check-label">{{attrs[i-1]}}</div>
+                                            <input class="float-end form-check-input" type="radio" :checked="inspecting_attr == i-1"
+                                                @click="attr_change(i)" />
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div style="height: 0.4rem;"></div>
-            <div id="controls-genre-chosen" class="control-group">
-                <div class="control-label fw-bold">Genres:</div>
-                <div class="dropdown">
-                    <button class="btn btn-sm btn-primary dropdown-toggle w-100" 
-                            type="button"  
-                            data-bs-toggle="dropdown" 
+                <div style="height: 0.4rem;"></div>
+                <div id="controls-genre-chosen" class="control-group">
+                    <div class="control-label fw-bold">Genres:</div>
+                    <div class="dropdown">
+                        <button class="btn btn-sm btn-primary dropdown-toggle w-100" type="button" data-bs-toggle="dropdown"
                             aria-expanded="false" id="genre-dropdown">
-                        Select Genres
-                    </button>
-                    <div class="dropdown-menu w-100" aria-labelledby="genre-dropdown">
-                        <div id="genres-select" class="container">
-                            <div v-for="i in genres.length" class="row">
-                                <div class="form-check-inline">
-                                    <div class="float-start badge rounded-pill genre-color-badge" :style="'background-color:' + genre_colors[i-1]">
-                                        &nbsp;
+                            Select Genres
+                        </button>
+                        <div class="dropdown-menu w-100" aria-labelledby="genre-dropdown">
+                            <div id="genres-select" class="container">
+                                <div v-for="i in genres.length" class="row">
+                                    <div class="form-check-inline">
+                                        <div class="float-start badge rounded-pill genre-color-badge"
+                                            :style="'background-color:' + genre_colors[i-1]">
+                                            &nbsp;
+                                        </div>
+                                        <div class="float-start genre-check-label">{{genres[i-1]}}</div>
+                                        <input class="float-end form-check-input" type="checkbox" v-model="using_genres[i-1]"
+                                            @change="grene_change()" />
                                     </div>
-                                    <div class="float-start genre-check-label">{{genres[i-1]}}</div>
-                                    <input class="float-end form-check-input" type="checkbox" v-model="using_genres[i-1]" @change="grene_change()" />
                                 </div>
                             </div>
                         </div>

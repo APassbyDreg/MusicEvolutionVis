@@ -15,7 +15,7 @@ function set_in_graph_opt() {
     var node_dict = {};
     var artist_id_dict = {};
     var artist_id = 0;
-    var max_num = 30;
+    var max_num = 20;
     var cate_set = new Set();
 
     for (year in artist_influence_data) {
@@ -106,10 +106,10 @@ function set_in_graph_opt() {
             },
             lineStyle: {
                 color: "source",
-                curveness: 0.3
+                curveness: 0.4
             },
             force: {
-                repulsion: force * 100
+                repulsion: force * 200
             },
             emphasis: {
                 focus: 'adjacency',
@@ -398,7 +398,7 @@ function set_sunburst_graph_opt() {
             data: node_data,
             links:link_data,
             force: {
-                repulsion: 400
+                repulsion: 1000
             },
             label: {
                 show: true,

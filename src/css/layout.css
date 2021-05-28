@@ -25,11 +25,11 @@ body {
     position: relative;
     left: 0;
     top: 0;
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
     background-image: url("../../assets/music-notes.png");
     background-size: 10vh;
-    transform: rotate(345deg) scale(2);
+    transform: translateY(-100vh) rotate(345deg) scale(2);
     opacity: 0.05;
     z-index: -1000;
 }
@@ -40,6 +40,17 @@ body {
     height: 100vh;
     transform: translateX(-25vh) scale(1.8) rotate(270deg);
     z-index: -100;
+}
+
+#content {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    /* box-shadow: 0 0 0 10px black; */
+    pointer-events: none;
+    filter: drop-shadow(0 0 12px rgba(0,0,0,0.6));
 }
 
 #table-view {
@@ -58,17 +69,7 @@ body {
     height: 50%;
     width: 100%;
     border-radius: 0 4vh 4vh 0;
-    background-color: rgb(255, 248, 209);
-}
-
-#table-decoration {
-    position: inherit;
-    top: 20%;
-    left: 91.5%;
-    height: 60%;
-    width: 3%;
-    border-radius: 1vh;
-    background-color: aquamarine;
+    background-color: rgb(255, 247, 230);
 }
 
 #graph-view {
@@ -103,6 +104,7 @@ body {
 }
 
 #controls {
+    pointer-events: all;
     position: absolute;
     right: 4vh;
     bottom: 2vh;

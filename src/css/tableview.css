@@ -47,3 +47,13 @@
     font-size: 4vh;
     text-align: right;
 }
+
+#table-decoration {
+    position: inherit;
+    top: 20%;
+    left: 91.5%;
+    height: 60%;
+    width: 3%;
+    border-radius: 1vh;
+    background-color: rgb(243, 172, 18);
+}

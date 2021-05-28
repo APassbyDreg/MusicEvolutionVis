@@ -18,7 +18,8 @@ let appconf = {
             inspecting_genre: "", // 图显示细节所属的流派
             inspecting_musician: "", // 图的中心音乐家
             inspecting_attr: 0, // 表展示的属性视图的属性
-            title: "TITLE" // 表题
+            title: "TITLE", // 表题
+            animating: false, // 是否在动画
         }
     },
     methods: {
@@ -112,7 +113,15 @@ let appconf = {
                 update_artist_bar();
                 update_table();
             }
-        }
+        },
+        toggle_animation: function () {
+            if (this.animating) {
+                stop_animation();
+            }
+            else {
+                start_animation(time_animation, 100);
+            }
+        },
     },
     computed: {
 
