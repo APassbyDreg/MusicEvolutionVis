@@ -96,7 +96,6 @@ let appconf = {
                 这个函数用来全局派发更改选定的流派的事件（包括从图中点击、点击弹幕、从流派中返回）
             `
             this.inspecting_genre = name; // 把这个值先改了以便别的部分调取
-
             if (this.inspecting_genre == "") {
                 // 从流派返回
                 this.inspecting_musician = ""
@@ -105,7 +104,11 @@ let appconf = {
                 update_table();
             } else {
                 // 图中点击
-                set_in_graph_opt();
+                if (this.inspecting_musician == "") {
+                    set_in_graph_opt();  
+                } else {
+                    set_sunburst_graph_opt();   
+                }
                 update_artist_bar();
                 update_table();
             }

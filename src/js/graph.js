@@ -15,123 +15,111 @@ function set_in_graph_opt() {
     var node_dict = {};
     var artist_id_dict = {};
     var artist_id = 0;
-    var max_num = 40;
+    var max_num = 30;
     var cate_set = new Set();
 
-    if (inspecting_musician == "") {
-        for (year in artist_influence_data) {
-            if (year < start || year > end) continue;
-            influence_map = artist_influence_data[year][genre];
-            for (artist in influence_map) {
-                cate_set.add({ name: artist });
-                if (artist_id_dict[artist] == undefined) {
-                    artist_id_dict[artist] = artist_id.toString();
-                    artist_id += 1
-                }
-                if (node_dict[artist] == undefined) {
-                    var artist_map = {
-                        id: artist_id_dict[artist],
-                        name: artist,
-                        value: influence_map[artist].length,
-                        start: start,
-                        end: end,
-                        category: artist,
-                        symbolSize: 10,
-                    }
-                    node_dict[artist] = artist_map;
-                } else {
-                    node_dict[artist].value += influence_map[artist].length;
-                }
-    
-                influence_map[artist].forEach(element => {
-                    cate_set.add({ name: artist });
-                    if (artist_id_dict[element] == undefined) {
-                        artist_id_dict[element] = artist_id.toString();
-                        artist_id += 1;
-                    }
-                    // link_set.add({source: artist_id_dict[artist], target: artist_id_dict[element]});
-                });
+    for (year in artist_influence_data) {
+        if (year < start || year > end) continue;
+        influence_map = artist_influence_data[year][genre];
+        for (artist in influence_map) {
+            cate_set.add({ name: artist });
+            if (artist_id_dict[artist] == undefined) {
+                artist_id_dict[artist] = artist_id.toString();
+                artist_id += 1
             }
-        }
-    
-        var node_data_tmp = new Array();
-        var max_value = 0
-        for (key in node_dict) {
-            var n = node_dict[key];
-            if (n.value > max_value) max_value = n.value;
-            var size = n.value;
-            if (size < 15) size = 15;
-            if (size > 60) size = 60;
-            n.symbolSize = size;
-            node_data_tmp.push(n);
-        }
-        node_data_tmp.sort(function(a, b) {
-            return b.value - a.value;
-        });
-        var node_data = node_data_tmp.splice(0, max_num);
-        var categ_data = Array.from(cate_set)
-        var force = (max_value / 10 > 10) ? 10 : max_value / 10;
-        // console.log(node_data);
-    
-        var link_set = new Set();
-        for (year in artist_influence_data) {
-            influence_map = artist_influence_data[year][genre];
-            if (year < start || year > end) continue;
-            for (artist in influence_map) {
-                if (node_data.find(function(node) { return (artist == node.name) })) {
-                    influence_map[artist].forEach(function(element) {
-                        if (node_data.find(function(node) { return (element == node.name) })) {
-                            link_set.add({ source: artist_id_dict[artist], target: artist_id_dict[element] });
-                        }
-                    })
+            if (node_dict[artist] == undefined) {
+                var artist_map = {
+                    id: artist_id_dict[artist],
+                    name: artist,
+                    value: influence_map[artist].length,
+                    start: start,
+                    end: end,
+                    category: artist,
+                    symbolSize: 10,
                 }
+                node_dict[artist] = artist_map;
+            } else {
+                node_dict[artist].value += influence_map[artist].length;
             }
-        }
-        var link_data = Array.from(link_set);
-        // console.log(node_data);
-        // console.log(link_data);
-    
-        var graph = { nodes: node_data, links: link_data, categories: categ_data };
-        graph_option = {
-            tooltip: {},
-            series: [{
-                type: 'graph',
-                layout: 'force',
-                data: graph.nodes,
-                links: graph.links,
-                categories: graph.categories,
-                label: {
-                    show: true,
-                    position: 'right',
-                    formatter: '{b}'
-                },
-                lineStyle: {
-                    color: "source",
-                    curveness: 0.3
-                },
-                force: {
-                    repulsion: force * 100
-                },
-                emphasis: {
-                    focus: 'adjacency',
-                    blurScope: 'coordinateSystem'
-                },
-                draggable: true,
-                edgeSymbol: ['none', 'arrow'], // 边的样式
-                edgeSymbolSize: 10,
-            }]
-        };
-    } else {
-        var artist_color_map = {};
-        var color_set = new Set();
-        center_color = getColor();
-        artist_color_map[inspecting_musician] = center_color;
-        color_set.add(center_color);
 
-        for (year in artist_influence_data) {
-            if (year < start || year > end) continue;
+            influence_map[artist].forEach(element => {
+                cate_set.add({ name: artist });
+                if (artist_id_dict[element] == undefined) {
+                    artist_id_dict[element] = artist_id.toString();
+                    artist_id += 1;
+                }
+                // link_set.add({source: artist_id_dict[artist], target: artist_id_dict[element]});
+            });
         }
     }
+
+    var node_data_tmp = new Array();
+    var max_value = 0
+    for (key in node_dict) {
+        var n = node_dict[key];
+        if (n.value > max_value) max_value = n.value;
+        var size = n.value;
+        if (size < 15) size = 15;
+        if (size > 60) size = 60;
+        n.symbolSize = size;
+        node_data_tmp.push(n);
+    }
+    node_data_tmp.sort(function(a, b) {
+        return b.value - a.value;
+    });
+    var node_data = node_data_tmp.splice(0, max_num);
+    var categ_data = Array.from(cate_set)
+    var force = (max_value / 10 > 10) ? 10 : max_value / 10;
+    // console.log(node_data);
+
+    var link_set = new Set();
+    for (year in artist_influence_data) {
+        influence_map = artist_influence_data[year][genre];
+        if (year < start || year > end) continue;
+        for (artist in influence_map) {
+            if (node_data.find(function(node) { return (artist == node.name) })) {
+                influence_map[artist].forEach(function(element) {
+                    if (node_data.find(function(node) { return (element == node.name) })) {
+                        link_set.add({ source: artist_id_dict[artist], target: artist_id_dict[element] });
+                    }
+                })
+            }
+        }
+    }
+    var link_data = Array.from(link_set);
+    // console.log(node_data);
+    // console.log(link_data);
+
+    var graph = { nodes: node_data, links: link_data, categories: categ_data };
+    graph_option = {
+        tooltip: {},
+        series: [{
+            type: 'graph',
+            layout: 'force',
+            data: graph.nodes,
+            links: graph.links,
+            categories: graph.categories,
+            label: {
+                show: true,
+                position: 'right',
+                formatter: '{b}'
+            },
+            lineStyle: {
+                color: "source",
+                curveness: 0.3
+            },
+            force: {
+                repulsion: force * 100
+            },
+            emphasis: {
+                focus: 'adjacency',
+                blurScope: 'coordinateSystem'
+            },
+            draggable: true,
+            edgeSymbol: ['none', 'arrow'], // 边的样式
+            edgeSymbolSize: 10,
+        }]
+    };
     
     graph_chart.clear();
     graph_chart.setOption(graph_option);
@@ -287,15 +275,141 @@ function set_out_graph_opt() {
     })
 };
 
-// 随机选择颜色 for 选中音乐家
-function getColor(){  
-    var colorElements = "0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f";  
-    var colorArray = colorElements.split(",");  
-    var color ="#";  
-    for(var i =0;i<6;i++){  
-        color+=colorArray[Math.floor(Math.random()*16)];  
-    }  
-return color;
+function set_sunburst_graph_opt() {
+    var start = app.time_range[0];
+    start = parseInt(start / 10) * 10;
+    var end = app.time_range[1];
+    end = (parseInt(end / 10) + 1) * 10;
+    var center_musision = app.inspecting_musician;
+    var center_genre = app.inspecting_genre;
+
+    var ori_cate_data = ["Electronic", "R&B;", "Vocal", "Pop/Rock", "Religious", "Blues", "Country", "Jazz", "Latin", "New Age", "Folk", "International", "Reggae", "Comedy/Spoken", "Easy Listening", "Classical", "Avant-Garde", "Stage & Screen", "Children's"];
+    cate_data = ori_cate_data.map(function(cate) {
+        return { name: cate };
+    });
+
+    var node_data = [
+        {
+            id: 0, 
+            name: center_musision, 
+            category: center_genre,
+            symbolSize: 70,
+            itemStyle: {
+                borderWidth: 5,
+                borderColor: "rgba(107, 72, 247, 1)"
+            },
+            symbol: "diamond"
+        }
+    ]
+
+    var center_musision_data = artist_influence_danmaku_data[center_musision];
+    console.log(center_musision_data);
+    
+    var influence_list = []
+    var influence_by_list = []
+    var id_cnt = 1
+
+    for (year in center_musision_data) {
+        if (year < start || year > end) continue;
+        var year_data = center_musision_data[year];
+        
+        for (genre in year_data["influence"]) {
+            year_data["influence"][genre].forEach(function(artist) {
+                influence_list.push({
+                    id: id_cnt,
+                    name: artist, 
+                    category: genre, 
+                    value: artist_influence_value_data[artist]
+                });
+                id_cnt += 1;
+            })
+        }
+
+        for (genre in year_data["influence_by"]) {
+            year_data["influence_by"][genre].forEach(function(artist) {
+                influence_by_list.push({
+                    id: id_cnt,
+                    name: artist, 
+                    category: genre, 
+                    value: artist_influence_value_data[artist]
+                });
+                id_cnt += 1;
+            })
+        }
+    }
+
+    influence_list.sort(function(a, b) {
+        return (b.value - a.value)
+    })
+    influence_list = influence_list.splice(0,10);
+    influence_by_list.sort(function(a, b) {
+        return (b.value - a.value)
+    })
+    influence_by_list = influence_by_list.splice(0,10);
+    console.log(influence_list);
+    console.log(influence_by_list);
+
+    var link_data = [];
+    var sorted_value = [];
+    influence_list.forEach(function(item) {
+        node_data.push(item);
+        link_data.push({
+            source: "0",
+            target: item.id.toString(),
+            lineStyle: {
+                color: "rgba(235, 27, 183, 1)" 
+            }
+        });
+        sorted_value.push({name: item.name, value: item.value});
+    });
+    influence_by_list.forEach(function(item) {
+        node_data.push(item);
+        link_data.push({
+            source: item.id.toString(),
+            target: "0",
+            lineStyle: {
+                color: "rgba(42, 158, 176, 1)" 
+            }
+        });
+        sorted_value.push({name: item.name, value: item.value});
+    })
+
+    sorted_value.sort(function(a, b) {
+        return b.value - a.value;
+    });
+    var symbolSize_list = {};
+    sorted_value.forEach(function(item, idx) {
+        symbolSize_list[item.name] = idx;
+    })
+
+    node_data.forEach(function(item) {
+        if (item.id == 0) return;
+        item['symbolSize'] = 15 + 2 * symbolSize_list[item.name];
+    });
+    console.log(link_data)
+    console.log(node_data)
+
+    var graph_option = {
+        tooltip: {},
+        series: [{
+            type: 'graph',
+            layout: 'force',
+            categories: cate_data,
+            data: node_data,
+            links:link_data,
+            force: {
+                repulsion: 400
+            },
+            label: {
+                show: true,
+                position: "top"
+            },
+            edgeSymbol: ['none', 'arrow']
+        }]    
+    }
+    graph_chart.clear();
+    graph_chart.setOption(graph_option);
+    graph_chart.off("click");
 }
 
 function update_graph() {
@@ -309,6 +423,10 @@ async function init_graph() {
     artist_influence_data = window.__loaded_json;
     await readJson("./assets/data/name2genre.json");
     name2genre_map = window.__loaded_json;
+    await readJson("./assets/data/artist_influence_danmaku_data.json");
+    artist_influence_danmaku_data = window.__loaded_json;
+    await readJson("./assets/data/artist_influence_value_data.json");
+    artist_influence_value_data = window.__loaded_json;
 
     set_out_graph_opt();
 }
