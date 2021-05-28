@@ -1,14 +1,12 @@
 var animation_timer;
 
 function start_animation(animation, speed) {
-    $("#reset-btn").addClass("disabled");
     animation_timer = setInterval(animation, speed)
 }
 
 function stop_animation() {
     app.animating = false;
     clearInterval(animation_timer);
-    $("#reset-btn").removeClass("disabled");
 }
 
 function time_animation() {

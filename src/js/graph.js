@@ -1,6 +1,5 @@
 var graph_dom = document.getElementById("graph-main");
 var graph_chart = echarts.init(graph_dom);
-var graph_mode = "Outgoing";
 
 // 按艺术家划分图
 function set_in_graph_opt() {
@@ -116,7 +115,7 @@ function set_in_graph_opt() {
                 blurScope: 'coordinateSystem'
             },
             draggable: true,
-            edgeSymbol: ['none', 'arrow'], // 边的样式
+            graph_modeSymbol: ['none', 'arrow'], // 边的样式
             edgeSymbolSize: 10,
         }]
     };
@@ -151,7 +150,13 @@ function set_out_graph_opt() {
             symbolSize: 20,
             value: 0,
             start: start,
-            end: end
+            end: end,
+            label: {
+                // color: 'black'
+            },
+            itemStyle: {
+                color: app.genre_colors[i]
+            }
         }
         node_data.push(node)
     }
@@ -238,6 +243,7 @@ function set_out_graph_opt() {
     var graph = { nodes: node_data, links: link_data, categories: cate_data }
     graph_option = {
         tooltip: {},
+        animationDurationUpdate: 0,
         series: [{
             type: 'graph',
             layout: 'circular',
