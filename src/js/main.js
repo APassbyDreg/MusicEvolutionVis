@@ -37,6 +37,7 @@ let appconf = {
                 图中显示边状态更改时的函数
             `
             this.graph_mode = mode;
+            update_graph();
             $("#graph-mode-switch button").removeClass("active");
             $("#graph-mode-switch button")[mode].classList.add("active");
         },
@@ -107,7 +108,7 @@ let appconf = {
                 if (this.inspecting_musician == "") {
                     set_in_graph_opt();  
                 } else {
-                    set_sunburst_graph_opt();   
+                    set_artist_graph_opt();   
                 }
                 update_artist_bar();
                 update_table();

@@ -281,7 +281,7 @@ function set_out_graph_opt() {
     })
 };
 
-function set_sunburst_graph_opt() {
+function set_artist_graph_opt() {
     var start = app.time_range[0];
     start = parseInt(start / 10) * 10;
     var end = app.time_range[1];
@@ -293,27 +293,36 @@ function set_sunburst_graph_opt() {
     cate_data = ori_cate_data.map(function(cate) {
         return { name: cate };
     });
+    var using_cates = new Set();
 
     var node_data = [
         {
             id: 0, 
             name: center_musision, 
             category: center_genre,
+            value: (artist_influence_value_data[center_musision] == undefined) ? 1: artist_influence_value_data[center_musision],
             symbolSize: 70,
             itemStyle: {
                 borderWidth: 5,
                 borderColor: "rgba(107, 72, 247, 1)"
             },
+            label: {
+                fontStyle: "italic",
+                fontWeight: "bolder",
+                fontSize: 20
+            },
             symbol: "diamond"
         }
     ]
+    using_cates.add(center_genre);
 
     var center_musision_data = artist_influence_danmaku_data[center_musision];
     console.log(center_musision_data);
-    
-    var influence_list = []
-    var influence_by_list = []
-    var id_cnt = 1
+    // 第一层节点
+    var influence_list = [];
+    var influence_by_list = [];
+    var id_cnt = 1;
+    var name2id_map = {center_musision: 0};
 
     for (year in center_musision_data) {
         if (year < start || year > end) continue;
@@ -325,8 +334,13 @@ function set_sunburst_graph_opt() {
                     id: id_cnt,
                     name: artist, 
                     category: genre, 
-                    value: artist_influence_value_data[artist]
+                    value: (artist_influence_value_data[artist] == undefined) ? 1: artist_influence_value_data[artist],
+                    label: {
+                        fontWeight: "bold",
+                        fontSize: 14
+                    }
                 });
+                name2id_map[artist] = id_cnt;
                 id_cnt += 1;
             })
         }
@@ -337,8 +351,13 @@ function set_sunburst_graph_opt() {
                     id: id_cnt,
                     name: artist, 
                     category: genre, 
-                    value: artist_influence_value_data[artist]
+                    value: (artist_influence_value_data[artist] == undefined) ? 1: artist_influence_value_data[artist],
+                    label: {
+                        fontWeight: "bold",
+                        fontSize: 14
+                    }
                 });
+                name2id_map[artist] = id_cnt;
                 id_cnt += 1;
             })
         }
@@ -347,11 +366,11 @@ function set_sunburst_graph_opt() {
     influence_list.sort(function(a, b) {
         return (b.value - a.value)
     })
-    influence_list = influence_list.splice(0,10);
+    influence_list = influence_list.splice(0,5);
     influence_by_list.sort(function(a, b) {
         return (b.value - a.value)
     })
-    influence_by_list = influence_by_list.splice(0,10);
+    influence_by_list = influence_by_list.splice(0,5);
     console.log(influence_list);
     console.log(influence_by_list);
 
@@ -363,7 +382,8 @@ function set_sunburst_graph_opt() {
             source: "0",
             target: item.id.toString(),
             lineStyle: {
-                color: "rgba(235, 27, 183, 1)" 
+                color: "rgba(235, 27, 183, 1)" ,
+                width: 3
             }
         });
         sorted_value.push({name: item.name, value: item.value});
@@ -374,14 +394,15 @@ function set_sunburst_graph_opt() {
             source: item.id.toString(),
             target: "0",
             lineStyle: {
-                color: "rgba(42, 158, 176, 1)" 
+                color: "rgba(42, 158, 176, 1)" ,
+                width: 3
             }
         });
         sorted_value.push({name: item.name, value: item.value});
     })
 
     sorted_value.sort(function(a, b) {
-        return b.value - a.value;
+        return a.value - b.value;
     });
     var symbolSize_list = {};
     sorted_value.forEach(function(item, idx) {
@@ -390,11 +411,101 @@ function set_sunburst_graph_opt() {
 
     node_data.forEach(function(item) {
         if (item.id == 0) return;
-        item['symbolSize'] = 15 + 2 * symbolSize_list[item.name];
+        item['symbolSize'] = 25 + 3 * symbolSize_list[item.name];
     });
+    
+    // 第二层节点
+    var second_layer_nodes = [];
+    var second_layer_links = [];
+
+    for (var i = 1; i < node_data.length; i++) {
+        var second_artist = node_data[i].name;
+        var second_layer_influence_data = artist_influence_danmaku_data[second_artist];
+        var second_infulence_nodes = [];
+        var second_infulence_by_nodes = [];
+
+        for (year in second_layer_influence_data) {
+            if (year < start || year > end) continue;
+            var year_data = second_layer_influence_data[year];
+
+            for (genre in year_data["influence"]) {
+                year_data["influence"][genre].forEach(function(artist) {
+                    if (node_data.find(function(item) {return item.name == artist})) return;
+                    second_infulence_nodes.push({
+                        id: id_cnt,
+                        name: artist, 
+                        category: genre, 
+                        value: (artist_influence_value_data[artist] == undefined) ? 1: artist_influence_value_data[artist],
+                        symbolSize: 20,
+                        label: {
+                            fontSize: 9
+                        }
+                    });
+                    name2id_map[artist] = id_cnt;
+                    id_cnt += 1;
+                })
+            }
+    
+            for (genre in year_data["influence_by"]) {
+                year_data["influence_by"][genre].forEach(function(artist) {
+                    if (node_data.find(function(item) {return item.name == artist})) return;
+                    second_infulence_by_nodes.push({
+                        id: id_cnt,
+                        name: artist, 
+                        category: genre, 
+                        value: (artist_influence_value_data[artist] == undefined) ? 1: artist_influence_value_data[artist],
+                        symbolSize: 20,
+                        label: {
+                            fontSize: 9
+                        }
+                    });
+                    name2id_map[artist] = id_cnt;
+                    id_cnt += 1;
+                })
+            }
+        }
+
+        second_infulence_nodes.sort(function(a, b) {
+            return (b.value - a.value);
+        })
+        second_infulence_nodes = second_infulence_nodes.splice(0,3);
+        second_infulence_nodes.forEach(function(item) {
+            second_layer_nodes.push(item);
+            second_layer_links.push({
+                source: name2id_map[second_artist].toString(),
+                target: name2id_map[item.name].toString(),
+                lineStyle: {
+                    color: "#fac858"
+                }
+            });
+        });
+
+        second_infulence_by_nodes.sort(function(a, b) {
+            return (b.value - a.value);
+        })
+        second_infulence_by_nodes = second_infulence_by_nodes.splice(0, 3);
+        second_infulence_by_nodes.forEach(function(item) {
+            second_layer_nodes.push(item);
+            second_layer_links.push({
+                source: name2id_map[second_artist].toString(),
+                target: name2id_map[item.name].toString(),
+                lineStyle: {
+                    color: "#5470c6"
+                }
+            });
+        });
+    }
+    
+    node_data = node_data.concat(second_layer_nodes);
+    link_data = link_data.concat(second_layer_links);
+    node_data.forEach(function(item) {
+        using_cates.add(item.category);
+    })
+    using_cates = Array.from(using_cates);
     console.log(link_data)
     console.log(node_data)
-
+    console.log(using_cates)
+    
     var graph_option = {
         tooltip: {},
         series: [{
@@ -403,8 +514,13 @@ function set_sunburst_graph_opt() {
             categories: cate_data,
             data: node_data,
             links:link_data,
+            draggable:true,
             force: {
-                repulsion: 1000
+                repulsion: 200
+            },
+            emphasis: {
+                focus: 'adjacency',
+                blurScope: 'coordinateSystem'
             },
             label: {
                 show: true,
