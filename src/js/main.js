@@ -31,15 +31,16 @@ let appconf = {
             this.change_table_mode(0);
             this.range_change();
             stop_animation();
+            update_bar();
         },
         change_graph_mode: function(mode) {
             `
                 图中显示边状态更改时的函数
             `
-            this.graph_mode = mode;
+            // this.graph_mode = mode;
             update_graph();
-            $("#graph-mode-switch button").removeClass("active");
-            $("#graph-mode-switch button")[mode].classList.add("active");
+            // $("#graph-mode-switch button").removeClass("active");
+            // $("#graph-mode-switch button")[mode].classList.add("active");
         },
         change_table_mode: function(mode) {
             `
@@ -106,19 +107,18 @@ let appconf = {
             } else {
                 // 图中点击
                 if (this.inspecting_musician == "") {
-                    set_in_graph_opt();  
+                    set_in_graph_opt();
                 } else {
-                    set_artist_graph_opt();   
+                    set_artist_graph_opt();
                 }
                 update_artist_bar();
                 update_table();
             }
         },
-        toggle_animation: function () {
+        toggle_animation: function() {
             if (this.animating) {
                 stop_animation();
-            }
-            else {
+            } else {
                 start_animation(time_animation, 100);
             }
         },
