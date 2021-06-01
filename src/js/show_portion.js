@@ -250,7 +250,7 @@ async function init_bar() {
     if (port_opt && typeof port_opt === 'object') {
         port_chart.setOption(port_opt);
     }
-
+    app.bar_title = "All Genres";
 }
 
 function update_bar() {
@@ -260,6 +260,7 @@ function update_bar() {
     if (port_opt && typeof port_opt === 'object') {
         port_chart.setOption(port_opt, true);
     }
+    app.bar_title = "All Genres";
 }
 
 function update_artist_bar() {
@@ -267,4 +268,5 @@ function update_artist_bar() {
     if (opt && typeof opt === 'object') {
         port_chart.setOption(opt, true);
     }
+    app.bar_title = "Genres Affected " + app.inspecting_genre;
 }
