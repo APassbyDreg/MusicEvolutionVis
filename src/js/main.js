@@ -103,7 +103,8 @@ let appconf = {
                 // 从流派返回
                 this.inspecting_musician = ""
                 set_out_graph_opt();
-                init_bar();
+                // init_bar();
+                update_bar();
                 update_table();
             } else {
                 // 图中点击

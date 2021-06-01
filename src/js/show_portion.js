@@ -57,6 +57,7 @@ function draw_bra(start, end, portion_csv, select_genre, color_list) {
             //     type: 'shadow'
             // }
         },
+        animationDurationUpdate: 100,
         legend: {
             data: now_genre_list,
             show: false
@@ -138,6 +139,7 @@ function draw_artist_bar(start, end, port_json, input_genre) {
             //     type: 'shadow'
             // }
         },
+        animationDurationUpdate: 100,
         legend: {
             data: now_artists_list,
             show: false
