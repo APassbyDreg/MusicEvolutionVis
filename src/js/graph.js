@@ -120,7 +120,7 @@ function set_in_graph_opt() {
         }]
     };
     
-    graph_chart.clear();
+    // graph_chart.clear();
     graph_chart.setOption(graph_option);
     graph_chart.off("click");
 };
@@ -243,7 +243,7 @@ function set_out_graph_opt() {
     var graph = { nodes: node_data, links: link_data, categories: cate_data }
     graph_option = {
         tooltip: {},
-        animationDurationUpdate: 0,
+        animationDurationUpdate: 100,
         series: [{
             type: 'graph',
             layout: 'circular',
@@ -251,11 +251,11 @@ function set_out_graph_opt() {
             links: graph.links,
             categories: graph.categories,
             circular: {
-                rotateLabel: true
+                rotateLabel: false
             },
             label: {
                 show: true,
-                position: 'right',
+                position: 'inside',
                 formatter: '{b}'
             },
             lineStyle: {
@@ -271,7 +271,7 @@ function set_out_graph_opt() {
             edgeSymbolSize: 15,
         }]
     };
-    graph_chart.clear();
+    // graph_chart.clear();
     graph_chart.setOption(graph_option);
     graph_chart.on("click", function(params) {
         genre = params.data.name;
@@ -529,7 +529,7 @@ function set_artist_graph_opt() {
             edgeSymbol: ['none', 'arrow']
         }]    
     }
-    graph_chart.clear();
+    // graph_chart.clear();
     graph_chart.setOption(graph_option);
     graph_chart.off("click");
 }

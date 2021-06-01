@@ -17,6 +17,7 @@ let appconf = {
             inspecting_musician: "", // 图的中心音乐家
             inspecting_attr: 0, // 表展示的属性视图的属性
             title: "TITLE", // 表题
+            bar_title: "BAR_TITLE", // bar 标题
             animating: false, // 是否在动画
         }
     },

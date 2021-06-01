@@ -1,0 +1,8 @@
+<svg version="1.2" baseProfile="tiny-ps" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1388 1388" width="1388" height="1388">
+	<title>Background</title>
+	<style>
+		tspan { white-space:pre }
+		.shp0 { fill: #ff0000 } 
+	</style>
+	<path id="Background" class="shp0" d="M694 1388C310.22 1388 0 1077.78 0 694C0 310.22 310.22 0 694 0C1077.78 0 1388 310.22 1388 694C1388 1077.78 1077.78 1388 694 1388Z" />
+</svg>

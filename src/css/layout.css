@@ -89,11 +89,16 @@ body {
     width: 60vh;
     border-radius: 100%;
     background-color: rgb(255, 250, 239);
+
+    mask-image: url("../../assets/circle-mask.svg");
+    mask-size: contain;
+    -webkit-mask-image: url("../../assets/circle-mask.svg");
+    -webkit-mask-size: contain;
 }
 
 #graph-bar {
     position: inherit;
-    right: 4%;
+    right: 6%;
     top: 15%;
     width: 6%;
     height: 70%;
@@ -101,6 +106,23 @@ body {
     background-color: whitesmoke;
     padding: 10px;
     pointer-events: all;
+}
+
+#graph-bar-title {
+    position: inherit;
+    right: 2%;
+    top: 15%;
+    width: 3%;
+    height: 70%;
+    pointer-events: all;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    vertical-align: middle;
+    text-align: center;
+
+    color: whitesmoke;
+    font-weight: bold;
+    /* -webkit-text-stroke: 2px whitesmoke; */
 }
 
 #controls {

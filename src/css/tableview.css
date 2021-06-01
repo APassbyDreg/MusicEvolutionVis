@@ -46,6 +46,8 @@
     color: white;
     font-size: 4vh;
     text-align: right;
+    font-weight: bold;
+    font-style: italic;
 }
 
 #table-decoration {
