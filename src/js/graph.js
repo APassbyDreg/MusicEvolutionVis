@@ -132,12 +132,13 @@ function set_out_graph_opt() {
     var end = app.time_range[1];
     end = (parseInt(end / 10) + 1) * 10;
     var using_genres = app.using_genres;
-
     var graph_option;
     var ori_cate_data = ["Electronic", "R&B;", "Vocal", "Pop/Rock", "Religious", "Blues", "Country", "Jazz", "Latin", "New Age", "Folk", "International", "Reggae", "Comedy/Spoken", "Easy Listening", "Classical", "Avant-Garde", "Stage & Screen", "Children's"];
-    cate_data = ori_cate_data.map(function(cate) {
-        return { name: cate };
-    });
+    cate_data = [];
+
+    ori_cate_data.forEach(function(cate, idx) {
+        if (using_genres[idx]) {cate_data.push({name: cate})};
+    })
 
     // 初始化node,link数据
     var node_data = new Array();
@@ -169,9 +170,8 @@ function set_out_graph_opt() {
             continue;
         }
         year_data = portion_influence_data[key];
-        for (var i = 0; i < ori_cate_data.length; i++) {
-            if (!using_genres[i]) continue;
-            var cate = ori_cate_data[i];
+        for (var i = 0; i < cate_data.length; i++) {
+            var cate = cate_data[i].name;
             if (year_data[cate] == undefined) {
                 continue;
             }
@@ -193,7 +193,7 @@ function set_out_graph_opt() {
         }
     }
 
-    for (var i = 0; i < ori_cate_data.length; i++) {
+    for (var i = 0; i < cate_data.length; i++) {
         var size = 40 * (1.0 * (node_data[i]["value"] - min_value)) / (max_value - min_value)
         if (size < 20) {
             size = 20;
