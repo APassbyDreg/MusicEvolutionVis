@@ -3,6 +3,8 @@ var graph_chart = echarts.init(graph_dom);
 
 // 按艺术家划分图
 function set_in_graph_opt() {
+    graph_chart.showLoading();
+
     var start = app.time_range[0];
     start = parseInt(start / 10) * 10;
     var end = app.time_range[1];
@@ -14,7 +16,7 @@ function set_in_graph_opt() {
     var node_dict = {};
     var artist_id_dict = {};
     var artist_id = 0;
-    var max_num = 20;
+    var max_num = 15;
     var cate_set = new Set();
 
     for (year in artist_influence_data) {
@@ -108,13 +110,17 @@ function set_in_graph_opt() {
                 curveness: 0.4
             },
             force: {
-                repulsion: force * 200
+                repulsion: [50 * force, 100 * force],
+                gravity: 0.01,
+                edgeLength: [10, 50],
+                friction: 0.4,
+                layoutAnimation: false
             },
             emphasis: {
                 focus: 'adjacency',
                 blurScope: 'coordinateSystem'
             },
-            draggable: true,
+            roam: true,
             graph_modeSymbol: ['none', 'arrow'], // 边的样式
             edgeSymbolSize: 10,
         }]
@@ -123,6 +129,9 @@ function set_in_graph_opt() {
     // graph_chart.clear();
     graph_chart.setOption(graph_option);
     graph_chart.off("click");
+    
+    let delay = 2000 * Math.random() + 500;
+    setTimeout(()=>{graph_chart.hideLoading();}, delay);
 };
 
 // 按流派划分图
@@ -134,10 +143,17 @@ function set_out_graph_opt() {
     var using_genres = app.using_genres;
     var graph_option;
     var ori_cate_data = ["Electronic", "R&B;", "Vocal", "Pop/Rock", "Religious", "Blues", "Country", "Jazz", "Latin", "New Age", "Folk", "International", "Reggae", "Comedy/Spoken", "Easy Listening", "Classical", "Avant-Garde", "Stage & Screen", "Children's"];
-    cate_data = [];
+    var cate_data = [];
 
     ori_cate_data.forEach(function(cate, idx) {
-        if (using_genres[idx]) {cate_data.push({name: cate})};
+        if (using_genres[idx]) {
+            cate_data.push({
+                name: cate,
+                itemStyle: {
+                    color: app.genre_colors[idx]
+                }
+            })
+        };
     })
 
     // 初始化node,link数据
@@ -240,6 +256,7 @@ function set_out_graph_opt() {
     }
     // console.log(link_data);
 
+    var rect = graph_dom.getBoundingClientRect()
     var graph = { nodes: node_data, links: link_data, categories: cate_data }
     graph_option = {
         tooltip: {},
@@ -266,7 +283,9 @@ function set_out_graph_opt() {
                 focus: 'adjacency',
                 blurScope: 'coordinateSystem'
             },
-            draggable: true,
+            roam: false,
+            zoom: 1,
+            center: [rect.width/2, rect.height/2],
             edgeSymbol: ['none', 'arrow'], // 边的样式
             edgeSymbolSize: 15,
         }]
@@ -282,6 +301,8 @@ function set_out_graph_opt() {
 };
 
 function set_artist_graph_opt() {
+    graph_chart.showLoading();
+
     var start = app.time_range[0];
     start = parseInt(start / 10) * 10;
     var end = app.time_range[1];
@@ -510,14 +531,14 @@ function set_artist_graph_opt() {
         tooltip: {},
         series: [{
             type: 'graph',
-            layout: 'force',
+            // layout: 'force',
             categories: cate_data,
             data: node_data,
             links:link_data,
             draggable:true,
-            force: {
-                repulsion: 200
-            },
+            // force: {
+            //     repulsion: 200
+            // },
             emphasis: {
                 focus: 'adjacency',
                 blurScope: 'coordinateSystem'
@@ -532,6 +553,7 @@ function set_artist_graph_opt() {
     // graph_chart.clear();
     graph_chart.setOption(graph_option);
     graph_chart.off("click");
+    graph_chart.hideLoading();
 }
 
 function update_graph() {
