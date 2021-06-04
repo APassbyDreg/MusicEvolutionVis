@@ -563,6 +563,10 @@ function set_artist_graph_opt() {
     // graph_chart.clear();
     graph_chart.setOption(graph_option);
     graph_chart.off("click");
+    graph_chart.on("click", function(params) {
+        artist_name = params.data.name;
+        app.focus_musician(artist_name);
+    })
     graph_chart.hideLoading();
 }
 
