@@ -1,6 +1,6 @@
 const row_cnt = 100;
-const min_musician_value = 15;  //  截断阈值
-const max_musician_value = 100; //  高亮阈值
+const min_musician_value = 10;  //  截断阈值
+const max_musician_value = 50;  //  高亮阈值
 let active_data;
 
 async function initDanmaku() {

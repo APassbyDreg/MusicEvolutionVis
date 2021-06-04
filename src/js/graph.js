@@ -16,7 +16,7 @@ function set_in_graph_opt() {
     var node_dict = {};
     var artist_id_dict = {};
     var artist_id = 0;
-    var max_num = 15;
+    var max_num = 25;
     var cate_set = new Set();
 
     for (year in artist_influence_data) {
@@ -59,16 +59,18 @@ function set_in_graph_opt() {
     for (key in node_dict) {
         var n = node_dict[key];
         if (n.value > max_value) max_value = n.value;
-        var size = n.value;
-        if (size < 15) size = 15;
-        if (size > 60) size = 60;
-        n.symbolSize = size;
         node_data_tmp.push(n);
     }
     node_data_tmp.sort(function(a, b) {
         return b.value - a.value;
     });
     var node_data = node_data_tmp.splice(0, max_num);
+    var min_value = node_data[node_data.length - 1].value;
+    node_data.forEach((n) => {
+        let size = 15 + 30 * (n.value - min_value) / (max_value - min_value);
+        n.symbolSize = size;
+    })
+
     var categ_data = Array.from(cate_set)
     var force = (max_value / 10 > 10) ? 10 : max_value / 10;
     // console.log(node_data);
@@ -81,7 +83,10 @@ function set_in_graph_opt() {
             if (node_data.find(function(node) { return (artist == node.name) })) {
                 influence_map[artist].forEach(function(element) {
                     if (node_data.find(function(node) { return (element == node.name) })) {
-                        link_set.add({ source: artist_id_dict[artist], target: artist_id_dict[element] });
+                        link_set.add({ 
+                            source: artist_id_dict[artist], 
+                            target: artist_id_dict[element] 
+                        });
                     }
                 })
             }
@@ -110,11 +115,11 @@ function set_in_graph_opt() {
                 curveness: 0.4
             },
             force: {
-                repulsion: [50 * force, 100 * force],
-                gravity: 0.01,
-                edgeLength: [10, 50],
-                friction: 0.4,
-                layoutAnimation: false
+                repulsion: [800, 1600],
+                gravity: 0.5,
+                edgeLength: [100, 200],
+                friction: 0.5,
+                // layoutAnimation: false
             },
             emphasis: {
                 focus: 'adjacency',
@@ -531,14 +536,14 @@ function set_artist_graph_opt() {
         tooltip: {},
         series: [{
             type: 'graph',
-            // layout: 'force',
+            layout: 'force',
             categories: cate_data,
             data: node_data,
             links:link_data,
             draggable:true,
-            // force: {
-            //     repulsion: 200
-            // },
+            force: {
+                repulsion: 200
+            },
             emphasis: {
                 focus: 'adjacency',
                 blurScope: 'coordinateSystem'
