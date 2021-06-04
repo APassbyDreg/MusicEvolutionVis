@@ -134,6 +134,10 @@ function set_in_graph_opt() {
     // graph_chart.clear();
     graph_chart.setOption(graph_option);
     graph_chart.off("click");
+    graph_chart.on("click", function(params) {
+        artist_name = params.data.name;
+        app.focus_musician(artist_name);
+    })
     
     let delay = 2000 * Math.random() + 500;
     setTimeout(()=>{graph_chart.hideLoading();}, delay);
@@ -320,6 +324,7 @@ function set_artist_graph_opt() {
         return { name: cate };
     });
     var using_cates = new Set();
+    var first_level_num = 3, second_level_num = 3;
 
     var node_data = [
         {
@@ -343,7 +348,7 @@ function set_artist_graph_opt() {
     using_cates.add(center_genre);
 
     var center_musision_data = artist_influence_danmaku_data[center_musision];
-    console.log(center_musision_data);
+    // console.log(center_musision_data);
     // 第一层节点
     var influence_list = [];
     var influence_by_list = [];
@@ -392,13 +397,13 @@ function set_artist_graph_opt() {
     influence_list.sort(function(a, b) {
         return (b.value - a.value)
     })
-    influence_list = influence_list.splice(0,5);
+    influence_list = influence_list.splice(0,first_level_num);
     influence_by_list.sort(function(a, b) {
         return (b.value - a.value)
     })
-    influence_by_list = influence_by_list.splice(0,5);
-    console.log(influence_list);
-    console.log(influence_by_list);
+    influence_by_list = influence_by_list.splice(0,first_level_num);
+    // console.log(influence_list);
+    // console.log(influence_by_list);
 
     var link_data = [];
     var sorted_value = [];
@@ -437,7 +442,7 @@ function set_artist_graph_opt() {
 
     node_data.forEach(function(item) {
         if (item.id == 0) return;
-        item['symbolSize'] = 25 + 3 * symbolSize_list[item.name];
+        item['symbolSize'] = 20 + 3 * symbolSize_list[item.name];
     });
     
     // 第二层节点
@@ -462,7 +467,7 @@ function set_artist_graph_opt() {
                         name: artist, 
                         category: genre, 
                         value: (artist_influence_value_data[artist] == undefined) ? 1: artist_influence_value_data[artist],
-                        symbolSize: 20,
+                        symbolSize: 15,
                         label: {
                             fontSize: 9
                         }
@@ -494,7 +499,7 @@ function set_artist_graph_opt() {
         second_infulence_nodes.sort(function(a, b) {
             return (b.value - a.value);
         })
-        second_infulence_nodes = second_infulence_nodes.splice(0,3);
+        second_infulence_nodes = second_infulence_nodes.splice(0,second_level_num);
         second_infulence_nodes.forEach(function(item) {
             second_layer_nodes.push(item);
             second_layer_links.push({
@@ -509,12 +514,12 @@ function set_artist_graph_opt() {
         second_infulence_by_nodes.sort(function(a, b) {
             return (b.value - a.value);
         })
-        second_infulence_by_nodes = second_infulence_by_nodes.splice(0, 3);
+        second_infulence_by_nodes = second_infulence_by_nodes.splice(0, second_level_num);
         second_infulence_by_nodes.forEach(function(item) {
             second_layer_nodes.push(item);
             second_layer_links.push({
-                source: name2id_map[second_artist].toString(),
-                target: name2id_map[item.name].toString(),
+                source: name2id_map[item.name].toString(),
+                target: name2id_map[second_artist].toString(),
                 lineStyle: {
                     color: "#5470c6"
                 }
@@ -542,7 +547,7 @@ function set_artist_graph_opt() {
             links:link_data,
             draggable:true,
             force: {
-                repulsion: 200
+                repulsion: 150
             },
             emphasis: {
                 focus: 'adjacency',
