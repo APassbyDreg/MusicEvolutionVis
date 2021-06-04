@@ -25,12 +25,12 @@
     <div id="app">
         <div id="musicians-danmaku">
             <div class="danmaku-row" v-for="i in 40">
-                <span v-for="n in musicians.slice((i-1)*25, i*25)" 
+                <span v-for="n in musicians.slice((i-1)*25, i*25).name" 
                       class="danmaku-cell"
                       @click="focus_musician(n)">
                     {{n}}
                 </span>
-                <span v-for="n in musicians.slice((i-1)*25, i*25)" 
+                <span v-for="n in musicians.slice((i-1)*25, i*25).name" 
                       class="danmaku-cell"
                       @click="focus_musician(n)">
                     {{n}}
