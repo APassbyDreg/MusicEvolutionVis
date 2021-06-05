@@ -19,6 +19,7 @@ let appconf = {
             title: "TITLE", // 表题
             bar_title: "BAR_TITLE", // bar 标题
             animating: false, // 是否在动画
+            influence_genres: Array(19).fill(0), // 影响流派数量
         }
     },
     methods: {
@@ -111,7 +112,9 @@ let appconf = {
                 if (this.inspecting_musician == "") {
                     set_in_graph_opt();
                 } else {
+                    this.influence_genres = Array(19).fill(0);
                     set_artist_graph_opt();
+                    console.log(this.influence_genres);
                 }
                 update_artist_bar();
                 update_table();
