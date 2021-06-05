@@ -382,6 +382,9 @@ function set_artist_graph_opt() {
                 });
                 name2id_map[artist] = id_cnt;
                 id_cnt += 1;
+
+                // bar info
+                app.influence_genres[ori_cate_data.indexOf(genre)] += 1;
             })
         }
 
@@ -402,6 +405,9 @@ function set_artist_graph_opt() {
                 });
                 name2id_map[artist] = id_cnt;
                 id_cnt += 1;
+
+                // bar info
+                app.influence_genres[ori_cate_data.indexOf(genre)] += 1;
             })
         }
     }
@@ -551,9 +557,9 @@ function set_artist_graph_opt() {
         using_cates.add(item.category);
     })
     using_cates = Array.from(using_cates);
-    console.log(link_data)
-    console.log(node_data)
-    console.log(using_cates)
+    // console.log(link_data)
+    // console.log(node_data)
+    // console.log(using_cates)
     
     var graph_option = {
         tooltip: {},
