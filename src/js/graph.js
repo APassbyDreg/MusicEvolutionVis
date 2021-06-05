@@ -202,12 +202,11 @@ function set_out_graph_opt() {
             }
             var portion_data = year_data[cate];
             var node_value = 0;
-            for (var j = 0; j < ori_cate_data.length; j++) {
-                if (i == j || portion_data[ori_cate_data[j]] == undefined) {
+            for (var j = 0; j < cate_data.length; j++) {
+                if (i == j || portion_data[cate_data[j].name] == undefined) {
                     continue;
                 }
-                if (!using_genres[j]) continue;
-                node_value += portion_data[ori_cate_data[j]];
+                node_value += portion_data[cate_data[j].name];
             }
             node_data[i]["value"] = node_data[i]["value"] + node_value;
             if (node_value > max_value) {
@@ -227,13 +226,12 @@ function set_out_graph_opt() {
     }
     // console.log(node_data);
     // link data
-    for (var i = 0; i < ori_cate_data.length; i++) {
-        if (!using_genres[i]) continue;
-        var src_cate = ori_cate_data[i];
-        for (var j = 0; j < ori_cate_data.length; j++) {
-            if (i == j || !using_genres[j]) continue;
+    for (var i = 0; i < cate_data.length; i++) {
+        var src_cate = cate_data[i].name;
+        for (var j = 0; j < cate_data.length; j++) {
+            if (i == j) continue;
             var value = 0;
-            var tar_cate = ori_cate_data[j];
+            var tar_cate = cate_data[j].name;
             for (var key in portion_influence_data) {
                 if (Number(key) < start || Number(key) > end) {
                     continue;
