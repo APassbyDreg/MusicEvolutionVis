@@ -111,12 +111,14 @@ let appconf = {
                 // 图中点击
                 if (this.inspecting_musician == "") {
                     set_in_graph_opt();
+                    update_artist_bar();
                 } else {
                     this.influence_genres = Array(19).fill(0);
                     set_artist_graph_opt();
+                    update_bar_for_artist();
                     console.log(this.influence_genres);
                 }
-                update_artist_bar();
+                // update_artist_bar();
                 update_table();
             }
         },
