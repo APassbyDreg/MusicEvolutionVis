@@ -6,7 +6,7 @@ var port_chart = echarts.init(port_part);
 
 var portion_csv;
 var artist_json_bar; // 用于绘制音乐家portion
-var genre_list = ["Electronic", "R&B", "Vocal", "Pop/Rock", "Religious", "Blues", "Country", "Jazz", "Latin", "New Age", "Folk", "International", "Reggae", "Comedy/Spoken", "Easy Listening", "Classical", "Avant-Garde", "Stage & Screen", "Children's"];
+var genre_list = ["Electronic", "R&B;", "Vocal", "Pop/Rock", "Religious", "Blues", "Country", "Jazz", "Latin", "New Age", "Folk", "International", "Reggae", "Comedy/Spoken", "Easy Listening", "Classical", "Avant-Garde", "Stage & Screen", "Children's"];
 // var now_genre_list = genre_list.concat();
 var bar_color_dict = {
     "Electronic": '#e78b8b',
@@ -252,16 +252,27 @@ async function init_bar() {
     if (port_opt && typeof port_opt === 'object') {
         port_chart.setOption(port_opt);
     }
+    port_chart.on("click", function(params) {
+        // console.log(params);
+        genre = params.seriesName;
+        app.inspecting_genre = genre;
+        app.select_genre(genre);
+    })
     app.bar_title = "All Genres";
 }
 
 function update_bar() {
     // console.log(select_genre);
     port_opt = draw_bra(app.time_range[0], app.time_range[1], portion_csv, app.using_genres, app.genre_colors);
-    // console.log(port_opt);
     if (port_opt && typeof port_opt === 'object') {
         port_chart.setOption(port_opt, true);
     }
+    port_chart.on("click", function(params) {
+        genre = params.seriesName;
+        // console.log(genre)
+        app.inspecting_genre = genre;
+        app.select_genre(genre);
+    })
     app.bar_title = "All Genres";
 }
 
@@ -270,5 +281,10 @@ function update_artist_bar() {
     if (opt && typeof opt === 'object') {
         port_chart.setOption(opt, true);
     }
+    port_chart.on("click", function(params) {
+        genre = params.seriesName;
+        app.inspecting_genre = genre;
+        app.select_genre(genre);
+    })
     app.bar_title = "Genres Affected " + app.inspecting_genre;
 }
