@@ -323,8 +323,13 @@ function set_artist_graph_opt() {
     cate_data = ori_cate_data.map(function(cate) {
         return { name: cate };
     });
+    var color_map = {};
+    ori_cate_data.forEach(function(item, idx) {
+        color_map[item] = app.genre_colors[idx];
+    })
+
     var using_cates = new Set();
-    var first_level_num = 3, second_level_num = 3;
+    var first_level_num = 3, second_level_num = 2;
 
     var node_data = [
         {
@@ -341,6 +346,9 @@ function set_artist_graph_opt() {
                 fontStyle: "italic",
                 fontWeight: "bolder",
                 fontSize: 20
+            },
+            itemStyle: {
+                color: color_map[center_genre]
             },
             symbol: "diamond"
         }
@@ -369,6 +377,9 @@ function set_artist_graph_opt() {
                     label: {
                         fontWeight: "bold",
                         fontSize: 14
+                    },
+                    itemStyle: {
+                        color: color_map[genre]
                     }
                 });
                 name2id_map[artist] = id_cnt;
@@ -386,6 +397,9 @@ function set_artist_graph_opt() {
                     label: {
                         fontWeight: "bold",
                         fontSize: 14
+                    },
+                    itemStyle: {
+                        color: color_map[genre]
                     }
                 });
                 name2id_map[artist] = id_cnt;
@@ -413,7 +427,7 @@ function set_artist_graph_opt() {
             source: "0",
             target: item.id.toString(),
             lineStyle: {
-                color: "rgba(235, 27, 183, 1)" ,
+                color: color_map[center_genre] ,
                 width: 3
             }
         });
@@ -425,7 +439,7 @@ function set_artist_graph_opt() {
             source: item.id.toString(),
             target: "0",
             lineStyle: {
-                color: "rgba(42, 158, 176, 1)" ,
+                color: color_map[item.category],
                 width: 3
             }
         });
@@ -470,6 +484,9 @@ function set_artist_graph_opt() {
                         symbolSize: 15,
                         label: {
                             fontSize: 9
+                        },
+                        itemStyle: {
+                            color: color_map[genre]
                         }
                     });
                     name2id_map[artist] = id_cnt;
@@ -488,6 +505,9 @@ function set_artist_graph_opt() {
                         symbolSize: 20,
                         label: {
                             fontSize: 9
+                        },
+                        itemStyle: {
+                            color: color_map[genre]
                         }
                     });
                     name2id_map[artist] = id_cnt;
@@ -506,7 +526,7 @@ function set_artist_graph_opt() {
                 source: name2id_map[second_artist].toString(),
                 target: name2id_map[item.name].toString(),
                 lineStyle: {
-                    color: "#fac858"
+                    color: color_map[node_data[i].category]
                 }
             });
         });
@@ -521,7 +541,7 @@ function set_artist_graph_opt() {
                 source: name2id_map[item.name].toString(),
                 target: name2id_map[second_artist].toString(),
                 lineStyle: {
-                    color: "#5470c6"
+                    color: color_map[item.category]
                 }
             });
         });
@@ -547,7 +567,7 @@ function set_artist_graph_opt() {
             links:link_data,
             draggable:true,
             force: {
-                repulsion: 150
+                repulsion: 300
             },
             emphasis: {
                 focus: 'adjacency',
