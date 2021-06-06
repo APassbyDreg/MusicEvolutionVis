@@ -8,27 +8,10 @@ var portion_csv;
 var artist_json_bar; // 用于绘制音乐家portion
 var genre_list = ["Electronic", "R&B;", "Vocal", "Pop/Rock", "Religious", "Blues", "Country", "Jazz", "Latin", "New Age", "Folk", "International", "Reggae", "Comedy/Spoken", "Easy Listening", "Classical", "Avant-Garde", "Stage & Screen", "Children's"];
 // var now_genre_list = genre_list.concat();
-var bar_color_dict = {
-    "Electronic": '#e78b8b',
-    "R&B;": '#e78ba8',
-    "Vocal": '#e78bc5',
-    "Pop/Rock": '#e78be2',
-    "Religious": '#cf8be7',
-    "Blues": '#b28be7',
-    "Country": '#948be7',
-    "Jazz": '#8b9ee7',
-    "Latin": '#8bbbe7',
-    "New Age": '#8bd8e7',
-    "Folk": '#8be7d8',
-    "International": '#8be7bb',
-    "Reggae": '#8be79e',
-    "Comedy/Spoken": '#94e78b',
-    "Easy Listening": '#b2e78b',
-    "Classical": '#cfe78b',
-    "Avant-Garde": '#e7e28b',
-    "Stage & Screen": '#e7c58b',
-    "Children's": '#e7a88b'
-};
+var bar_color_dict = {};
+for (var i = 0; i < 19; i++) {
+    bar_color_dict[app.genres[i]] = app.genre_colors[i];
+}
 
 function draw_bra(start, end, portion_csv, select_genre, color_list) {
     now_genre_list = genre_list.concat();
