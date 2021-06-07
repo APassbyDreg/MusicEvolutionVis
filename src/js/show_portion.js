@@ -347,6 +347,7 @@ function update_bar_for_artist() {
     port_chart.on("click", function(params) {
         genre = params.seriesName;
         app.inspecting_genre = genre;
+        app.inspecting_musician = "";
         app.select_genre(genre);
     })
     app.bar_title = "Genres Affected " + app.inspecting_musician;
