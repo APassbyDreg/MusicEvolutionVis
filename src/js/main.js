@@ -29,7 +29,13 @@ let appconf = {
         set_fullscreen: function (state) {
             this.fullscreen = state;
             if (state == 1) this.fullscreen_title = this.title;
-            if (state == 2) this.fullscreen_title = this.graph_title;
+            if (state == 2) {
+                this.fullscreen_title = this.graph_title;
+                setTimeout(()=> {
+                    update_fs_graph();
+                }, 1)
+                
+            }
         },
         reset: function() {
             this.inspecting_attr = 0;
