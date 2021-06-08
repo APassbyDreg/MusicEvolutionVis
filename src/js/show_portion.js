@@ -232,6 +232,7 @@ async function init_bar() {
     basic_select_genre = Array(19).fill(true);
     // basic_select_genre[0] = false
     port_opt = draw_bra(app.time_range[0], app.time_range[1], portion_csv, basic_select_genre, app.genre_colors);
+    console.log(port_opt);
     if (port_opt && typeof port_opt === 'object') {
         port_chart.setOption(port_opt);
     }
@@ -352,4 +353,40 @@ function update_bar_for_artist() {
         app.select_genre(genre);
     })
     app.bar_title = "Genres Affected " + app.inspecting_musician;
+}
+
+function draw_full_bar() {
+    // var bar_new_portion = JSON.parse(JSON.stringify(port_chart._model.option));
+    var bar_new_portion = {
+        color: now_port_colors,
+        tooltip: {},
+        animationDurationUpdate: 100,
+        legend: {
+            data: port_chart._model.option.legend[0].data,
+            show: true
+        },
+        grid: {
+            left: '-10px',
+            right: '-10px',
+            bottom: '0%',
+            top: '0%',
+            containLabel: false
+        },
+        xAxis: {
+            type: 'category',
+            data: ['portion'],
+            axisLabel: {
+                show: false
+            },
+        },
+        yAxis: {
+            type: 'value',
+            axisLabel: {
+                show: false
+            }
+        },
+        series: port_chart._model.option.series
+    };
+    console.log(bar_new_portion);
+    full_bar_chart.setOption(bar_new_portion);
 }

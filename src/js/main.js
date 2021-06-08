@@ -10,7 +10,7 @@ let appconf = {
             genre_colors: ['#f09090', '#dea487', '#f0d090', '#d6d675', '#d0f090', '#93da70', '#90f090', '#83d9a0', '#90f0d0', '#75d2d2', '#90d0f0', '#6c8fd5', '#9090f0', '#9070d1', '#d090f0', '#e184e1', '#f090d0', '#dc87a3', '#c0c0c0'],
             musicians: [],
             // APP 状态值
-            fullscreen: 0,  // 0: 不显示, 1: 全屏显示表格, 2: 全屏显示图
+            fullscreen: 0, // 0: 不显示, 1: 全屏显示表格, 2: 全屏显示图
             time_range: [1921, 2020], // 时间区域
             table_mode: 0, // 表状态， '0'是Attr图，'1'是Timeline变化图
             using_genres: Array(19).fill(true), // 被使用的流派
@@ -27,15 +27,15 @@ let appconf = {
         }
     },
     methods: {
-        set_fullscreen: function (state) {
+        set_fullscreen: function(state) {
             this.fullscreen = state;
             if (state == 1) this.fullscreen_title = this.title;
-            if (state == 2) this.fullscreen_title = this.bar_title;
-
-            setTimeout(() => {
-                let d = document.getElementById("fullscreen-graph");
-                console.log(d.getBoundingClientRect());
-            }, 1);
+            if (state == 2) {
+                this.fullscreen_title = this.graph_title;
+                setTimeout(()=> {
+                    update_fs_graph();
+                }, 1)
+            }
         },
         reset: function() {
             this.inspecting_attr = 0;
@@ -145,8 +145,7 @@ let appconf = {
             }
         },
     },
-    computed: {
-    },
+    computed: {},
     mounted: function() {
         // initialize options
         $("#table-mode-switch button")[0].classList.add("active");

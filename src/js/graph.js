@@ -130,7 +130,8 @@ function set_in_graph_opt() {
             roam: true,
             graph_modeSymbol: ['none', 'arrow'], // 边的样式
             edgeSymbolSize: 10,
-        }]
+        }],
+        mode: 2
     };
     
     // graph_chart.clear();
@@ -141,15 +142,12 @@ function set_in_graph_opt() {
         app.focus_musician(artist_name);
     })
 
-    graph_fs_chart.setOption(graph_option);
-    graph_fs_chart.off("click");
-    graph_fs_chart.on("click", function(params) {
-        artist_name = params.data.name;
-        app.focus_musician(artist_name);
-    })
-    
     let delay = 2000 * Math.random() + 500;
     setTimeout(()=>{graph_chart.hideLoading();}, delay);
+    // full screen
+    if (app.fullscreen == 2) {
+        update_fs_graph()
+    }
 };
 
 // 按流派划分图
@@ -304,7 +302,8 @@ function set_out_graph_opt() {
             center: [rect.width/2, rect.height/2],
             edgeSymbol: ['none', 'arrow'], // 边的样式
             edgeSymbolSize: 15,
-        }]
+        }],
+        mode: 1
     };
 
     graph_chart.setOption(graph_option);
@@ -314,14 +313,10 @@ function set_out_graph_opt() {
         app.inspecting_genre = genre;
         app.select_genre(genre);
     })
-
-    graph_fs_chart.setOption(graph_option);
-    graph_fs_chart.off("click");
-    graph_fs_chart.on("click", function(params) {
-        genre = params.data.name;
-        app.inspecting_genre = genre;
-        app.select_genre(genre);
-    })
+    // fullscreen
+    if (app.fullscreen == 2) {
+        update_fs_graph()
+    }
 };
 
 function set_artist_graph_opt() {
@@ -599,7 +594,8 @@ function set_artist_graph_opt() {
                 position: "top"
             },
             edgeSymbol: ['none', 'arrow']
-        }]    
+        }],
+        mode: 3    
     }
     // graph_chart.clear();
 
@@ -610,18 +606,43 @@ function set_artist_graph_opt() {
         app.focus_musician(artist_name);
     })
     graph_chart.hideLoading();
-
-    graph_fs_chart.setOption(graph_option);
-    graph_fs_chart.off("click");
-    graph_fs_chart.on("click", function(params) {
-        artist_name = params.data.name;
-        app.focus_musician(artist_name);
-    })
-    graph_fs_chart.hideLoading();
+    // fullscreen
+    if (app.fullscreen == 2) {
+        update_fs_graph()
+    }
 }
 
 function update_graph() {
     set_out_graph_opt();
+}
+
+function update_fs_graph() {
+    graph_fs_chart.dispose();
+    graph_fs_dom = null
+
+    graph_fs_dom = document.getElementById("fullscreen-graph");
+    graph_fs_chart = echarts.init(graph_fs_dom);
+    graph_option = graph_chart.getOption();
+    graph_option["center"] = [300, 200]
+
+    graph_fs_chart.setOption(graph_option);
+    console.log(graph_option["mode"])
+    
+    graph_mode = graph_option["mode"]
+    if (graph_mode == 1) {
+        graph_fs_chart.off("click");
+        graph_fs_chart.on("click", function(params) {
+            genre = params.data.name;
+            app.inspecting_genre = genre;
+            app.select_genre(genre);
+        })
+    } else if (graph_mode == 2 || graph_mode == 3) {
+        graph_fs_chart.off("click");
+        graph_fs_chart.on("click", function(params) {
+            artist_name = params.data.name;
+            app.focus_musician(artist_name);
+        }) 
+    }
 }
 
 async function init_graph() {
