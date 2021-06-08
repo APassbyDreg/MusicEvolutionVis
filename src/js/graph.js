@@ -131,6 +131,7 @@ function set_in_graph_opt() {
             graph_modeSymbol: ['none', 'arrow'], // 边的样式
             edgeSymbolSize: 10,
         }],
+        center: [],
         mode: 2
     };
     
@@ -303,6 +304,7 @@ function set_out_graph_opt() {
             edgeSymbol: ['none', 'arrow'], // 边的样式
             edgeSymbolSize: 15,
         }],
+        center: [],
         mode: 1
     };
 
@@ -595,6 +597,7 @@ function set_artist_graph_opt() {
             },
             edgeSymbol: ['none', 'arrow']
         }],
+        center: [],
         mode: 3    
     }
     // graph_chart.clear();
@@ -622,8 +625,14 @@ function update_fs_graph() {
 
     graph_fs_dom = document.getElementById("fullscreen-graph");
     graph_fs_chart = echarts.init(graph_fs_dom);
+    graph_fs_chart.resize({
+        width: graph_fs_dom.offsetWidth * 0.7,
+        height: graph_fs_dom.offsetHeight * 0.85
+    })
+
     graph_option = graph_chart.getOption();
-    graph_option["center"] = [300, 200]
+    graph_option["zoom"] = 2.0
+    console.log(graph_option)
 
     graph_fs_chart.setOption(graph_option);
     console.log(graph_option["mode"])
