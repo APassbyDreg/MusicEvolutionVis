@@ -181,7 +181,7 @@ function set_out_graph_opt() {
                 // color: 'black'
             },
             itemStyle: {
-                color: app.genre_colors[i]
+                color: cate_data[i].itemStyle.color
             }
         }
         node_data.push(node)
@@ -299,6 +299,7 @@ function set_out_graph_opt() {
     };
     // graph_chart.clear();
     graph_chart.setOption(graph_option);
+    graph_chart.off("click");
     graph_chart.on("click", function(params) {
         genre = params.data.name;
         app.inspecting_genre = genre;
