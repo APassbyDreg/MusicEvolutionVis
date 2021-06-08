@@ -3,6 +3,24 @@
     display: inline-block;
 }
 
+#table-main {
+    pointer-events: fill;
+    position: inherit;
+    top: 25%;
+    height: 50%;
+    width: 100%;
+    border-radius: 0 3vh 3vh 0;
+    background-color: rgb(255, 250, 239);
+}
+
+#table-content {
+    width: 90%;
+    height: 100%;
+    position: inherit;
+    top: 0;
+    left: 0;
+}
+
 #table-slider {
     z-index: 100;
     pointer-events: fill;
@@ -53,7 +71,7 @@
 #table-decoration {
     position: inherit;
     top: 20%;
-    left: 91.5%;
+    right: 3%;
     height: 60%;
     width: 3%;
     border-radius: 1vh;
@@ -64,4 +82,14 @@
 #table-decoration-texture {
     height: 100%;
     filter: brightness(1.8) hue-rotate(9deg);
+}
+
+#table-fullscreen-btn {
+    z-index: 1000;
+    width: 4%;
+    height: 5%;
+    position: inherit;
+    top: 47.5%;
+    right: 6%;
+    text-align: center;
 }

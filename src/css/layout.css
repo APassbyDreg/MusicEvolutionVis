@@ -5,6 +5,29 @@ body {
     top: 0;
 }
 
+.fullscreen-container {
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+#fullscreen-view {
+    background-color: rgba(255, 250, 245, 0.8);
+    z-index: 2000;
+    opacity: 0;
+    transition: all ease 0.25s;
+    pointer-events: none;
+}
+
+#normal-view {
+    background-color: white;
+    z-index: 1000;
+    opacity: 1;
+    transition: all ease 0.2s;
+}
+
 #app {
     width: 100vw;
     height: 100vh;
@@ -60,16 +83,6 @@ body {
     top: calc(50vh - min(30vh, 15vw));
     height: min(60vh, 30vw);
     width: 55vw;
-}
-
-#table-main {
-    pointer-events: fill;
-    position: inherit;
-    top: 25%;
-    height: 50%;
-    width: 100%;
-    border-radius: 0 4vh 4vh 0;
-    background-color: rgb(255, 250, 239);
 }
 
 #graph-view {

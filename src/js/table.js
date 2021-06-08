@@ -1,4 +1,4 @@
-var table_dom = document.getElementById("table-main");
+var table_dom = document.getElementById("table-content");
 var table_chart = echarts.init(table_dom);
 var attrs = ["danceability", "energy", "valence", "tempo", "loudness", "mode", "key", "acousticness", "instrumentalness", "liveness", "speechiness", "explicit", "duration_ms", "popularity"];
 // 所有流派信息
@@ -35,9 +35,9 @@ var table_option = {
     },
     grid: {
         height: '85%',
-        width: '85%',
-        top: '11%',
-        left: '5%',
+        width: '90%',
+        top: '7.5%',
+        left: '10%',
     },
     xAxis: {
         type: 'category',

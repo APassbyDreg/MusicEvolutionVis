@@ -1,0 +1,89 @@
+.fullscreen-showing {
+    opacity: 0.9 !important;
+    pointer-events: all !important;
+}
+
+.blured {
+    filter: blur(10px);
+}
+
+#fullscreen-back-btn {
+    z-index: 100;
+    width: min(3vh, 50px);
+    height: min(3vh, 50px);
+    position: inherit;
+    right: 5%;
+    top: 3vh;
+}
+
+.fullscreen-out-btn {
+    pointer-events: all;
+    cursor: pointer;
+    transition: all linear 0.15s;
+    opacity: 0.5;
+    transform: scale(1.15);
+}
+.fullscreen-out-btn:hover {
+    opacity: 1.0;
+    transform: scale(1.0);
+}
+
+.fullscreen-in-btn {
+    pointer-events: all;
+    cursor: pointer;
+    transition: all linear 0.15s;
+    opacity: 0.5;
+    transform: scale(1.0);
+}
+.fullscreen-in-btn:hover {
+    opacity: 1.0;
+    transform: scale(1.15);
+}
+
+#fullscreen-title {
+    z-index: 50;
+    position: absolute;
+    top: 3vh;
+    left: 0;
+    width: 100vw;
+    height: 5vh;
+    font-size: 5vh;
+    line-height: 5vh;
+    font-weight: bolder;
+    text-align: center;
+}
+
+#fullscreen-content {
+    position: absolute;
+    top: 10vh;
+    left: 0;
+    width: 100vw;
+    height: 85vh;
+}
+
+#fullscreen-table {
+    width: 90%;
+    height: 100%;
+    position: inherit;
+    left: 5%;
+    top: 0;
+    background-color: #ccc;
+}
+
+#fullscreen-graph {
+    background-color: #666;
+    width: 75%;
+    height: 100%;
+    position: inherit;
+    left: 5%;
+    top: 0;
+}
+
+#fullscreen-graph-info {
+    background-color: #999;
+    width: 15%;
+    height: 100%;
+    position: inherit;
+    right: 5%;
+    top: 0;
+}
