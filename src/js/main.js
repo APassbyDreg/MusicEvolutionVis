@@ -89,9 +89,9 @@ let appconf = {
                 当弹幕被点击时触发的事件
             `
             this.inspecting_musician = name; // 这个值标识了选中的音乐家名字
-            console.log(name);
+            // console.log(name);
             let genre = name2genre_map[name]; // 需要设置该音乐家所属的流派
-            console.log(genre);
+            // console.log(genre);
             this.select_genre(genre);
         },
         select_genre: function(name = "") {

@@ -317,7 +317,7 @@ function set_artist_graph_opt() {
     using_cates.add(center_genre);
 
     var center_musision_data = artist_influence_danmaku_data[center_musision];
-    console.log(center_musision_data);
+    // console.log(center_musision_data);
     // 第一层节点
     var influence_list = [];
     var influence_by_list = [];
@@ -371,8 +371,8 @@ function set_artist_graph_opt() {
         return (b.value - a.value)
     })
     influence_by_list = influence_by_list.splice(0,5);
-    console.log(influence_list);
-    console.log(influence_by_list);
+    // console.log(influence_list);
+    // console.log(influence_by_list);
 
     var link_data = [];
     var sorted_value = [];
@@ -502,9 +502,9 @@ function set_artist_graph_opt() {
         using_cates.add(item.category);
     })
     using_cates = Array.from(using_cates);
-    console.log(link_data)
-    console.log(node_data)
-    console.log(using_cates)
+    // console.log(link_data)
+    // console.log(node_data)
+    // console.log(using_cates)
     
     var graph_option = {
         tooltip: {},
