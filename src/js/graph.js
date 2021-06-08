@@ -3,6 +3,8 @@ var graph_chart = echarts.init(graph_dom);
 
 // 按艺术家划分图
 function set_in_graph_opt() {
+    graph_chart.showLoading();
+
     var start = app.time_range[0];
     start = parseInt(start / 10) * 10;
     var end = app.time_range[1];
@@ -14,7 +16,7 @@ function set_in_graph_opt() {
     var node_dict = {};
     var artist_id_dict = {};
     var artist_id = 0;
-    var max_num = 20;
+    var max_num = 25;
     var cate_set = new Set();
 
     for (year in artist_influence_data) {
@@ -57,16 +59,18 @@ function set_in_graph_opt() {
     for (key in node_dict) {
         var n = node_dict[key];
         if (n.value > max_value) max_value = n.value;
-        var size = n.value;
-        if (size < 15) size = 15;
-        if (size > 60) size = 60;
-        n.symbolSize = size;
         node_data_tmp.push(n);
     }
     node_data_tmp.sort(function(a, b) {
         return b.value - a.value;
     });
     var node_data = node_data_tmp.splice(0, max_num);
+    var min_value = node_data[node_data.length - 1].value;
+    node_data.forEach((n) => {
+        let size = 15 + 30 * (n.value - min_value) / (max_value - min_value);
+        n.symbolSize = size;
+    })
+
     var categ_data = Array.from(cate_set)
     var force = (max_value / 10 > 10) ? 10 : max_value / 10;
     // console.log(node_data);
@@ -79,7 +83,10 @@ function set_in_graph_opt() {
             if (node_data.find(function(node) { return (artist == node.name) })) {
                 influence_map[artist].forEach(function(element) {
                     if (node_data.find(function(node) { return (element == node.name) })) {
-                        link_set.add({ source: artist_id_dict[artist], target: artist_id_dict[element] });
+                        link_set.add({ 
+                            source: artist_id_dict[artist], 
+                            target: artist_id_dict[element] 
+                        });
                     }
                 })
             }
@@ -108,13 +115,17 @@ function set_in_graph_opt() {
                 curveness: 0.4
             },
             force: {
-                repulsion: force * 200
+                repulsion: [800, 1600],
+                gravity: 0.5,
+                edgeLength: [100, 200],
+                friction: 0.5,
+                // layoutAnimation: false
             },
             emphasis: {
                 focus: 'adjacency',
                 blurScope: 'coordinateSystem'
             },
-            draggable: true,
+            roam: true,
             graph_modeSymbol: ['none', 'arrow'], // 边的样式
             edgeSymbolSize: 10,
         }]
@@ -123,6 +134,13 @@ function set_in_graph_opt() {
     // graph_chart.clear();
     graph_chart.setOption(graph_option);
     graph_chart.off("click");
+    graph_chart.on("click", function(params) {
+        artist_name = params.data.name;
+        app.focus_musician(artist_name);
+    })
+    
+    let delay = 2000 * Math.random() + 500;
+    setTimeout(()=>{graph_chart.hideLoading();}, delay);
 };
 
 // 按流派划分图
@@ -132,12 +150,20 @@ function set_out_graph_opt() {
     var end = app.time_range[1];
     end = (parseInt(end / 10) + 1) * 10;
     var using_genres = app.using_genres;
-
     var graph_option;
     var ori_cate_data = ["Electronic", "R&B;", "Vocal", "Pop/Rock", "Religious", "Blues", "Country", "Jazz", "Latin", "New Age", "Folk", "International", "Reggae", "Comedy/Spoken", "Easy Listening", "Classical", "Avant-Garde", "Stage & Screen", "Children's"];
-    cate_data = ori_cate_data.map(function(cate) {
-        return { name: cate };
-    });
+    var cate_data = [];
+
+    ori_cate_data.forEach(function(cate, idx) {
+        if (using_genres[idx]) {
+            cate_data.push({
+                name: cate,
+                itemStyle: {
+                    color: app.genre_colors[idx]
+                }
+            })
+        };
+    })
 
     // 初始化node,link数据
     var node_data = new Array();
@@ -169,20 +195,18 @@ function set_out_graph_opt() {
             continue;
         }
         year_data = portion_influence_data[key];
-        for (var i = 0; i < ori_cate_data.length; i++) {
-            if (!using_genres[i]) continue;
-            var cate = ori_cate_data[i];
+        for (var i = 0; i < cate_data.length; i++) {
+            var cate = cate_data[i].name;
             if (year_data[cate] == undefined) {
                 continue;
             }
             var portion_data = year_data[cate];
             var node_value = 0;
-            for (var j = 0; j < ori_cate_data.length; j++) {
-                if (i == j || portion_data[ori_cate_data[j]] == undefined) {
+            for (var j = 0; j < cate_data.length; j++) {
+                if (i == j || portion_data[cate_data[j].name] == undefined) {
                     continue;
                 }
-                if (!using_genres[j]) continue;
-                node_value += portion_data[ori_cate_data[j]];
+                node_value += portion_data[cate_data[j].name];
             }
             node_data[i]["value"] = node_data[i]["value"] + node_value;
             if (node_value > max_value) {
@@ -193,7 +217,7 @@ function set_out_graph_opt() {
         }
     }
 
-    for (var i = 0; i < ori_cate_data.length; i++) {
+    for (var i = 0; i < cate_data.length; i++) {
         var size = 40 * (1.0 * (node_data[i]["value"] - min_value)) / (max_value - min_value)
         if (size < 20) {
             size = 20;
@@ -202,13 +226,12 @@ function set_out_graph_opt() {
     }
     // console.log(node_data);
     // link data
-    for (var i = 0; i < ori_cate_data.length; i++) {
-        if (!using_genres[i]) continue;
-        var src_cate = ori_cate_data[i];
-        for (var j = 0; j < ori_cate_data.length; j++) {
-            if (i == j || !using_genres[j]) continue;
+    for (var i = 0; i < cate_data.length; i++) {
+        var src_cate = cate_data[i].name;
+        for (var j = 0; j < cate_data.length; j++) {
+            if (i == j) continue;
             var value = 0;
-            var tar_cate = ori_cate_data[j];
+            var tar_cate = cate_data[j].name;
             for (var key in portion_influence_data) {
                 if (Number(key) < start || Number(key) > end) {
                     continue;
@@ -240,6 +263,7 @@ function set_out_graph_opt() {
     }
     // console.log(link_data);
 
+    var rect = graph_dom.getBoundingClientRect()
     var graph = { nodes: node_data, links: link_data, categories: cate_data }
     graph_option = {
         tooltip: {},
@@ -266,7 +290,9 @@ function set_out_graph_opt() {
                 focus: 'adjacency',
                 blurScope: 'coordinateSystem'
             },
-            draggable: true,
+            roam: false,
+            zoom: 1,
+            center: [rect.width/2, rect.height/2],
             edgeSymbol: ['none', 'arrow'], // 边的样式
             edgeSymbolSize: 15,
         }]
@@ -282,6 +308,8 @@ function set_out_graph_opt() {
 };
 
 function set_artist_graph_opt() {
+    graph_chart.showLoading();
+
     var start = app.time_range[0];
     start = parseInt(start / 10) * 10;
     var end = app.time_range[1];
@@ -293,7 +321,13 @@ function set_artist_graph_opt() {
     cate_data = ori_cate_data.map(function(cate) {
         return { name: cate };
     });
+    var color_map = {};
+    ori_cate_data.forEach(function(item, idx) {
+        color_map[item] = app.genre_colors[idx];
+    })
+
     var using_cates = new Set();
+    var first_level_num = 3, second_level_num = 2;
 
     var node_data = [
         {
@@ -310,6 +344,9 @@ function set_artist_graph_opt() {
                 fontStyle: "italic",
                 fontWeight: "bolder",
                 fontSize: 20
+            },
+            itemStyle: {
+                color: color_map[center_genre]
             },
             symbol: "diamond"
         }
@@ -338,10 +375,16 @@ function set_artist_graph_opt() {
                     label: {
                         fontWeight: "bold",
                         fontSize: 14
+                    },
+                    itemStyle: {
+                        color: color_map[genre]
                     }
                 });
                 name2id_map[artist] = id_cnt;
                 id_cnt += 1;
+
+                // bar info
+                app.influence_genres[ori_cate_data.indexOf(genre)] += 1;
             })
         }
 
@@ -355,10 +398,16 @@ function set_artist_graph_opt() {
                     label: {
                         fontWeight: "bold",
                         fontSize: 14
+                    },
+                    itemStyle: {
+                        color: color_map[genre]
                     }
                 });
                 name2id_map[artist] = id_cnt;
                 id_cnt += 1;
+
+                // bar info
+                app.influence_genres[ori_cate_data.indexOf(genre)] += 1;
             })
         }
     }
@@ -366,11 +415,11 @@ function set_artist_graph_opt() {
     influence_list.sort(function(a, b) {
         return (b.value - a.value)
     })
-    influence_list = influence_list.splice(0,5);
+    influence_list = influence_list.splice(0,first_level_num);
     influence_by_list.sort(function(a, b) {
         return (b.value - a.value)
     })
-    influence_by_list = influence_by_list.splice(0,5);
+    influence_by_list = influence_by_list.splice(0,first_level_num);
     // console.log(influence_list);
     // console.log(influence_by_list);
 
@@ -382,7 +431,7 @@ function set_artist_graph_opt() {
             source: "0",
             target: item.id.toString(),
             lineStyle: {
-                color: "rgba(235, 27, 183, 1)" ,
+                color: color_map[center_genre] ,
                 width: 3
             }
         });
@@ -394,7 +443,7 @@ function set_artist_graph_opt() {
             source: item.id.toString(),
             target: "0",
             lineStyle: {
-                color: "rgba(42, 158, 176, 1)" ,
+                color: color_map[item.category],
                 width: 3
             }
         });
@@ -411,7 +460,7 @@ function set_artist_graph_opt() {
 
     node_data.forEach(function(item) {
         if (item.id == 0) return;
-        item['symbolSize'] = 25 + 3 * symbolSize_list[item.name];
+        item['symbolSize'] = 20 + 3 * symbolSize_list[item.name];
     });
     
     // 第二层节点
@@ -436,9 +485,12 @@ function set_artist_graph_opt() {
                         name: artist, 
                         category: genre, 
                         value: (artist_influence_value_data[artist] == undefined) ? 1: artist_influence_value_data[artist],
-                        symbolSize: 20,
+                        symbolSize: 15,
                         label: {
                             fontSize: 9
+                        },
+                        itemStyle: {
+                            color: color_map[genre]
                         }
                     });
                     name2id_map[artist] = id_cnt;
@@ -457,6 +509,9 @@ function set_artist_graph_opt() {
                         symbolSize: 20,
                         label: {
                             fontSize: 9
+                        },
+                        itemStyle: {
+                            color: color_map[genre]
                         }
                     });
                     name2id_map[artist] = id_cnt;
@@ -468,14 +523,14 @@ function set_artist_graph_opt() {
         second_infulence_nodes.sort(function(a, b) {
             return (b.value - a.value);
         })
-        second_infulence_nodes = second_infulence_nodes.splice(0,3);
+        second_infulence_nodes = second_infulence_nodes.splice(0,second_level_num);
         second_infulence_nodes.forEach(function(item) {
             second_layer_nodes.push(item);
             second_layer_links.push({
                 source: name2id_map[second_artist].toString(),
                 target: name2id_map[item.name].toString(),
                 lineStyle: {
-                    color: "#fac858"
+                    color: color_map[node_data[i].category]
                 }
             });
         });
@@ -483,14 +538,14 @@ function set_artist_graph_opt() {
         second_infulence_by_nodes.sort(function(a, b) {
             return (b.value - a.value);
         })
-        second_infulence_by_nodes = second_infulence_by_nodes.splice(0, 3);
+        second_infulence_by_nodes = second_infulence_by_nodes.splice(0, second_level_num);
         second_infulence_by_nodes.forEach(function(item) {
             second_layer_nodes.push(item);
             second_layer_links.push({
-                source: name2id_map[second_artist].toString(),
-                target: name2id_map[item.name].toString(),
+                source: name2id_map[item.name].toString(),
+                target: name2id_map[second_artist].toString(),
                 lineStyle: {
-                    color: "#5470c6"
+                    color: color_map[item.category]
                 }
             });
         });
@@ -516,7 +571,7 @@ function set_artist_graph_opt() {
             links:link_data,
             draggable:true,
             force: {
-                repulsion: 200
+                repulsion: 300
             },
             emphasis: {
                 focus: 'adjacency',
@@ -532,6 +587,11 @@ function set_artist_graph_opt() {
     // graph_chart.clear();
     graph_chart.setOption(graph_option);
     graph_chart.off("click");
+    graph_chart.on("click", function(params) {
+        artist_name = params.data.name;
+        app.focus_musician(artist_name);
+    })
+    graph_chart.hideLoading();
 }
 
 function update_graph() {

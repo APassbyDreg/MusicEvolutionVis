@@ -7,7 +7,7 @@ let appconf = {
             attrs: ["danceability", "energy", "valence", "tempo", "loudness", "mode", "key", "acousticness", "instrumentalness", "liveness", "speechiness", "explicit", "duration_ms", "popularity"],
             table_mode_list: ["Attrs", "Timeline"],
             genres: ["Electronic", "R&B;", "Vocal", "Pop/Rock", "Religious", "Blues", "Country", "Jazz", "Latin", "New Age", "Folk", "International", "Reggae", "Comedy/Spoken", "Easy Listening", "Classical", "Avant-Garde", "Stage & Screen", "Children's"],
-            genre_colors: ['#e78b8b', '#e78ba8', '#e78bc5', '#e78be2', '#cf8be7', '#b28be7', '#948be7', '#8b9ee7', '#8bbbe7', '#8bd8e7', '#8be7d8', '#8be7bb', '#8be79e', '#94e78b', '#b2e78b', '#cfe78b', '#e7e28b', '#e7c58b', '#e7a88b'],
+            genre_colors: ['#f09090', '#dea487', '#f0d090', '#d6d675', '#d0f090', '#93da70', '#90f090', '#83d9a0', '#90f0d0', '#75d2d2', '#90d0f0', '#6c8fd5', '#9090f0', '#9070d1', '#d090f0', '#e184e1', '#f090d0', '#dc87a3', '#c0c0c0'],
             musicians: [],
             // APP 状态值
             time_range: [1921, 2020], // 时间区域
@@ -19,6 +19,7 @@ let appconf = {
             title: "TITLE", // 表题
             bar_title: "BAR_TITLE", // bar 标题
             animating: false, // 是否在动画
+            influence_genres: Array(19).fill(0), // 影响流派数量
         }
     },
     methods: {
@@ -110,10 +111,14 @@ let appconf = {
                 // 图中点击
                 if (this.inspecting_musician == "") {
                     set_in_graph_opt();
+                    update_artist_bar();
                 } else {
+                    this.influence_genres = Array(19).fill(0);
                     set_artist_graph_opt();
+                    update_bar_for_artist();
+                    console.log(this.influence_genres);
                 }
-                update_artist_bar();
+                // update_artist_bar();
                 update_table();
             }
         },

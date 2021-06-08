@@ -6,29 +6,12 @@ var port_chart = echarts.init(port_part);
 
 var portion_csv;
 var artist_json_bar; // 用于绘制音乐家portion
-var genre_list = ["Electronic", "R&B", "Vocal", "Pop/Rock", "Religious", "Blues", "Country", "Jazz", "Latin", "New Age", "Folk", "International", "Reggae", "Comedy/Spoken", "Easy Listening", "Classical", "Avant-Garde", "Stage & Screen", "Children's"];
+var genre_list = ["Electronic", "R&B;", "Vocal", "Pop/Rock", "Religious", "Blues", "Country", "Jazz", "Latin", "New Age", "Folk", "International", "Reggae", "Comedy/Spoken", "Easy Listening", "Classical", "Avant-Garde", "Stage & Screen", "Children's"];
 // var now_genre_list = genre_list.concat();
-var bar_color_dict = {
-    "Electronic": '#e78b8b',
-    "R&B;": '#e78ba8',
-    "Vocal": '#e78bc5',
-    "Pop/Rock": '#e78be2',
-    "Religious": '#cf8be7',
-    "Blues": '#b28be7',
-    "Country": '#948be7',
-    "Jazz": '#8b9ee7',
-    "Latin": '#8bbbe7',
-    "New Age": '#8bd8e7',
-    "Folk": '#8be7d8',
-    "International": '#8be7bb',
-    "Reggae": '#8be79e',
-    "Comedy/Spoken": '#94e78b',
-    "Easy Listening": '#b2e78b',
-    "Classical": '#cfe78b',
-    "Avant-Garde": '#e7e28b',
-    "Stage & Screen": '#e7c58b',
-    "Children's": '#e7a88b'
-};
+var bar_color_dict = {};
+for (var i = 0; i < 19; i++) {
+    bar_color_dict[app.genres[i]] = app.genre_colors[i];
+}
 
 function draw_bra(start, end, portion_csv, select_genre, color_list) {
     now_genre_list = genre_list.concat();
@@ -252,16 +235,27 @@ async function init_bar() {
     if (port_opt && typeof port_opt === 'object') {
         port_chart.setOption(port_opt);
     }
+    port_chart.on("click", function(params) {
+        // console.log(params);
+        genre = params.seriesName;
+        app.inspecting_genre = genre;
+        app.select_genre(genre);
+    })
     app.bar_title = "All Genres";
 }
 
 function update_bar() {
     // console.log(select_genre);
     port_opt = draw_bra(app.time_range[0], app.time_range[1], portion_csv, app.using_genres, app.genre_colors);
-    // console.log(port_opt);
     if (port_opt && typeof port_opt === 'object') {
         port_chart.setOption(port_opt, true);
     }
+    port_chart.on("click", function(params) {
+        genre = params.seriesName;
+        // console.log(genre)
+        app.inspecting_genre = genre;
+        app.select_genre(genre);
+    })
     app.bar_title = "All Genres";
 }
 
@@ -270,5 +264,91 @@ function update_artist_bar() {
     if (opt && typeof opt === 'object') {
         port_chart.setOption(opt, true);
     }
+    port_chart.on("click", function(params) {
+        genre = params.seriesName;
+        app.inspecting_genre = genre;
+        app.select_genre(genre);
+    })
     app.bar_title = "Genres Affected " + app.inspecting_genre;
+}
+
+function update_bar_for_artist() {
+    // 为选中的音乐家更新流派
+    // console.log(app.influence_genres)
+    let now_influence_genres = {}; // 修改后最终输入option的数据
+    let now_genre_list;
+    var total_length = 0;
+    var now_port_colors = [];
+    port_option = {
+        color: now_port_colors,
+        tooltip: {},
+        animationDurationUpdate: 100,
+        legend: {
+            data: now_genre_list,
+            show: false
+        },
+        grid: {
+            left: '-10px',
+            right: '-10px',
+            bottom: '0%',
+            top: '0%',
+            containLabel: false
+        },
+        xAxis: {
+            type: 'category',
+            data: ['portion'],
+            axisLabel: {
+                show: false
+            },
+        },
+        yAxis: {
+            type: 'value',
+            axisLabel: {
+                show: false
+            }
+        },
+        series: []
+    };
+    for (var i = 0; i < 19; i++) {
+        // now_influence_genres[app.genres[i]] = app.influence_genres[i];
+        // console.log(now_influence_genres)
+        input_num = Math.pow(app.influence_genres[i], scale_fact);
+        new_part = {
+            name: app.genres[i],
+            type: 'bar',
+            stack: 'total',
+            label: {
+                show: false
+            },
+            emphasis: {
+                focus: 'series',
+            },
+            tooltip: {
+                formatter: (v) => {
+                    // console.log(v);
+                    var orig = Math.round(Math.pow(v.data, 1 / scale_fact));
+                    return `<b>${v.seriesName}:</b> ${orig}`;
+                }
+            },
+            data: [input_num]
+        };
+        total_length += input_num;
+        port_option["series"].push(new_part);
+    }
+    port_option["series"].sort(function(first, second) {
+        return (second["data"][0] - first["data"][0]);
+    });
+    for (var i = 0; i < port_option["series"].length; i++) {
+        now_port_colors.push(bar_color_dict[port_option["series"][i]["name"]]);
+    }
+    port_option.yAxis.max = total_length;
+    port_option.color = now_port_colors;
+    port_chart.setOption(port_option, true);
+    port_chart.on("click", function(params) {
+        genre = params.seriesName;
+        app.inspecting_genre = genre;
+        app.inspecting_musician = "";
+        app.select_genre(genre);
+    })
+    app.bar_title = "Genres Affected " + app.inspecting_musician;
 }

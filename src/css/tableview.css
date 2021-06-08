@@ -58,4 +58,10 @@
     width: 3%;
     border-radius: 1vh;
     background-color: rgb(243, 172, 18);
+    overflow: hidden;
+}
+
+#table-decoration-texture {
+    height: 100%;
+    filter: brightness(1.8) hue-rotate(9deg);
 }
