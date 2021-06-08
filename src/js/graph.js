@@ -1,5 +1,7 @@
 var graph_dom = document.getElementById("graph-main");
+var graph_fs_dom = document.getElementById("fullscreen-graph");
 var graph_chart = echarts.init(graph_dom);
+var graph_fs_chart = echarts.init(graph_fs_dom);
 
 // 按艺术家划分图
 function set_in_graph_opt() {
@@ -135,6 +137,13 @@ function set_in_graph_opt() {
     graph_chart.setOption(graph_option);
     graph_chart.off("click");
     graph_chart.on("click", function(params) {
+        artist_name = params.data.name;
+        app.focus_musician(artist_name);
+    })
+
+    graph_fs_chart.setOption(graph_option);
+    graph_fs_chart.off("click");
+    graph_fs_chart.on("click", function(params) {
         artist_name = params.data.name;
         app.focus_musician(artist_name);
     })
@@ -297,13 +306,20 @@ function set_out_graph_opt() {
             edgeSymbolSize: 15,
         }]
     };
-    // graph_chart.clear();
+
     graph_chart.setOption(graph_option);
     graph_chart.off("click");
     graph_chart.on("click", function(params) {
         genre = params.data.name;
         app.inspecting_genre = genre;
-        // set_in_graph_opt(app.time_range[0], app.time_range[1], genre);
+        app.select_genre(genre);
+    })
+
+    graph_fs_chart.setOption(graph_option);
+    graph_fs_chart.off("click");
+    graph_fs_chart.on("click", function(params) {
+        genre = params.data.name;
+        app.inspecting_genre = genre;
         app.select_genre(genre);
     })
 };
@@ -586,6 +602,7 @@ function set_artist_graph_opt() {
         }]    
     }
     // graph_chart.clear();
+
     graph_chart.setOption(graph_option);
     graph_chart.off("click");
     graph_chart.on("click", function(params) {
@@ -593,6 +610,14 @@ function set_artist_graph_opt() {
         app.focus_musician(artist_name);
     })
     graph_chart.hideLoading();
+
+    graph_fs_chart.setOption(graph_option);
+    graph_fs_chart.off("click");
+    graph_fs_chart.on("click", function(params) {
+        artist_name = params.data.name;
+        app.focus_musician(artist_name);
+    })
+    graph_fs_chart.hideLoading();
 }
 
 function update_graph() {
