@@ -4,18 +4,18 @@ var attrs = ["danceability", "energy", "valence", "tempo", "loudness", "mode", "
 // 所有流派信息
 var genres = ["Electronic", "R&B;", "Vocal", "Pop/Rock", "Religious", "Blues", "Country", "Jazz", "Latin", "New Age", "Folk", "International", "Reggae", "Comedy/Spoken", "Easy Listening", "Classical", "Avant-Garde", "Stage & Screen", "Children's", "Unknown"];
 // 表格坐标轴尺度
-var table_yrange = 11;   // 纵列的刻度，即分成几格
+var table_yrange = 11; // 纵列的刻度，即分成几格
 var table_xrange = attrs.length;
 
 var i = 0;
 var table_arr = new Array(table_yrange)
 table_arr[0] = 'low'
-table_arr[table_yrange-1] = 'high'
+table_arr[table_yrange - 1] = 'high'
 
 // 表格数据
-var full_table_data;    // 百年所有数据，不分流派
-var full_table_data_genre;  // 按年统计，按流派分类的数据
-var table_data = new Array(table_xrange*table_yrange);; //这个是直接给table用的数据，[纵坐标，横坐标，值]
+var full_table_data; // 百年所有数据，不分流派
+var full_table_data_genre; // 按年统计，按流派分类的数据
+var table_data = new Array(table_xrange * table_yrange);; //这个是直接给table用的数据，[纵坐标，横坐标，值]
 var table_mode = 'Attrs'; // 标记表格类型，是'Attrs'属性图，还是单一属性'Timeline'
 var table_attr; //标记年趋势视图下是哪个属性信息
 // 表格数据起止年份
@@ -89,27 +89,28 @@ var table_option = {
 };
 
 // 表格数据初始化
-async function init_table(){
-    app.title = "Attributes"
+async function init_table() {
+    app.table_title = "Attributes";
+    app.table_subtitle = "all genres";
     table_start = app.time_range[0];
     table_end = app.time_range[1];
 
     await readJson("./assets/data/attr_by_year_with_genre.json")
     full_table_data_genre = window.__loaded_json;
     table_xrange = attrs.length;
-    
+
     update_table_data();
     var series = init_table_series();
-    var col3 = table_data.map(function(value,index) { return value[2]; });
+    var col3 = table_data.map(function(value, index) { return value[2]; });
     table_option.series = series;
     table_option.visualMap.max = Math.max.apply(null, col3);
     table_option.xAxis.data = attrs;
     table_option.xAxis.axisLabel.interval = '0';
     table_chart.setOption(table_option);
     table_chart.on("click", function(params) {
-        if (attrs.indexOf(params.value)!=-1){
+        if (attrs.indexOf(params.value) != -1) {
             app.inspecting_attr = attrs.indexOf(params.value)
-        }else{
+        } else {
             app.inspecting_attr = params.data[0];
         }
         change_table_attr();
@@ -117,45 +118,48 @@ async function init_table(){
 }
 
 // 每次更改时间区间或者流派信息时候更改表格数据
-function update_table(){
+function update_table() {
     // 更新选择的流派、模式
     table_mode = app.table_mode_list[app.table_mode];
-    if (app.inspecting_genre){
+    if (app.inspecting_genre) {
         var tmp_genres = new Array(table_genres.length).fill(false)
-        var idx = genres.findIndex(value=>value == app.inspecting_genre)
+        var idx = genres.findIndex(value => value == app.inspecting_genre)
         tmp_genres[idx] = true;
         table_genres = tmp_genres;
-    }else{
+    } else {
         table_genres = app.using_genres;
     }
     // 更新时间区间
     table_start = app.time_range[0];
     table_end = app.time_range[1];
-    
+
     // 重新计算区间内的数值
-    if (table_mode == 'Attrs'){
+    if (table_mode == 'Attrs') {
         // 对数值进行清零
         table_xrange = attrs.length;
         update_table_data();
         table_option.xAxis.data = attrs;
         table_option.xAxis.axisLabel.interval = '0';
-        app.title = "Attributes"
-    }else if (table_mode == 'Timeline'){
+        app.table_title = "Attributes";
+        if (app.inspecting_genre == "") {
+            app.table_subtitle = "all genres";
+        } else app.table_subtitle = app.inspecting_genre;
+    } else if (table_mode == 'Timeline') {
         table_xrange = table_end - table_start;
         change_table_attr();
         update_table_timeline();
-        table_option.xAxis.axisLabel.interval = Math.round(table_xrange/20);
+        table_option.xAxis.axisLabel.interval = Math.round(table_xrange / 20);
     }
     // 更新数据域
     var series = init_table_series();
-    var col3 = table_data.map(function(value,index) { return value[2]; });
+    var col3 = table_data.map(function(value, index) { return value[2]; });
     table_option.series = series;
     table_option.visualMap.max = Math.max.apply(null, col3);
     table_chart.setOption(table_option);
     table_chart.on("click", function(params) {
-        if (attrs.indexOf(params.value)!=-1){
+        if (attrs.indexOf(params.value) != -1) {
             app.inspecting_attr = attrs.indexOf(params.value)
-        }else{
+        } else {
             app.inspecting_attr = params.data[0];
         }
         change_table_attr();
@@ -163,23 +167,23 @@ function update_table(){
 }
 
 // 在属性视图中用于更新图表数据
-function update_table_data(){
-    for (i = 0; i < table_xrange; i++){
-        for (j = 0; j < table_yrange; j++){
-            table_data[i*table_yrange+j] = [i, j, 0];
+function update_table_data() {
+    for (i = 0; i < table_xrange; i++) {
+        for (j = 0; j < table_yrange; j++) {
+            table_data[i * table_yrange + j] = [i, j, 0];
         }
     }
-    for (i = table_start; i <= table_end; i++){
-        if (full_table_data_genre[i+""]){
+    for (i = table_start; i <= table_end; i++) {
+        if (full_table_data_genre[i + ""]) {
             // 统计流派信息
-            for (var ii=0; ii < genres.length; ii++){
-                if (table_genres[ii]){
+            for (var ii = 0; ii < genres.length; ii++) {
+                if (table_genres[ii]) {
                     genre = genres[ii]
-                    for (k = 0; k < table_xrange; k++){
-                        for (j = 0; j < table_yrange; j++){
-                            table_data[k*table_yrange+j][2] += full_table_data_genre[i+""][genre][attrs[k]][j];
+                    for (k = 0; k < table_xrange; k++) {
+                        for (j = 0; j < table_yrange; j++) {
+                            table_data[k * table_yrange + j][2] += full_table_data_genre[i + ""][genre][attrs[k]][j];
                         }
-                    }    
+                    }
                 }
             }
         }
@@ -187,23 +191,23 @@ function update_table_data(){
 }
 
 // 在时间趋势视图中用于更新图表数据
-function update_table_timeline(){
-    table_data = new Array(table_xrange*table_yrange);
-    for (i = 0; i < table_xrange; i++){
-        for (j = 0; j < table_yrange; j++){
-            table_data[i*table_yrange+j] = [i, j, 0];
+function update_table_timeline() {
+    table_data = new Array(table_xrange * table_yrange);
+    for (i = 0; i < table_xrange; i++) {
+        for (j = 0; j < table_yrange; j++) {
+            table_data[i * table_yrange + j] = [i, j, 0];
         }
     }
     var table_year = new Array(table_xrange);
-    for (i = 0; i < table_xrange; i++){
-        year_i = table_start+i;
-        table_year[i] = year_i+"";
-        if (full_table_data_genre[year_i+""]){
-            for (var ii = 0; ii < genres.length; ii++){
-                if(table_genres[ii]){
+    for (i = 0; i < table_xrange; i++) {
+        year_i = table_start + i;
+        table_year[i] = year_i + "";
+        if (full_table_data_genre[year_i + ""]) {
+            for (var ii = 0; ii < genres.length; ii++) {
+                if (table_genres[ii]) {
                     genre = genres[ii]
-                    for (j = 0; j < table_yrange; j++){
-                        table_data[i*table_yrange+j][2] += full_table_data_genre[year_i+""][genre][table_attr+""][j];
+                    for (j = 0; j < table_yrange; j++) {
+                        table_data[i * table_yrange + j][2] += full_table_data_genre[year_i + ""][genre][table_attr + ""][j];
                     }
                 }
             }
@@ -212,25 +216,32 @@ function update_table_timeline(){
     table_option.xAxis.data = table_year;
 }
 
-function change_table_attr(){
+function change_table_attr() {
     var param_idx = app.inspecting_attr;
     table_attr = attrs[param_idx];
     app.inspecting_attr = param_idx;
     app.table_mode = 1
-    app.title = table_attr;
+    var new_table_attr = table_attr.split('');
+    new_table_attr[0] = new_table_attr[0].toUpperCase();
+    new_table_attr = new_table_attr.join('');
+    // console.log(new_table_attr[0]);
+    app.table_title = new_table_attr;
+    if (app.inspecting_genre == "") {
+        app.table_subtitle = "all genres";
+    } else app.table_subtitle = app.inspecting_genre;
     table_mode = 'Timeline';
-    table_xrange = table_end-table_start;
+    table_xrange = table_end - table_start;
     update_table_timeline()
     var series = init_table_series();
-    var col3 = table_data.map(function(value,index) { return value[2]; });
+    var col3 = table_data.map(function(value, index) { return value[2]; });
     table_option.series = series;
     table_option.visualMap.max = Math.max.apply(null, col3);
-    table_option.xAxis.axisLabel.interval = Math.round(table_xrange/20);
+    table_option.xAxis.axisLabel.interval = Math.round(table_xrange / 20);
     table_chart.setOption(table_option);
     table_chart.off("click");
 }
 
-function init_table_series(){
+function init_table_series() {
     return [{
         type: 'heatmap',
         data: table_data,
