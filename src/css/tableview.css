@@ -57,14 +57,27 @@
 #table-title {
     pointer-events: all;
     position: inherit;
-    top: 8%;
+    top: 5%;
     right: 0%;
     width: 50%;
     height: 10%;
     color: white;
     font-size: 4vh;
     text-align: right;
-    font-weight: bold;
+    font-weight: bolder;
+    font-style: italic;
+}
+
+#table-subtitle {
+    pointer-events: all;
+    position: inherit;
+    top: 13.5%;
+    right: 0%;
+    width: 50%;
+    height: 10%;
+    color: white;
+    font-size: 1.6vh;
+    text-align: right;
     font-style: italic;
 }
 

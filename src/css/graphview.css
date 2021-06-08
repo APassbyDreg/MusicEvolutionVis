@@ -28,10 +28,10 @@
 
 #graph-fullscreen-btn {
     position: inherit;
-    left: calc((90% - 60vh) / 1.6 + 55vh);
-    top: 6%;
-    width: 5.5%;
-    height: 5.5%;
+    left: calc((90% - 60vh) / 1.6 + 61vh);
+    top: 47.4%;
+    width: 5%;
+    height: 5.4%;
     z-index: 1000;
     text-align: center;
 }

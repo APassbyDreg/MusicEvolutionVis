@@ -55,35 +55,46 @@
 
 #fullscreen-content {
     position: absolute;
-    top: 10vh;
-    left: 0;
-    width: 100vw;
-    height: 85vh;
+    top: 12.5%;
+    left: 5%;
+    width: 90%;
+    height: 80%;
+    border: #666 2px solid;
+    border-radius: 20px;
 }
 
 #fullscreen-table {
-    width: 90%;
+    width: 100%;
     height: 100%;
     position: inherit;
-    left: 5%;
+    left: 0;
     top: 0;
-    background-color: #ccc;
+    /* background-color: #ccc; */
+    border-radius: 20px;
 }
 
 #fullscreen-graph {
-    background-color: #666;
-    width: 75%;
+    /* background-color: #666; */
+    width: 80%;
     height: 100%;
     position: inherit;
-    left: 5%;
+    left: 0;
     top: 0;
 }
 
 #fullscreen-graph-info {
-    background-color: #999;
-    width: 15%;
+    /* background-color: #999; */
+    width: 20%;
     height: 100%;
     position: inherit;
-    right: 5%;
+    right: 0;
     top: 0;
+}
+
+.fullscreen-genre-label {
+    border-radius: 10px;
+}
+
+.fullscreen-genre-title {
+    font-weight: bold;
 }

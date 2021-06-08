@@ -17,9 +17,10 @@ let appconf = {
             inspecting_genre: "", // 图显示细节所属的流派
             inspecting_musician: "", // 图的中心音乐家
             inspecting_attr: 0, // 表展示的属性视图的属性
-            title: "TITLE", // 表题
+            table_title: "TITLE", // 表题
+            table_subtitle: "SUBTITLE", // 表副标题，大部分时间和图标题差不多
             bar_title: "BAR_TITLE", // bar 标题
-            graph_title: "GRAPH_TITLE", // 图标题
+            // graph_title: "GRAPH_TITLE", // 图标题
             fullscreen_title: "FULLSCREEN_TITLE",
             animating: false, // 是否在动画
             influence_genres: Array(19).fill(0), // 影响流派数量
@@ -29,7 +30,12 @@ let appconf = {
         set_fullscreen: function (state) {
             this.fullscreen = state;
             if (state == 1) this.fullscreen_title = this.title;
-            if (state == 2) this.fullscreen_title = this.graph_title;
+            if (state == 2) this.fullscreen_title = this.bar_title;
+
+            setTimeout(() => {
+                let d = document.getElementById("fullscreen-graph");
+                console.log(d.getBoundingClientRect());
+            }, 1);
         },
         reset: function() {
             this.inspecting_attr = 0;

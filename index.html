@@ -46,8 +46,25 @@
                 <div id="fullscreen-graph">
                 
                 </div>
-                <div id="fullscreen-graph-info">
-
+                <div id="fullscreen-graph-info" 
+                     class="d-flex align-items-center">
+                    <div class="container">
+                        <div class="row m-2" 
+                             v-for="i in genres.length">
+                            <div v-if="using_genres[i-1]" class="w-100 h-100 row">
+                                <div class="col-sm-2 fullscreen-genre-label" 
+                                     :style="`background-color: ${genre_colors[i-1]}`">
+                                    <!-- &nbsp; -->
+                                </div>
+                                <div class="col-sm-8 fullscreen-genre-title">
+                                    {{genres[i-1]}}
+                                </div>
+                                <div class="col-sm-2 text-end">
+                                    {{i}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -87,7 +104,10 @@
                         <img src="./assets/icons/fullscreen-in-black.svg" alt="back" class="w-100, h-100">
                     </div>
                     <div id="table-title">
-                        {{title}}
+                        {{table_title}}
+                    </div>
+                    <div id="table-subtitle">
+                        of {{table_subtitle}}
                     </div>
                     <div id="table-main">
                         <div id="table-content">
