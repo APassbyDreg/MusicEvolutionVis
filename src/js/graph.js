@@ -123,6 +123,7 @@ function set_in_graph_opt() {
                 friction: 0.5,
                 // layoutAnimation: false
             },
+            draggable: false,
             emphasis: {
                 focus: 'adjacency',
                 blurScope: 'coordinateSystem'
@@ -587,6 +588,7 @@ function set_artist_graph_opt() {
             force: {
                 repulsion: 300
             },
+            draggable: false,
             emphasis: {
                 focus: 'adjacency',
                 blurScope: 'coordinateSystem'
@@ -625,19 +627,22 @@ function update_fs_graph() {
 
     graph_fs_dom = document.getElementById("fullscreen-graph");
     graph_fs_chart = echarts.init(graph_fs_dom);
-    graph_fs_chart.resize({
-        width: graph_fs_dom.offsetWidth * 0.7,
-        height: graph_fs_dom.offsetHeight * 0.85
-    })
+    // graph_fs_chart.resize({
+    //     width: graph_fs_dom.offsetWidth * 0.7,
+    //     height: graph_fs_dom.offsetHeight * 0.85
+    // })
 
     graph_option = graph_chart.getOption();
-    graph_option["zoom"] = 2.0
-    console.log(graph_option)
+    graph_mode = graph_option["mode"]
+    graph_option.series[0]["center"] = [graph_fs_dom.offsetWidth * 0.5, graph_fs_dom.offsetHeight * 0.5]
+    if (graph_mode != 1) {
+        graph_option.series[0]["zoom"] = 1.5
+    }
 
     graph_fs_chart.setOption(graph_option);
     console.log(graph_option["mode"])
     
-    graph_mode = graph_option["mode"]
+    
     if (graph_mode == 1) {
         graph_fs_chart.off("click");
         graph_fs_chart.on("click", function(params) {
