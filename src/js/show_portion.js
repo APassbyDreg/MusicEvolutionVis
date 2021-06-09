@@ -252,12 +252,17 @@ function update_bar() {
         port_chart.setOption(port_opt, true);
     }
     port_chart.on("click", function(params) {
-        genre = params.seriesName;
-        // console.log(genre)
-        app.inspecting_genre = genre;
-        app.select_genre(genre);
-    })
-    app.bar_title = "All Genres";
+            genre = params.seriesName;
+            // console.log(genre)
+            app.inspecting_genre = genre;
+            app.select_genre(genre);
+        })
+        // 根据app.using_genres制定bar title
+    if (app.using_genres.indexOf(true) > -1) {
+        if (app.using_genres.indexOf(false) > -1) {
+            app.bar_title = "Part of the genres";
+        } else app.bar_title = "All genres";
+    } else app.bar_title = "Nothing to show";
 }
 
 function update_artist_bar() {
