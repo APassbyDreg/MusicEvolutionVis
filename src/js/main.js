@@ -4,9 +4,9 @@ let appconf = {
     data() {
         return {
             // 属性值
-            attrs: ["danceability", "energy", "valence", "tempo", "loudness", "mode", "key", "acousticness", "instrumentalness", "liveness", "speechiness", "explicit", "duration_ms", "popularity"],
+            attrs: ["Danceability", "Energy", "Valence", "Tempo", "Loudness", "Mode", "Key", "Acousticness", "Instrumentalness", "Liveness", "Speechiness", "Explicit", "Duration", "Popularity"],
             table_mode_list: ["Attrs", "Timeline"],
-            genres: ["Electronic", "R&B;", "Vocal", "Pop/Rock", "Religious", "Blues", "Country", "Jazz", "Latin", "New Age", "Folk", "International", "Reggae", "Comedy/Spoken", "Easy Listening", "Classical", "Avant-Garde", "Stage & Screen", "Children's"],
+            genres: ["Electronic", "R&B;", "Vocal", "Pop/Rock", "Religious", "Blues", "Country", "Jazz", "Latin", "New Age", "Folk", "International", "Reggae", "Comedy/Spoken", "Easy Listening", "Classical", "Avant-Garde", "Stage&Screen", "Children's"],
             genre_colors: ['#f09090', '#dea487', '#f0d090', '#d6d675', '#d0f090', '#93da70', '#90f090', '#83d9a0', '#90f0d0', '#75d2d2', '#90d0f0', '#6c8fd5', '#9090f0', '#9070d1', '#d090f0', '#e184e1', '#f090d0', '#dc87a3', '#c0c0c0'],
             musicians: [],
             // APP 状态值
@@ -29,9 +29,14 @@ let appconf = {
     methods: {
         set_fullscreen: function(state) {
             this.fullscreen = state;
-            if (state == 1) this.fullscreen_title = this.title;
+            if (state == 1) {
+                this.fullscreen_title = this.title;
+                setTimeout(() => {
+                    
+                }, 1);
+            }
             if (state == 2) {
-                this.fullscreen_title = this.graph_title;
+                this.fullscreen_title = this.bar_title;
                 setTimeout(()=> {
                     update_fs_graph();
                 }, 1)

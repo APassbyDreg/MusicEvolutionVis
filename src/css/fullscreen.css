@@ -89,12 +89,21 @@
     position: inherit;
     right: 0;
     top: 0;
+    border-radius: 0 20px 20px 0px;
+    background-color: white;
+    box-shadow: -10px 0 10px -10px rgba(0, 0, 0, 0.4);
 }
 
 .fullscreen-genre-label {
     border-radius: 10px;
+    transform: scale(0.8);
 }
 
 .fullscreen-genre-title {
     font-weight: bold;
+    font-size: small;
+}
+
+.fullscreen-genre-info {
+    font-size: small;
 }

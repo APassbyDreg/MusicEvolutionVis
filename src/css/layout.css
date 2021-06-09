@@ -14,7 +14,7 @@ body {
 }
 
 #fullscreen-view {
-    background-color: rgba(255, 252, 250, 0.9);
+    background-color: rgba(255, 255, 255, 0.9);
     z-index: 2000;
     opacity: 0;
     transition: all ease 0.25s;
@@ -139,6 +139,7 @@ body {
 }
 
 #controls {
+    z-index: 5000;
     pointer-events: all;
     position: absolute;
     right: 4vh;

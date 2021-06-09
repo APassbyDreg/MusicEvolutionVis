@@ -30,8 +30,11 @@
             <div id="fullscreen-back-btn" class="fullscreen-out-btn" @click="set_fullscreen(0)">
                 <img src="./assets/icons/fullscreen-out-black.svg" alt="back" class="w-100, h-100">
             </div>
-            <div id="fullscreen-title">
-                {{fullscreen_title}}
+            <div id="fullscreen-title" v-if="fullscreen == 1">
+                {{table_title}}
+            </div>
+            <div id="fullscreen-title" v-if="fullscreen == 2">
+                {{bar_title}}
             </div>
             <div id="fullscreen-content" 
                  class="fullscreen-container" 
@@ -48,8 +51,8 @@
                 </div>
                 <div id="fullscreen-graph-info" 
                      class="d-flex align-items-center">
-                    <div class="container">
-                        <div class="row m-2" 
+                    <div class="container" style="transform: translateX(10px);">
+                        <div class="row small m-1" 
                              v-for="i in genres.length">
                             <div v-if="using_genres[i-1]" class="w-100 h-100 row">
                                 <div class="col-sm-2 fullscreen-genre-label" 
@@ -59,7 +62,7 @@
                                 <div class="col-sm-8 fullscreen-genre-title">
                                     {{genres[i-1]}}
                                 </div>
-                                <div class="col-sm-2 text-end">
+                                <div class="col-sm-2 text-end fullscreen-genre-info">
                                     {{i}}
                                 </div>
                             </div>
@@ -106,6 +109,7 @@
                     <div id="table-title">
                         {{table_title}}
                     </div>
+                    <div id="table-title-decoration"></div>
                     <div id="table-subtitle">
                         of {{table_subtitle}}
                     </div>
@@ -154,7 +158,7 @@
             
                 <div id="graph-view">
                     <div id="graph-fullscreen-btn" class="fullscreen-in-btn" @click="set_fullscreen(2)">
-                        <img src="./assets/icons/fullscreen-in-white.svg" alt="back" class="w-100, h-100">
+                        <img src="./assets/icons/fullscreen-in-black.svg" alt="back" class="w-100, h-100">
                     </div>
                     <div id="graph-main">
             
