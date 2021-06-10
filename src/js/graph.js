@@ -69,7 +69,12 @@ function set_in_graph_opt() {
     var node_data = node_data_tmp.splice(0, max_num);
     var min_value = node_data[node_data.length - 1].value;
     node_data.forEach((n) => {
-        let size = 15 + 30 * (n.value - min_value) / (max_value - min_value);
+        if (max_value == min_value) {
+            let size = 40
+        } else {
+            let size = 15 + 30 * (n.value - min_value) / (max_value - min_value);
+        }
+        
         n.symbolSize = size;
     })
 
@@ -196,7 +201,7 @@ function set_out_graph_opt() {
         node_data.push(node)
     }
 
-    var max_value = 0;
+    var max_value = -1;
     var min_value = 9999;
     // node data
     for (var key in portion_influence_data) {
@@ -218,16 +223,20 @@ function set_out_graph_opt() {
                 node_value += portion_data[cate_data[j].name];
             }
             node_data[i]["value"] = node_data[i]["value"] + node_value;
-            if (node_value > max_value) {
-                max_value = node_value;
-            } else if (node_value != 0 && node_value < min_value) {
-                min_value = node_value;
+            if (node_data[i]["value"] > max_value) {
+                max_value = node_data[i]["value"];
+            } else if (node_data[i]["value"] < min_value) {
+                min_value = node_data[i]["value"];
             }
         }
     }
 
     for (var i = 0; i < cate_data.length; i++) {
-        var size = 40 * (1.0 * (node_data[i]["value"] - min_value)) / (max_value - min_value)
+        if (max_value == min_value) {
+            size = 40;
+        } else {
+            var size = 40 * (1.0 * (node_data[i]["value"] - min_value)) / (max_value - min_value)
+        }
         if (size < 20) {
             size = 20;
         }
