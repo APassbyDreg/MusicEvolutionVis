@@ -69,10 +69,11 @@ function set_in_graph_opt() {
     var node_data = node_data_tmp.splice(0, max_num);
     var min_value = node_data[node_data.length - 1].value;
     node_data.forEach((n) => {
+        var size
         if (max_value == min_value) {
-            let size = 40
+            size = 40
         } else {
-            let size = 15 + 30 * (n.value - min_value) / (max_value - min_value);
+            size = 15 + 30 * (n.value - min_value) / (max_value - min_value);
         }
         
         n.symbolSize = size;
@@ -232,10 +233,11 @@ function set_out_graph_opt() {
     }
 
     for (var i = 0; i < cate_data.length; i++) {
+        var size
         if (max_value == min_value) {
             size = 40;
         } else {
-            var size = 40 * (1.0 * (node_data[i]["value"] - min_value)) / (max_value - min_value)
+            size = 40 * (1.0 * (node_data[i]["value"] - min_value)) / (max_value - min_value)
         }
         if (size < 20) {
             size = 20;
