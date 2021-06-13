@@ -142,7 +142,12 @@ function update_table() {
         table_option.xAxis.axisLabel.interval = '0';
         app.table_title = "Attributes";
         if (app.inspecting_genre == "") {
-            app.table_subtitle = "all genres";
+            if (app.using_genres.filter((e) => {return e}).length == 19) {
+                app.table_subtitle = "all genres";
+            }
+            else {
+                app.table_subtitle = "selected genres";
+            }
         } else app.table_subtitle = app.inspecting_genre;
     } else if (table_mode == 'Timeline') {
         table_xrange = table_end - table_start;
@@ -227,7 +232,12 @@ function change_table_attr() {
     // console.log(new_table_attr[0]);
     app.table_title = new_table_attr;
     if (app.inspecting_genre == "") {
-        app.table_subtitle = "all genres";
+        if (app.using_genres.filter((e) => {return e}).length == 19) {
+            app.table_subtitle = "all genres";
+        }
+        else {
+            app.table_subtitle = "selected genres";
+        }
     } else app.table_subtitle = app.inspecting_genre;
     table_mode = 'Timeline';
     table_xrange = table_end - table_start;

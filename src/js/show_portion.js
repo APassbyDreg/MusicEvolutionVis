@@ -260,7 +260,7 @@ function update_bar() {
         // 根据app.using_genres制定bar title
     if (app.using_genres.indexOf(true) > -1) {
         if (app.using_genres.indexOf(false) > -1) {
-            app.bar_title = "Part of the genres";
+            app.bar_title = "Selected genres";
         } else app.bar_title = "All genres";
     } else app.bar_title = "Nothing to show";
 }
