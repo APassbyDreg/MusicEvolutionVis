@@ -32,7 +32,7 @@ let appconf = {
             if (state == 1) {
                 this.fullscreen_title = this.title;
                 setTimeout(() => {
-                    
+                    update_fs_table();
                 }, 1);
             }
             if (state == 2) {
@@ -126,7 +126,6 @@ let appconf = {
                 set_out_graph_opt();
                 // init_bar();
                 update_bar();
-                update_table();
             } else {
                 // 图中点击
                 if (this.inspecting_musician == "") {
@@ -139,8 +138,8 @@ let appconf = {
                     console.log(this.influence_genres);
                 }
                 // update_artist_bar();
-                update_table();
             }
+            update_table();
         },
         toggle_animation: function() {
             if (this.animating) {
