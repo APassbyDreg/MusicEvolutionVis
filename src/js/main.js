@@ -1,12 +1,10 @@
-const { loadModule } = window['vue3-sfc-loader'];
-
 let appconf = {
     data() {
         return {
             // 属性值
             attrs: ["Danceability", "Energy", "Valence", "Tempo", "Loudness", "Mode", "Key", "Acousticness", "Instrumentalness", "Liveness", "Speechiness", "Explicit", "Duration", "Popularity"],
             table_mode_list: ["Attrs", "Timeline"],
-            genres: ["Electronic", "R&B;", "Vocal", "Pop/Rock", "Religious", "Blues", "Country", "Jazz", "Latin", "New Age", "Folk", "International", "Reggae", "Comedy/Spoken", "Easy Listening", "Classical", "Avant-Garde", "Stage&Screen", "Children's"],
+            genres: ["Electronic", "R&B", "Vocal", "Pop/Rock", "Religious", "Blues", "Country", "Jazz", "Latin", "New Age", "Folk", "International", "Reggae", "Comedy/Spoken", "Easy Listening", "Classical", "Avant-Garde", "Stage&Screen", "Children's"],
             genre_colors: ['#f09090', '#dea487', '#f0d090', '#d6d675', '#d0f090', '#93da70', '#90f090', '#83d9a0', '#90f0d0', '#75d2d2', '#90d0f0', '#6c8fd5', '#9090f0', '#9070d1', '#d090f0', '#e184e1', '#f090d0', '#dc87a3', '#c0c0c0'],
             musicians: [],
             // APP 状态值
@@ -20,7 +18,6 @@ let appconf = {
             table_title: "TITLE", // 表题
             table_subtitle: "SUBTITLE", // 表副标题，大部分时间和图标题差不多
             bar_title: "BAR_TITLE", // bar 标题
-            // graph_title: "GRAPH_TITLE", // 图标题
             fullscreen_title: "FULLSCREEN_TITLE",
             animating: false, // 是否在动画
             influence_genres: Array(19).fill(0), // 影响流派数量
