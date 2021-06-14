@@ -37,6 +37,11 @@ let appconf = {
                 setTimeout(()=> {
                     update_fs_graph();
                 }, 1)
+            }else{
+                this.fullscreen_title = this.title;
+                setTimeout(() => {
+                    update_table();
+                }, 1);
             }
         },
         reset: function() {

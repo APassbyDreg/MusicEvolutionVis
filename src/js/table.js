@@ -112,7 +112,7 @@ async function init_table() {
     table_chart.on("click", function(params) {
         if (attrs.indexOf(params.value) != -1) {
             app.attr_change(attrs.indexOf(params.value)+1);
-        } else {
+        } else if (app.table_mode == 0) {
             app.attr_change(params.data[0]+1)
         }
     })
@@ -161,11 +161,11 @@ function update_table() {
     var col3 = table_data.map(function(value, index) { return value[2]; });
     table_option.series = series;
     table_option.visualMap.max = Math.max.apply(null, col3);
-    table_chart.setOption(table_option);
+    set_table_option();
     table_chart.on("click", function(params) {
         if (attrs.indexOf(params.value) != -1) {
             app.attr_change(attrs.indexOf(params.value)+1);
-        } else {
+        } else if (app.table_mode == 0) {
             app.attr_change(params.data[0]+1)
         }
     })
@@ -180,15 +180,17 @@ function update_fs_table() {
     table_fs_dom = document.getElementById("fullscreen-table");
     table_fs_chart = echarts.init(table_fs_dom);
 
-    table_option.grid.left = '2.5%';
-
-    table_fs_chart.setOption(table_option);
+    var series = init_table_series();
+    var col3 = table_data.map(function(value, index) { return value[2]; });
+    table_option.series = series;
+    table_option.visualMap.max = Math.max.apply(null, col3);
+    set_table_option();
     
     table_fs_chart.off("click");
     table_fs_chart.on("click", function(params) {
         if (attrs.indexOf(params.value) != -1) {
             app.attr_change(attrs.indexOf(params.value)+1);
-        } else {
+        } else if (app.table_mode == 0) {
             app.attr_change(params.data[0]+1);
         }
     })
@@ -251,7 +253,7 @@ function change_table_attr() {
     var param_idx = app.inspecting_attr;
     table_attr = attrs[param_idx];
     app.inspecting_attr = param_idx;
-    app.table_mode = 1
+    // app.table_mode = 1
     var new_table_attr = table_attr.split('');
     new_table_attr[0] = new_table_attr[0].toUpperCase();
     new_table_attr = new_table_attr.join('');
@@ -273,19 +275,20 @@ function change_table_attr() {
     table_option.series = series;
     table_option.visualMap.max = Math.max.apply(null, col3);
     table_option.xAxis.axisLabel.interval = Math.round(table_xrange / 20);
-    table_option.grid.left = '2.5%';
-    table_fs_chart.setOption(table_option);
-    table_option.grid.left = '5%';
-    table_chart.setOption(table_option);
+    set_table_option();
     table_chart.off("click");
 }
 
 
 // 生成表格数据格式的偷懒内容
 function init_table_series() {
+    var label_show = (app.fullscreen==1 && app.table_mode==0);
     return [{
         type: 'heatmap',
         data: table_data,
+        label:{
+            show: label_show,
+        },
         emphasis: {
             itemStyle: {
                 shadowBlur: 10,
@@ -293,4 +296,17 @@ function init_table_series() {
             }
         }
     }]
+}
+
+function set_table_option() {
+    table_option.grid.width = "90%";
+    table_option.visualMap.show = true;
+    table_option.xAxis.axisLabel.fontSize = 18;
+    table_option.xAxis.axisLabel.margin = 20;
+    table_fs_chart.setOption(table_option);
+    table_option.grid.width = "95%";
+    table_option.visualMap.show = false;
+    table_option.xAxis.axisLabel.fontSize = 10;
+    table_option.xAxis.axisLabel.margin = 10;
+    table_chart.setOption(table_option);
 }
