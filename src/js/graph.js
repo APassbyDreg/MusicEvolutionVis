@@ -12,7 +12,7 @@ function set_in_graph_opt() {
     var end = app.time_range[1];
     end = (parseInt(end / 10) + 1) * 10;
     var genre = app.inspecting_genre;
-    var inspecting_musician = app.inspecting_musician;
+    var genre_color = app.genre_colors[app.genres.indexOf(genre)]
 
     var graph_option;
     var node_dict = {};
@@ -39,6 +39,9 @@ function set_in_graph_opt() {
                     end: end,
                     category: artist,
                     symbolSize: 10,
+                    itemStyle: {
+                        color: genre_color
+                    }
                 }
                 node_dict[artist] = artist_map;
             } else {
@@ -224,26 +227,25 @@ function set_out_graph_opt() {
                 node_value += portion_data[cate_data[j].name];
             }
             node_data[i]["value"] = node_data[i]["value"] + node_value;
-            if (node_data[i]["value"] > max_value) {
-                max_value = node_data[i]["value"];
-            } else if (node_data[i]["value"] < min_value) {
-                min_value = node_data[i]["value"];
-            }
         }
     }
-
-    for (var i = 0; i < cate_data.length; i++) {
-        var size
-        if (max_value == min_value) {
-            size = 40;
-        } else {
-            size = 40 * (1.0 * (node_data[i]["value"] - min_value)) / (max_value - min_value)
+    node_data.forEach(function(node) {
+        if (node["value"] > max_value) {
+            max_value = node["value"];
+        } else if (node["value"] < min_value) {
+            min_value = node["value"];
         }
-        if (size < 20) {
-            size = 20;
-        }
-        node_data[i]["symbolSize"] = size;
-    }
+    })
+    console.log(node_data)
+    const nonlinear_coef = 0.9;
+    let max_interp = Math.pow(max_value, nonlinear_coef);
+    let min_interp = Math.pow(min_value, nonlinear_coef);
+    for (var i = 0; i < cate_data.length; i++) {
+        var size
+        let val_interp = Math.pow(node_data[i]["value"], nonlinear_coef);
+        size = 20 + 100 * (val_interp - min_interp) / (max_interp - min_interp)
+        node_data[i]["symbolSize"] = size;
+    }
     // console.log(node_data);
     // link data
     for (var i = 0; i < cate_data.length; i++) {
@@ -347,10 +349,14 @@ function set_artist_graph_opt() {
     cate_data = ori_cate_data.map(function(cate) {
         return { name: cate };
     });
-    var color_map = {};
-    ori_cate_data.forEach(function(item, idx) {
-        color_map[item] = app.genre_colors[idx];
+    var color_map = [];
+    app.genre_colors_raw.forEach(function(hsl) {
+        color_map.push(hsl);
     })
+
+    var center_hsl = color_map[ori_cate_data.indexOf(center_genre)];
+    var center_rgb = hslToRgb(center_hsl[0], center_hsl[1], center_hsl[2]);
+    console.log(center_hsl, center_rgb);
 
     var using_cates = new Set();
     var first_level_num = 3, second_level_num = 2;
@@ -372,7 +378,7 @@ function set_artist_graph_opt() {
                 fontSize: 20
             },
             itemStyle: {
-                color: color_map[center_genre]
+                color: `#${center_rgb[0].toString(16)}${center_rgb[1].toString(16)}${center_rgb[2].toString(16)}`
             },
             symbol: "diamond"
         }
@@ -393,6 +399,10 @@ function set_artist_graph_opt() {
         
         for (genre in year_data["influence"]) {
             year_data["influence"][genre].forEach(function(artist) {
+                let hsl = app.genre_colors_raw[ori_cate_data.indexOf(genre)];
+                hsl[1] -= 0.1;
+                hsl[2] -= 0.1;
+                let rgb = hslToRgb(hsl[0], hsl[1], hsl[2]);
                 influence_list.push({
                     id: id_cnt,
                     name: artist, 
@@ -403,7 +413,7 @@ function set_artist_graph_opt() {
                         fontSize: 14
                     },
                     itemStyle: {
-                        color: color_map[genre]
+                        color: `#${rgb[0].toString(16)}${rgb[1].toString(16)}${rgb[2].toString(16)}`
                     }
                 });
                 name2id_map[artist] = id_cnt;
@@ -416,6 +426,13 @@ function set_artist_graph_opt() {
 
         for (genre in year_data["influence_by"]) {
             year_data["influence_by"][genre].forEach(function(artist) {
+                let hsl = app.genre_colors_raw[ori_cate_data.indexOf(genre)];
+                console.log(hsl)
+                hsl[1] -= 0.2;
+                hsl[2] -= 0.2;
+                let rgb = hslToRgb(hsl[0], hsl[1], hsl[2]);
+                console.log(rgb)
+                
                 influence_by_list.push({
                     id: id_cnt,
                     name: artist, 
@@ -426,7 +443,7 @@ function set_artist_graph_opt() {
                         fontSize: 14
                     },
                     itemStyle: {
-                        color: color_map[genre]
+                        color: `#${rgb[0].toString(16)}${rgb[1].toString(16)}${rgb[2].toString(16)}`
                     }
                 });
                 name2id_map[artist] = id_cnt;
