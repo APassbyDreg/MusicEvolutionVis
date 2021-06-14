@@ -12,7 +12,7 @@ function set_in_graph_opt() {
     var end = app.time_range[1];
     end = (parseInt(end / 10) + 1) * 10;
     var genre = app.inspecting_genre;
-    var genre_color = app.genre_colors[app.genres.indexOf(genre)]
+    var genre_color = app.genre_colors_raw[app.genres.indexOf(genre)]
 
     var graph_option;
     var node_dict = {};
@@ -20,6 +20,8 @@ function set_in_graph_opt() {
     var artist_id = 0;
     var max_num = 25;
     var cate_set = new Set();
+    var line_hsl = app.genre_colors_raw[app.genres.indexOf(genre)]
+    let line_color = hslToRgb(line_hsl[0], 0.5, 0.25)
 
     for (year in artist_influence_data) {
         if (year < start || year > end) continue;
@@ -31,6 +33,7 @@ function set_in_graph_opt() {
                 artist_id += 1
             }
             if (node_dict[artist] == undefined) {
+                let rgb = hslToRgb(genre_color[0], genre_color[1] + Math.random() * 0.2 - 0.1, genre_color[2] + Math.random() * 0.2 - 0.1)
                 var artist_map = {
                     id: artist_id_dict[artist],
                     name: artist,
@@ -40,7 +43,7 @@ function set_in_graph_opt() {
                     category: artist,
                     symbolSize: 10,
                     itemStyle: {
-                        color: genre_color
+                        color: `#${rgb[0].toString(16)}${rgb[1].toString(16)}${rgb[2].toString(16)}`
                     }
                 }
                 node_dict[artist] = artist_map;
@@ -96,7 +99,10 @@ function set_in_graph_opt() {
                     if (node_data.find(function(node) { return (element == node.name) })) {
                         link_set.add({ 
                             source: artist_id_dict[artist], 
-                            target: artist_id_dict[element] 
+                            target: artist_id_dict[element],
+                            lineStyle: {
+                                color: `#${line_color[0].toString(16)}${line_color[1].toString(16)}${line_color[2].toString(16)}`
+                            }
                         });
                     }
                 })
@@ -138,7 +144,7 @@ function set_in_graph_opt() {
                 blurScope: 'coordinateSystem'
             },
             roam: true,
-            graph_modeSymbol: ['none', 'arrow'], // 边的样式
+            // graph_modeSymbol: ['none', 'arrow'], // 边的样式
             edgeSymbolSize: 10,
         }],
         center: [],
@@ -349,14 +355,10 @@ function set_artist_graph_opt() {
     cate_data = ori_cate_data.map(function(cate) {
         return { name: cate };
     });
-    var color_map = [];
-    app.genre_colors_raw.forEach(function(hsl) {
-        color_map.push(hsl);
+    var color_map = {};
+    ori_cate_data.forEach(function(item, idx) {
+        color_map[item] = app.genre_colors[idx]
     })
-
-    var center_hsl = color_map[ori_cate_data.indexOf(center_genre)];
-    var center_rgb = hslToRgb(center_hsl[0], center_hsl[1], center_hsl[2]);
-    console.log(center_hsl, center_rgb);
 
     var using_cates = new Set();
     var first_level_num = 3, second_level_num = 2;
@@ -378,7 +380,7 @@ function set_artist_graph_opt() {
                 fontSize: 20
             },
             itemStyle: {
-                color: `#${center_rgb[0].toString(16)}${center_rgb[1].toString(16)}${center_rgb[2].toString(16)}`
+                color: color_map[genre]
             },
             symbol: "diamond"
         }
@@ -399,10 +401,6 @@ function set_artist_graph_opt() {
         
         for (genre in year_data["influence"]) {
             year_data["influence"][genre].forEach(function(artist) {
-                let hsl = app.genre_colors_raw[ori_cate_data.indexOf(genre)];
-                hsl[1] -= 0.1;
-                hsl[2] -= 0.1;
-                let rgb = hslToRgb(hsl[0], hsl[1], hsl[2]);
                 influence_list.push({
                     id: id_cnt,
                     name: artist, 
@@ -413,7 +411,7 @@ function set_artist_graph_opt() {
                         fontSize: 14
                     },
                     itemStyle: {
-                        color: `#${rgb[0].toString(16)}${rgb[1].toString(16)}${rgb[2].toString(16)}`
+                        color: color_map[genre]
                     }
                 });
                 name2id_map[artist] = id_cnt;
@@ -426,13 +424,6 @@ function set_artist_graph_opt() {
 
         for (genre in year_data["influence_by"]) {
             year_data["influence_by"][genre].forEach(function(artist) {
-                let hsl = app.genre_colors_raw[ori_cate_data.indexOf(genre)];
-                console.log(hsl)
-                hsl[1] -= 0.2;
-                hsl[2] -= 0.2;
-                let rgb = hslToRgb(hsl[0], hsl[1], hsl[2]);
-                console.log(rgb)
-                
                 influence_by_list.push({
                     id: id_cnt,
                     name: artist, 
@@ -443,7 +434,7 @@ function set_artist_graph_opt() {
                         fontSize: 14
                     },
                     itemStyle: {
-                        color: `#${rgb[0].toString(16)}${rgb[1].toString(16)}${rgb[2].toString(16)}`
+                        color: color_map[genre]
                     }
                 });
                 name2id_map[artist] = id_cnt;

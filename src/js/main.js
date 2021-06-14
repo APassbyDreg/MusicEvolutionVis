@@ -4,7 +4,7 @@ let appconf = {
             // 属性值
             attrs: ["Danceability", "Energy", "Valence", "Tempo", "Loudness", "Mode", "Key", "Acousticness", "Instrumentalness", "Liveness", "Speechiness", "Explicit", "Duration", "Popularity"],
             table_mode_list: ["Attrs", "Timeline"],
-            genres: ["Electronic", "R&B", "Vocal", "Pop/Rock", "Religious", "Blues", "Country", "Jazz", "Latin", "New Age", "Folk", "International", "Reggae", "Comedy/Spoken", "Easy Listening", "Classical", "Avant-Garde", "Stage&Screen", "Children's"],
+            genres: ["Electronic", "R&B;", "Vocal", "Pop/Rock", "Religious", "Blues", "Country", "Jazz", "Latin", "New Age", "Folk", "International", "Reggae", "Comedy/Spoken", "Easy Listening", "Classical", "Avant-Garde", "Stage & Screen", "Children's"],
             genre_colors_raw: [[0.0, 0.75, 0.75], [0.06, 0.56, 0.65], [0.11, 0.75, 0.75], [0.17, 0.59, 0.66], [0.22, 0.75, 0.75], [0.28, 0.52, 0.63], [0.33, 0.75, 0.75], [0.39, 0.56, 0.69], [0.44, 0.75, 0.75], [0.5, 0.5, 0.62], [0.56, 0.75, 0.75], [0.61, 0.53, 0.61], [0.67, 0.75, 0.75], [0.72, 0.54, 0.62], [0.78, 0.75, 0.75], [0.83, 0.57, 0.68], [0.89, 0.75, 0.75], [0.94, 0.59, 0.65], [0, 0, 0.75]],
             musicians: [],
             // APP 状态值
