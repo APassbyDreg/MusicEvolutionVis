@@ -220,6 +220,9 @@ function draw_artist_bar(start, end, port_json, input_genre) {
         if (now_port_name == "Stage & Screen") {
             now_port_name = "Stage&Screen";
         }
+        if (now_port_name == "R&B;") {
+            now_port_name = "R&B";
+        }
         now_port_colors.push(bar_color_dict[now_port_name]);
     }
     port_option.yAxis.max = total_length;
