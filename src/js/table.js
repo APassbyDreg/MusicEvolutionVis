@@ -3,6 +3,7 @@ var table_fs_dom = document.getElementById("fullscreen-table")
 var table_chart = echarts.init(table_dom);
 var table_fs_chart = echarts.init(table_fs_dom);
 var attrs = ["danceability", "energy", "valence", "tempo", "loudness", "mode", "key", "acousticness", "instrumentalness", "liveness", "speechiness", "explicit", "duration_ms", "popularity"];
+// var attr_label = ["Danceability", "Energy", "Valence", "Tempo", "Loudness", "Mode", "Key", "Acousticness", "Instrumentalness", "Liveness", "Speechiness", "Explicit", "Duration_ms", "Popularity"];
 // 所有流派信息
 var genres = ["Electronic", "R&B;", "Vocal", "Pop/Rock", "Religious", "Blues", "Country", "Jazz", "Latin", "New Age", "Folk", "International", "Reggae", "Comedy/Spoken", "Easy Listening", "Classical", "Avant-Garde", "Stage & Screen", "Children's", "Unknown"];
 // 表格坐标轴尺度
@@ -302,11 +303,19 @@ function set_table_option() {
     table_option.grid.width = "90%";
     table_option.visualMap.show = true;
     table_option.xAxis.axisLabel.fontSize = 18;
+    table_option.xAxis.axisLabel.fontWeight= 'bolder';
     table_option.xAxis.axisLabel.margin = 20;
+    table_option.yAxis.axisLabel.fontSize = 18;
+    table_option.yAxis.axisLabel.fontWeight= 'bolder';
+    table_option.visualMap.itemHeight = '500%';
     table_fs_chart.setOption(table_option);
     table_option.grid.width = "95%";
     table_option.visualMap.show = false;
     table_option.xAxis.axisLabel.fontSize = 10;
+    table_option.xAxis.axisLabel.fontWeight= 'normal';
     table_option.xAxis.axisLabel.margin = 10;
+    table_option.yAxis.axisLabel.fontSize = 10;
+    table_option.yAxis.axisLabel.fontWeight= 'normal';
+    table_option.visualMap.itemHeight = '200%';
     table_chart.setOption(table_option);
 }
