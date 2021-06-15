@@ -1,13 +1,11 @@
-const { loadModule } = window['vue3-sfc-loader'];
-
 let appconf = {
     data() {
         return {
             // 属性值
             attrs: ["Danceability", "Energy", "Valence", "Tempo", "Loudness", "Mode", "Key", "Acousticness", "Instrumentalness", "Liveness", "Speechiness", "Explicit", "Duration", "Popularity"],
             table_mode_list: ["Attrs", "Timeline"],
-            genres: ["Electronic", "R&B;", "Vocal", "Pop/Rock", "Religious", "Blues", "Country", "Jazz", "Latin", "New Age", "Folk", "International", "Reggae", "Comedy/Spoken", "Easy Listening", "Classical", "Avant-Garde", "Stage&Screen", "Children's"],
-            genre_colors: ['#f09090', '#dea487', '#f0d090', '#d6d675', '#d0f090', '#93da70', '#90f090', '#83d9a0', '#90f0d0', '#75d2d2', '#90d0f0', '#6c8fd5', '#9090f0', '#9070d1', '#d090f0', '#e184e1', '#f090d0', '#dc87a3', '#c0c0c0'],
+            genres: ["Electronic", "R&B;", "Vocal", "Pop/Rock", "Religious", "Blues", "Country", "Jazz", "Latin", "New Age", "Folk", "International", "Reggae", "Comedy/Spoken", "Easy Listening", "Classical", "Avant-Garde", "Stage & Screen", "Children's"],
+            genre_colors_raw: [[0.0, 0.75, 0.75], [0.06, 0.56, 0.65], [0.11, 0.75, 0.75], [0.17, 0.59, 0.66], [0.22, 0.75, 0.75], [0.28, 0.52, 0.63], [0.33, 0.75, 0.75], [0.39, 0.56, 0.69], [0.44, 0.75, 0.75], [0.5, 0.5, 0.62], [0.56, 0.75, 0.75], [0.61, 0.53, 0.61], [0.67, 0.75, 0.75], [0.72, 0.54, 0.62], [0.78, 0.75, 0.75], [0.83, 0.57, 0.68], [0.89, 0.75, 0.75], [0.94, 0.59, 0.65], [0, 0, 0.75]],
             musicians: [],
             // APP 状态值
             fullscreen: 0, // 0: 不显示, 1: 全屏显示表格, 2: 全屏显示图
@@ -20,7 +18,6 @@ let appconf = {
             table_title: "TITLE", // 表题
             table_subtitle: "SUBTITLE", // 表副标题，大部分时间和图标题差不多
             bar_title: "BAR_TITLE", // bar 标题
-            // graph_title: "GRAPH_TITLE", // 图标题
             fullscreen_title: "FULLSCREEN_TITLE",
             animating: false, // 是否在动画
             influence_genres: Array(19).fill(0), // 影响流派数量
@@ -32,7 +29,7 @@ let appconf = {
             if (state == 1) {
                 this.fullscreen_title = this.title;
                 setTimeout(() => {
-                    
+                    update_fs_table();
                 }, 1);
             }
             if (state == 2) {
@@ -40,6 +37,11 @@ let appconf = {
                 setTimeout(()=> {
                     update_fs_graph();
                 }, 1)
+            }else{
+                this.fullscreen_title = this.title;
+                setTimeout(() => {
+                    update_table();
+                }, 1);
             }
         },
         reset: function() {
@@ -126,7 +128,6 @@ let appconf = {
                 set_out_graph_opt();
                 // init_bar();
                 update_bar();
-                update_table();
             } else {
                 // 图中点击
                 if (this.inspecting_musician == "") {
@@ -139,8 +140,8 @@ let appconf = {
                     console.log(this.influence_genres);
                 }
                 // update_artist_bar();
-                update_table();
             }
+            update_table();
         },
         toggle_animation: function() {
             if (this.animating) {
@@ -150,7 +151,16 @@ let appconf = {
             }
         },
     },
-    computed: {},
+    computed: {
+        genre_colors: function () {
+            let colors = [];
+            this.genre_colors_raw.forEach((hsl) => {
+                let rgb = hslToRgb(hsl[0], hsl[1], hsl[2]);
+                colors.push(`#${rgb[0].toString(16)}${rgb[1].toString(16)}${rgb[2].toString(16)}`);
+            });
+            return colors;
+        }
+    },
     mounted: function() {
         // initialize options
         $("#table-mode-switch button")[0].classList.add("active");

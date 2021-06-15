@@ -1,5 +1,7 @@
 var table_dom = document.getElementById("table-content");
+var table_fs_dom = document.getElementById("fullscreen-table")
 var table_chart = echarts.init(table_dom);
+var table_fs_chart = echarts.init(table_fs_dom);
 var attrs = ["danceability", "energy", "valence", "tempo", "loudness", "mode", "key", "acousticness", "instrumentalness", "liveness", "speechiness", "explicit", "duration_ms", "popularity"];
 // 所有流派信息
 var genres = ["Electronic", "R&B;", "Vocal", "Pop/Rock", "Religious", "Blues", "Country", "Jazz", "Latin", "New Age", "Folk", "International", "Reggae", "Comedy/Spoken", "Easy Listening", "Classical", "Avant-Garde", "Stage & Screen", "Children's", "Unknown"];
@@ -35,9 +37,9 @@ var table_option = {
     },
     grid: {
         height: '85%',
-        width: '90%',
+        width: '95%',
         top: '7.5%',
-        left: '10%',
+        left: '5%',
     },
     xAxis: {
         type: 'category',
@@ -109,11 +111,10 @@ async function init_table() {
     table_chart.setOption(table_option);
     table_chart.on("click", function(params) {
         if (attrs.indexOf(params.value) != -1) {
-            app.inspecting_attr = attrs.indexOf(params.value)
-        } else {
-            app.inspecting_attr = params.data[0];
+            app.attr_change(attrs.indexOf(params.value)+1);
+        } else if (app.table_mode == 0) {
+            app.attr_change(params.data[0]+1)
         }
-        change_table_attr();
     })
 }
 
@@ -142,7 +143,12 @@ function update_table() {
         table_option.xAxis.axisLabel.interval = '0';
         app.table_title = "Attributes";
         if (app.inspecting_genre == "") {
-            app.table_subtitle = "all genres";
+            if (app.using_genres.filter((e) => {return e}).length == 19) {
+                app.table_subtitle = "all genres";
+            }
+            else {
+                app.table_subtitle = "selected genres";
+            }
         } else app.table_subtitle = app.inspecting_genre;
     } else if (table_mode == 'Timeline') {
         table_xrange = table_end - table_start;
@@ -155,16 +161,41 @@ function update_table() {
     var col3 = table_data.map(function(value, index) { return value[2]; });
     table_option.series = series;
     table_option.visualMap.max = Math.max.apply(null, col3);
-    table_chart.setOption(table_option);
+    set_table_option();
     table_chart.on("click", function(params) {
         if (attrs.indexOf(params.value) != -1) {
-            app.inspecting_attr = attrs.indexOf(params.value)
-        } else {
-            app.inspecting_attr = params.data[0];
+            app.attr_change(attrs.indexOf(params.value)+1);
+        } else if (app.table_mode == 0) {
+            app.attr_change(params.data[0]+1)
         }
-        change_table_attr();
     })
 }
+
+
+// 更新表格全屏显示
+function update_fs_table() {
+    table_fs_chart.dispose();
+    table_fs_dom = null
+
+    table_fs_dom = document.getElementById("fullscreen-table");
+    table_fs_chart = echarts.init(table_fs_dom);
+
+    var series = init_table_series();
+    var col3 = table_data.map(function(value, index) { return value[2]; });
+    table_option.series = series;
+    table_option.visualMap.max = Math.max.apply(null, col3);
+    set_table_option();
+    
+    table_fs_chart.off("click");
+    table_fs_chart.on("click", function(params) {
+        if (attrs.indexOf(params.value) != -1) {
+            app.attr_change(attrs.indexOf(params.value)+1);
+        } else if (app.table_mode == 0) {
+            app.attr_change(params.data[0]+1);
+        }
+    })
+}
+
 
 // 在属性视图中用于更新图表数据
 function update_table_data() {
@@ -216,18 +247,25 @@ function update_table_timeline() {
     table_option.xAxis.data = table_year;
 }
 
+
+// 更改表格的属性
 function change_table_attr() {
     var param_idx = app.inspecting_attr;
     table_attr = attrs[param_idx];
     app.inspecting_attr = param_idx;
-    app.table_mode = 1
+    // app.table_mode = 1
     var new_table_attr = table_attr.split('');
     new_table_attr[0] = new_table_attr[0].toUpperCase();
     new_table_attr = new_table_attr.join('');
     // console.log(new_table_attr[0]);
     app.table_title = new_table_attr;
     if (app.inspecting_genre == "") {
-        app.table_subtitle = "all genres";
+        if (app.using_genres.filter((e) => {return e}).length == 19) {
+            app.table_subtitle = "all genres";
+        }
+        else {
+            app.table_subtitle = "selected genres";
+        }
     } else app.table_subtitle = app.inspecting_genre;
     table_mode = 'Timeline';
     table_xrange = table_end - table_start;
@@ -237,14 +275,20 @@ function change_table_attr() {
     table_option.series = series;
     table_option.visualMap.max = Math.max.apply(null, col3);
     table_option.xAxis.axisLabel.interval = Math.round(table_xrange / 20);
-    table_chart.setOption(table_option);
+    set_table_option();
     table_chart.off("click");
 }
 
+
+// 生成表格数据格式的偷懒内容
 function init_table_series() {
+    var label_show = (app.fullscreen==1 && app.table_mode==0);
     return [{
         type: 'heatmap',
         data: table_data,
+        label:{
+            show: label_show,
+        },
         emphasis: {
             itemStyle: {
                 shadowBlur: 10,
@@ -252,4 +296,17 @@ function init_table_series() {
             }
         }
     }]
+}
+
+function set_table_option() {
+    table_option.grid.width = "90%";
+    table_option.visualMap.show = true;
+    table_option.xAxis.axisLabel.fontSize = 18;
+    table_option.xAxis.axisLabel.margin = 20;
+    table_fs_chart.setOption(table_option);
+    table_option.grid.width = "95%";
+    table_option.visualMap.show = false;
+    table_option.xAxis.axisLabel.fontSize = 10;
+    table_option.xAxis.axisLabel.margin = 10;
+    table_chart.setOption(table_option);
 }

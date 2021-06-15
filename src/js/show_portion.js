@@ -215,7 +215,15 @@ function draw_artist_bar(start, end, port_json, input_genre) {
         return (second["data"][0] - first["data"][0]);
     });
     for (var i = 0; i < port_option["series"].length; i++) {
-        now_port_colors.push(bar_color_dict[port_option["series"][i]["name"]]);
+        // now_port_name = port_option["series"][i]["name"].split(" ").join("");
+        now_port_name = port_option["series"][i]["name"];
+        if (now_port_name == "Stage & Screen") {
+            now_port_name = "Stage&Screen";
+        }
+        if (now_port_name == "R&B;") {
+            now_port_name = "R&B";
+        }
+        now_port_colors.push(bar_color_dict[now_port_name]);
     }
     port_option.yAxis.max = total_length;
     port_option.color = now_port_colors;
@@ -232,7 +240,7 @@ async function init_bar() {
     basic_select_genre = Array(19).fill(true);
     // basic_select_genre[0] = false
     port_opt = draw_bra(app.time_range[0], app.time_range[1], portion_csv, basic_select_genre, app.genre_colors);
-    console.log(port_opt);
+    // console.log(port_opt);
     if (port_opt && typeof port_opt === 'object') {
         port_chart.setOption(port_opt);
     }
@@ -248,6 +256,7 @@ async function init_bar() {
 function update_bar() {
     // console.log(select_genre);
     port_opt = draw_bra(app.time_range[0], app.time_range[1], portion_csv, app.using_genres, app.genre_colors);
+    // console.log(port_opt);
     if (port_opt && typeof port_opt === 'object') {
         port_chart.setOption(port_opt, true);
     }
@@ -260,7 +269,7 @@ function update_bar() {
         // 根据app.using_genres制定bar title
     if (app.using_genres.indexOf(true) > -1) {
         if (app.using_genres.indexOf(false) > -1) {
-            app.bar_title = "Part of the genres";
+            app.bar_title = "Selected genres";
         } else app.bar_title = "All genres";
     } else app.bar_title = "Nothing to show";
 }
@@ -268,6 +277,7 @@ function update_bar() {
 function update_artist_bar() {
     // 选中流派时使用
     opt = draw_artist_bar(app.time_range[0], app.time_range[1], artist_json_bar, app.inspecting_genre);
+    // console.log(opt);
     if (opt && typeof opt === 'object') {
         port_chart.setOption(opt, true);
     }
