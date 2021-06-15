@@ -23,7 +23,6 @@ async function initDanmaku() {
         }  
     });
     setTimeout(start_danmaku, 1000);
-    console.log(app.musicians);
 }
 
 function start_danmaku () {

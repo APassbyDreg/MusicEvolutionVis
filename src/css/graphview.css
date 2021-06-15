@@ -25,3 +25,13 @@
     width: 100%;
     height: 100%;
 }
+
+#graph-fullscreen-btn {
+    position: inherit;
+    left: calc((90% - 60vh) / 1.6 + 55vh);
+    top: 47.5%;
+    width: 5%;
+    height: 5%;
+    z-index: 2000;
+    text-align: center;
+}
