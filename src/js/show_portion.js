@@ -217,12 +217,12 @@ function draw_artist_bar(start, end, port_json, input_genre) {
     for (var i = 0; i < port_option["series"].length; i++) {
         // now_port_name = port_option["series"][i]["name"].split(" ").join("");
         now_port_name = port_option["series"][i]["name"];
-        if (now_port_name == "Stage & Screen") {
-            now_port_name = "Stage&Screen";
-        }
-        if (now_port_name == "R&B;") {
-            now_port_name = "R&B";
-        }
+        // if (now_port_name == "Stage & Screen") {
+        //     now_port_name = "Stage&Screen";
+        // }
+        // if (now_port_name == "R&B;") {
+        //     now_port_name = "R&B";
+        // }
         now_port_colors.push(bar_color_dict[now_port_name]);
     }
     port_option.yAxis.max = total_length;
@@ -363,6 +363,12 @@ function update_bar_for_artist() {
     port_chart.setOption(port_option, true);
     port_chart.on("click", function(params) {
         genre = params.seriesName;
+        // if (genre == "R&B") {
+        //     genre = "R&B;";
+        // }
+        // if (genre == "Stage&Screen") {
+        //     genre = "Stage & Screen";
+        // }
         app.inspecting_genre = genre;
         app.inspecting_musician = "";
         app.select_genre(genre);

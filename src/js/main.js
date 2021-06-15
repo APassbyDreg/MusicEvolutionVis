@@ -24,27 +24,28 @@ let appconf = {
         }
     },
     methods: {
-        set_fullscreen: function(state) {
+        set_fullscreen: function (state) {
             this.fullscreen = state;
             if (state == 1) {
-                this.fullscreen_title = this.title;
+                this.fullscreen_title = this.table_title;
                 setTimeout(() => {
                     update_fs_table();
                 }, 1);
             }
             if (state == 2) {
                 this.fullscreen_title = this.bar_title;
-                setTimeout(()=> {
+                setTimeout(() => {
                     update_fs_graph();
                 }, 1)
-            }else{
-                this.fullscreen_title = this.title;
+            }
+            else {
+                this.fullscreen_title = this.table_title;
                 setTimeout(() => {
                     update_table();
                 }, 1);
             }
         },
-        reset: function() {
+        reset: function () {
             this.inspecting_attr = 0;
             this.inspecting_musician = "";
             this.inspecting_genre = "";
@@ -57,7 +58,7 @@ let appconf = {
             stop_animation();
             update_bar();
         },
-        change_graph_mode: function(mode) {
+        change_graph_mode: function (mode) {
             `
                 图中显示边状态更改时的函数
             `
@@ -66,7 +67,7 @@ let appconf = {
             // $("#graph-mode-switch button").removeClass("active");
             // $("#graph-mode-switch button")[mode].classList.add("active");
         },
-        change_table_mode: function(mode) {
+        change_table_mode: function (mode) {
             `
                 图中显示表格模式更改时的函数
             `
@@ -78,7 +79,7 @@ let appconf = {
                 $("#table-mode-switch button")[2].classList.add("active");
             }
         },
-        grene_change: function() {
+        grene_change: function () {
             `
                 使用流派更改时的函数
             `
@@ -86,7 +87,7 @@ let appconf = {
             update_table();
             update_bar();
         },
-        attr_change: function(idx) {
+        attr_change: function (idx) {
             `
                 展示属性变化时的函数
             `
@@ -94,12 +95,12 @@ let appconf = {
             this.inspecting_attr = idx - 1;
             change_table_attr();
         },
-        range_change: function() {
+        range_change: function () {
             `
                 时间状态更改处理函数
             `
-            let start = (typeof(this.time_range[0]) === "number") ? this.time_range[0] : parseInt(this.time_range[0]);
-            let end = (typeof(this.time_range[1]) === "number") ? this.time_range[1] : parseInt(this.time_range[1]);
+            let start = (typeof (this.time_range[0]) === "number") ? this.time_range[0] : parseInt(this.time_range[0]);
+            let end = (typeof (this.time_range[1]) === "number") ? this.time_range[1] : parseInt(this.time_range[1]);
             start = Math.max(1921, Math.min(2020, start));
             end = Math.max(1921, Math.min(2020, end));
             this.time_range = (start > end) ? [end, start] : [start, end];
@@ -107,7 +108,7 @@ let appconf = {
             update_graph();
             update_bar();
         },
-        focus_musician: function(name) {
+        focus_musician: function (name) {
             `
                 当弹幕被点击时触发的事件
             `
@@ -117,7 +118,7 @@ let appconf = {
             // console.log(genre);
             this.select_genre(genre);
         },
-        select_genre: function(name = "") {
+        select_genre: function (name = "") {
             `
                 这个函数用来全局派发更改选定的流派的事件（包括从图中点击、点击弹幕、从流派中返回）
             `
@@ -143,7 +144,7 @@ let appconf = {
             }
             update_table();
         },
-        toggle_animation: function() {
+        toggle_animation: function () {
             if (this.animating) {
                 stop_animation();
             } else {
@@ -161,7 +162,7 @@ let appconf = {
             return colors;
         }
     },
-    mounted: function() {
+    mounted: function () {
         // initialize options
         $("#table-mode-switch button")[0].classList.add("active");
     }
