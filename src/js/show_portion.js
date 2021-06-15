@@ -363,6 +363,12 @@ function update_bar_for_artist() {
     port_chart.setOption(port_option, true);
     port_chart.on("click", function(params) {
         genre = params.seriesName;
+        if (genre == "R&B") {
+            genre = "R&B;";
+        }
+        if (genre == "Stage&Screen") {
+            genre = "Stage & Screen";
+        }
         app.inspecting_genre = genre;
         app.inspecting_musician = "";
         app.select_genre(genre);
