@@ -29,7 +29,6 @@ function draw_bra(start, end, portion_csv, select_genre, color_list) {
             } // 没查到返回列表元素下标的函数
             now_genre_list.splice(remove_idx, 1);
             now_port_colors.splice(remove_idx, 1);
-            // console.log(now_genre_list);
         }
     }
     port_option = {
@@ -89,7 +88,6 @@ function draw_bra(start, end, portion_csv, select_genre, color_list) {
             },
             tooltip: {
                 formatter: (v) => {
-                    // console.log(v);
                     var orig = Math.round(Math.pow(v.data, 1 / scale_fact));
                     return `<b>${v.seriesName}:</b> ${orig}`;
                 }
@@ -97,7 +95,6 @@ function draw_bra(start, end, portion_csv, select_genre, color_list) {
             data: [sum_num]
         };
         genre_flag = select_genre[i];
-        // console.log(genre_flag);
         if (genre_flag == true) {
             port_option["series"].push(new_part);
             total += sum_num;
@@ -179,8 +176,6 @@ function draw_artist_bar(start, end, port_json, input_genre) {
             }
         }
     }
-    // console.log(now_influence_genres);
-
     // var now_artists_num = 0;
     var total_length = 0;
     for (var genre in now_influence_genres) {
@@ -197,7 +192,6 @@ function draw_artist_bar(start, end, port_json, input_genre) {
             },
             tooltip: {
                 formatter: (v) => {
-                    // console.log(v);
                     var orig = Math.round(Math.pow(v.data, 1 / scale_fact));
                     return `<b>${v.seriesName}:</b> ${orig}`;
                 }
@@ -215,7 +209,6 @@ function draw_artist_bar(start, end, port_json, input_genre) {
         return (second["data"][0] - first["data"][0]);
     });
     for (var i = 0; i < port_option["series"].length; i++) {
-        // now_port_name = port_option["series"][i]["name"].split(" ").join("");
         now_port_name = port_option["series"][i]["name"];
         // if (now_port_name == "Stage & Screen") {
         //     now_port_name = "Stage&Screen";
@@ -227,7 +220,6 @@ function draw_artist_bar(start, end, port_json, input_genre) {
     }
     port_option.yAxis.max = total_length;
     port_option.color = now_port_colors;
-    // console.log(port_option);
     return port_option;
 }
 
@@ -240,12 +232,10 @@ async function init_bar() {
     basic_select_genre = Array(19).fill(true);
     // basic_select_genre[0] = false
     port_opt = draw_bra(app.time_range[0], app.time_range[1], portion_csv, basic_select_genre, app.genre_colors);
-    // console.log(port_opt);
     if (port_opt && typeof port_opt === 'object') {
         port_chart.setOption(port_opt);
     }
     port_chart.on("click", function(params) {
-        // console.log(params);
         genre = params.seriesName;
         app.inspecting_genre = genre;
         app.select_genre(genre);
@@ -254,15 +244,12 @@ async function init_bar() {
 }
 
 function update_bar() {
-    // console.log(select_genre);
     port_opt = draw_bra(app.time_range[0], app.time_range[1], portion_csv, app.using_genres, app.genre_colors);
-    // console.log(port_opt);
     if (port_opt && typeof port_opt === 'object') {
         port_chart.setOption(port_opt, true);
     }
     port_chart.on("click", function(params) {
             genre = params.seriesName;
-            // console.log(genre)
             app.inspecting_genre = genre;
             app.select_genre(genre);
         })
@@ -277,7 +264,6 @@ function update_bar() {
 function update_artist_bar() {
     // 选中流派时使用
     opt = draw_artist_bar(app.time_range[0], app.time_range[1], artist_json_bar, app.inspecting_genre);
-    // console.log(opt);
     if (opt && typeof opt === 'object') {
         port_chart.setOption(opt, true);
     }
@@ -291,7 +277,6 @@ function update_artist_bar() {
 
 function update_bar_for_artist() {
     // 为选中的音乐家更新流派
-    // console.log(app.influence_genres)
     let now_influence_genres = {}; // 修改后最终输入option的数据
     let now_genre_list;
     var total_length = 0;
@@ -327,8 +312,6 @@ function update_bar_for_artist() {
         series: []
     };
     for (var i = 0; i < 19; i++) {
-        // now_influence_genres[app.genres[i]] = app.influence_genres[i];
-        // console.log(now_influence_genres)
         input_num = Math.pow(app.influence_genres[i], scale_fact);
         new_part = {
             name: app.genres[i],
