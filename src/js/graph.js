@@ -12,7 +12,7 @@ function set_in_graph_opt() {
     var end = app.time_range[1];
     end = (parseInt(end / 10) + 1) * 10;
     var genre = app.inspecting_genre;
-    var inspecting_musician = app.inspecting_musician;
+    var genre_color = app.genre_colors_raw[app.genres.indexOf(genre)]
 
     var graph_option;
     var node_dict = {};
@@ -20,6 +20,8 @@ function set_in_graph_opt() {
     var artist_id = 0;
     var max_num = 25;
     var cate_set = new Set();
+    var line_hsl = app.genre_colors_raw[app.genres.indexOf(genre)]
+    let line_color = hslToRgb(line_hsl[0], 0.5, 0.25)
 
     for (year in artist_influence_data) {
         if (year < start || year > end) continue;
@@ -31,6 +33,7 @@ function set_in_graph_opt() {
                 artist_id += 1
             }
             if (node_dict[artist] == undefined) {
+                let rgb = hslToRgb(genre_color[0], genre_color[1] + Math.random() * 0.2 - 0.1, genre_color[2] + Math.random() * 0.2 - 0.1)
                 var artist_map = {
                     id: artist_id_dict[artist],
                     name: artist,
@@ -39,6 +42,9 @@ function set_in_graph_opt() {
                     end: end,
                     category: artist,
                     symbolSize: 10,
+                    itemStyle: {
+                        color: `#${rgb[0].toString(16)}${rgb[1].toString(16)}${rgb[2].toString(16)}`
+                    }
                 }
                 node_dict[artist] = artist_map;
             } else {
@@ -93,7 +99,10 @@ function set_in_graph_opt() {
                     if (node_data.find(function(node) { return (element == node.name) })) {
                         link_set.add({ 
                             source: artist_id_dict[artist], 
-                            target: artist_id_dict[element] 
+                            target: artist_id_dict[element],
+                            lineStyle: {
+                                color: `#${line_color[0].toString(16)}${line_color[1].toString(16)}${line_color[2].toString(16)}`
+                            }
                         });
                     }
                 })
@@ -135,7 +144,7 @@ function set_in_graph_opt() {
                 blurScope: 'coordinateSystem'
             },
             roam: true,
-            graph_modeSymbol: ['none', 'arrow'], // 边的样式
+            // graph_modeSymbol: ['none', 'arrow'], // 边的样式
             edgeSymbolSize: 10,
         }],
         center: [],
@@ -224,26 +233,25 @@ function set_out_graph_opt() {
                 node_value += portion_data[cate_data[j].name];
             }
             node_data[i]["value"] = node_data[i]["value"] + node_value;
-            if (node_data[i]["value"] > max_value) {
-                max_value = node_data[i]["value"];
-            } else if (node_data[i]["value"] < min_value) {
-                min_value = node_data[i]["value"];
-            }
         }
     }
-
-    for (var i = 0; i < cate_data.length; i++) {
-        var size
-        if (max_value == min_value) {
-            size = 40;
-        } else {
-            size = 40 * (1.0 * (node_data[i]["value"] - min_value)) / (max_value - min_value)
+    node_data.forEach(function(node) {
+        if (node["value"] > max_value) {
+            max_value = node["value"];
+        } else if (node["value"] < min_value) {
+            min_value = node["value"];
         }
-        if (size < 20) {
-            size = 20;
-        }
-        node_data[i]["symbolSize"] = size;
-    }
+    })
+    console.log(node_data)
+    const nonlinear_coef = 0.9;
+    let max_interp = Math.pow(max_value, nonlinear_coef);
+    let min_interp = Math.pow(min_value, nonlinear_coef);
+    for (var i = 0; i < cate_data.length; i++) {
+        var size
+        let val_interp = Math.pow(node_data[i]["value"], nonlinear_coef);
+        size = 20 + 100 * (val_interp - min_interp) / (max_interp - min_interp)
+        node_data[i]["symbolSize"] = size;
+    }
     // console.log(node_data);
     // link data
     for (var i = 0; i < cate_data.length; i++) {
@@ -349,7 +357,7 @@ function set_artist_graph_opt() {
     });
     var color_map = {};
     ori_cate_data.forEach(function(item, idx) {
-        color_map[item] = app.genre_colors[idx];
+        color_map[item] = app.genre_colors[idx]
     })
 
     var using_cates = new Set();
@@ -372,7 +380,7 @@ function set_artist_graph_opt() {
                 fontSize: 20
             },
             itemStyle: {
-                color: color_map[center_genre]
+                color: color_map[genre]
             },
             symbol: "diamond"
         }

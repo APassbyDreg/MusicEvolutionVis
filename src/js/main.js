@@ -4,8 +4,8 @@ let appconf = {
             // 属性值
             attrs: ["Danceability", "Energy", "Valence", "Tempo", "Loudness", "Mode", "Key", "Acousticness", "Instrumentalness", "Liveness", "Speechiness", "Explicit", "Duration", "Popularity"],
             table_mode_list: ["Attrs", "Timeline"],
-            genres: ["Electronic", "R&B", "Vocal", "Pop/Rock", "Religious", "Blues", "Country", "Jazz", "Latin", "New Age", "Folk", "International", "Reggae", "Comedy/Spoken", "Easy Listening", "Classical", "Avant-Garde", "Stage&Screen", "Children's"],
-            genre_colors: ['#f09090', '#dea487', '#f0d090', '#d6d675', '#d0f090', '#93da70', '#90f090', '#83d9a0', '#90f0d0', '#75d2d2', '#90d0f0', '#6c8fd5', '#9090f0', '#9070d1', '#d090f0', '#e184e1', '#f090d0', '#dc87a3', '#c0c0c0'],
+            genres: ["Electronic", "R&B;", "Vocal", "Pop/Rock", "Religious", "Blues", "Country", "Jazz", "Latin", "New Age", "Folk", "International", "Reggae", "Comedy/Spoken", "Easy Listening", "Classical", "Avant-Garde", "Stage & Screen", "Children's"],
+            genre_colors_raw: [[0.0, 0.75, 0.75], [0.06, 0.56, 0.65], [0.11, 0.75, 0.75], [0.17, 0.59, 0.66], [0.22, 0.75, 0.75], [0.28, 0.52, 0.63], [0.33, 0.75, 0.75], [0.39, 0.56, 0.69], [0.44, 0.75, 0.75], [0.5, 0.5, 0.62], [0.56, 0.75, 0.75], [0.61, 0.53, 0.61], [0.67, 0.75, 0.75], [0.72, 0.54, 0.62], [0.78, 0.75, 0.75], [0.83, 0.57, 0.68], [0.89, 0.75, 0.75], [0.94, 0.59, 0.65], [0, 0, 0.75]],
             musicians: [],
             // APP 状态值
             fullscreen: 0, // 0: 不显示, 1: 全屏显示表格, 2: 全屏显示图
@@ -24,27 +24,28 @@ let appconf = {
         }
     },
     methods: {
-        set_fullscreen: function(state) {
+        set_fullscreen: function (state) {
             this.fullscreen = state;
             if (state == 1) {
-                this.fullscreen_title = this.title;
+                this.fullscreen_title = this.table_title;
                 setTimeout(() => {
                     update_fs_table();
                 }, 1);
             }
             if (state == 2) {
                 this.fullscreen_title = this.bar_title;
-                setTimeout(()=> {
+                setTimeout(() => {
                     update_fs_graph();
                 }, 1)
-            }else{
-                this.fullscreen_title = this.title;
+            }
+            else {
+                this.fullscreen_title = this.table_title;
                 setTimeout(() => {
                     update_table();
                 }, 1);
             }
         },
-        reset: function() {
+        reset: function () {
             this.inspecting_attr = 0;
             this.inspecting_musician = "";
             this.inspecting_genre = "";
@@ -57,7 +58,7 @@ let appconf = {
             stop_animation();
             update_bar();
         },
-        change_graph_mode: function(mode) {
+        change_graph_mode: function (mode) {
             `
                 图中显示边状态更改时的函数
             `
@@ -66,7 +67,7 @@ let appconf = {
             // $("#graph-mode-switch button").removeClass("active");
             // $("#graph-mode-switch button")[mode].classList.add("active");
         },
-        change_table_mode: function(mode) {
+        change_table_mode: function (mode) {
             `
                 图中显示表格模式更改时的函数
             `
@@ -78,7 +79,7 @@ let appconf = {
                 $("#table-mode-switch button")[2].classList.add("active");
             }
         },
-        grene_change: function() {
+        grene_change: function () {
             `
                 使用流派更改时的函数
             `
@@ -86,7 +87,7 @@ let appconf = {
             update_table();
             update_bar();
         },
-        attr_change: function(idx) {
+        attr_change: function (idx) {
             `
                 展示属性变化时的函数
             `
@@ -94,12 +95,12 @@ let appconf = {
             this.inspecting_attr = idx - 1;
             change_table_attr();
         },
-        range_change: function() {
+        range_change: function () {
             `
                 时间状态更改处理函数
             `
-            let start = (typeof(this.time_range[0]) === "number") ? this.time_range[0] : parseInt(this.time_range[0]);
-            let end = (typeof(this.time_range[1]) === "number") ? this.time_range[1] : parseInt(this.time_range[1]);
+            let start = (typeof (this.time_range[0]) === "number") ? this.time_range[0] : parseInt(this.time_range[0]);
+            let end = (typeof (this.time_range[1]) === "number") ? this.time_range[1] : parseInt(this.time_range[1]);
             start = Math.max(1921, Math.min(2020, start));
             end = Math.max(1921, Math.min(2020, end));
             this.time_range = (start > end) ? [end, start] : [start, end];
@@ -107,7 +108,7 @@ let appconf = {
             update_graph();
             update_bar();
         },
-        focus_musician: function(name) {
+        focus_musician: function (name) {
             `
                 当弹幕被点击时触发的事件
             `
@@ -117,7 +118,7 @@ let appconf = {
             console.log(genre);
             this.select_genre(genre);
         },
-        select_genre: function(name = "") {
+        select_genre: function (name = "") {
             `
                 这个函数用来全局派发更改选定的流派的事件（包括从图中点击、点击弹幕、从流派中返回）
             `
@@ -143,7 +144,7 @@ let appconf = {
             }
             update_table();
         },
-        toggle_animation: function() {
+        toggle_animation: function () {
             if (this.animating) {
                 stop_animation();
             } else {
@@ -151,8 +152,17 @@ let appconf = {
             }
         },
     },
-    computed: {},
-    mounted: function() {
+    computed: {
+        genre_colors: function () {
+            let colors = [];
+            this.genre_colors_raw.forEach((hsl) => {
+                let rgb = hslToRgb(hsl[0], hsl[1], hsl[2]);
+                colors.push(`#${rgb[0].toString(16)}${rgb[1].toString(16)}${rgb[2].toString(16)}`);
+            });
+            return colors;
+        }
+    },
+    mounted: function () {
         // initialize options
         $("#table-mode-switch button")[0].classList.add("active");
     }
