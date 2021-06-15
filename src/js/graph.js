@@ -242,7 +242,7 @@ function set_out_graph_opt() {
             min_value = node["value"];
         }
     })
-    console.log(node_data)
+    // console.log(node_data)
     const nonlinear_coef = 0.9;
     let max_interp = Math.pow(max_value, nonlinear_coef);
     let min_interp = Math.pow(min_value, nonlinear_coef);

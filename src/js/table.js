@@ -2,8 +2,8 @@ var table_dom = document.getElementById("table-content");
 var table_fs_dom = document.getElementById("fullscreen-table")
 var table_chart = echarts.init(table_dom);
 var table_fs_chart = echarts.init(table_fs_dom);
-var attrs = ["danceability", "energy", "valence", "tempo", "loudness", "mode", "key", "acousticness", "instrumentalness", "liveness", "speechiness", "explicit", "duration_ms", "popularity"];
-// var attr_label = ["Danceability", "Energy", "Valence", "Tempo", "Loudness", "Mode", "Key", "Acousticness", "Instrumentalness", "Liveness", "Speechiness", "Explicit", "Duration_ms", "Popularity"];
+var attrs_data = ["danceability", "energy", "valence", "tempo", "loudness", "mode", "key", "acousticness", "instrumentalness", "liveness", "speechiness", "explicit", "duration_ms", "popularity"];
+var attrs = ["Danceability", "Energy", "Valence", "Tempo", "Loudness", "Mode", "Key", "Acousticness", "Instrumentalness", "Liveness", "Speechiness", "Explicit", "Duration_ms", "Popularity"];
 // 所有流派信息
 var genres = ["Electronic", "R&B;", "Vocal", "Pop/Rock", "Religious", "Blues", "Country", "Jazz", "Latin", "New Age", "Folk", "International", "Reggae", "Comedy/Spoken", "Easy Listening", "Classical", "Avant-Garde", "Stage & Screen", "Children's", "Unknown"];
 // 表格坐标轴尺度
@@ -213,7 +213,7 @@ function update_table_data() {
                     genre = genres[ii]
                     for (k = 0; k < table_xrange; k++) {
                         for (j = 0; j < table_yrange; j++) {
-                            table_data[k * table_yrange + j][2] += full_table_data_genre[i + ""][genre][attrs[k]][j];
+                            table_data[k * table_yrange + j][2] += full_table_data_genre[i + ""][genre][attrs_data[k]][j];
                         }
                     }
                 }
@@ -252,7 +252,7 @@ function update_table_timeline() {
 // 更改表格的属性
 function change_table_attr() {
     var param_idx = app.inspecting_attr;
-    table_attr = attrs[param_idx];
+    table_attr = attrs_data[param_idx];
     app.inspecting_attr = param_idx;
     // app.table_mode = 1
     var new_table_attr = table_attr.split('');
