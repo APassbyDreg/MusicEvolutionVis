@@ -18,7 +18,7 @@ table_arr[table_yrange - 1] = 'high'
 // 表格数据
 var full_table_data; // 百年所有数据，不分流派
 var full_table_data_genre; // 按年统计，按流派分类的数据
-var table_data = new Array(table_xrange * table_yrange);; //这个是直接给table用的数据，[纵坐标，横坐标，值]
+var table_data = new Array(table_xrange * table_yrange); //这个是直接给table用的数据，[纵坐标，横坐标，值]
 var table_mode = 'Attrs'; // 标记表格类型，是'Attrs'属性图，还是单一属性'Timeline'
 var table_attr; //标记年趋势视图下是哪个属性信息
 // 表格数据起止年份
@@ -29,7 +29,7 @@ var table_end = 2021;
 var table_genres = new Array(genres.length).fill(true);
 
 var table_color = ['#e6cda8', '#de8c5c', '#f3772e', '#ee6666', '#ca3535'];
-// var table_color = [bright_color, mid_color, dark_color]
+
 // 表格的样式的设置
 var table_option = {
     gradientColor: table_color,
@@ -123,6 +123,7 @@ async function init_table() {
 function update_table() {
     // 更新选择的流派、模式
     table_mode = app.table_mode_list[app.table_mode];
+    // 判断目前查看的音乐流派
     if (app.inspecting_genre) {
         var tmp_genres = new Array(table_genres.length).fill(false)
         var idx = genres.findIndex(value => value == app.inspecting_genre)
@@ -152,6 +153,7 @@ function update_table() {
             }
         } else app.table_subtitle = app.inspecting_genre;
     } else if (table_mode == 'Timeline') {
+        // 切换成为时间趋势图
         table_xrange = table_end - table_start;
         change_table_attr();
         update_table_timeline();
@@ -254,11 +256,11 @@ function change_table_attr() {
     var param_idx = app.inspecting_attr;
     table_attr = attrs_data[param_idx];
     app.inspecting_attr = param_idx;
-    // app.table_mode = 1
+
     var new_table_attr = table_attr.split('');
     new_table_attr[0] = new_table_attr[0].toUpperCase();
     new_table_attr = new_table_attr.join('');
-    // console.log(new_table_attr[0]);
+
     app.table_title = new_table_attr;
     if (app.inspecting_genre == "") {
         if (app.using_genres.filter((e) => {return e}).length == 19) {
@@ -299,6 +301,7 @@ function init_table_series() {
     }]
 }
 
+// 统一全屏的样式和主视图的样式
 function set_table_option() {
     table_option.grid.width = "90%";
     table_option.visualMap.show = true;
