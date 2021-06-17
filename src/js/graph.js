@@ -514,6 +514,7 @@ function set_artist_graph_opt() {
             for (genre in year_data["influence"]) {
                 year_data["influence"][genre].forEach(function(artist) {
                     if (node_data.find(function(item) {return item.name == artist})) return;
+                    if (second_infulence_nodes.find(function(item) {return item.name == artist})) return;
                     second_infulence_nodes.push({
                         id: id_cnt,
                         name: artist, 
